@@ -4,11 +4,13 @@ const BookRatings = require('./bookRatings');
 const BookReviews  =require('./bookReviews');
 
 const userSchema = new mongoose.Schema({
+    username: {type: String, required: true, minlength: 3, unique:true},
     firstName: {type: String, required: true, minlength: 3},
     lastName: {type: String, required: true},
     email: {type: String, required: true, unique: true, match: /.+@.+\..+/},
     password: {type: String, required: true},
-    image_path: {type: String}
+    image_path: {type: String},
+    roles:[{type:mongoose.Schema.Types.ObjectId, ref:"Role"}]
 });
 
 // Delete dependent documents
