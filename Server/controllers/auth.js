@@ -8,6 +8,30 @@ var jwt = require('jsonwebtoken')
 var bcrypt = require('bcryptjs')
 
 exports.signup = (req, res) => {
+    const { body: { username, firstName, lastName, email, password } } = req;
+    console.log(req.files[0].path);
+    
+    const image_path = req.files[0].path;
+    let newUser = new User({
+        username,
+        firstName,
+        lastName,
+        email,
+        password,
+        image_path
+    });
+    Role.findOne({ name: "user" }, (err, role) => {
+        if (err) {
+            res.status(500).send({ message: err });
+            return;
+        }
+        newUser.roles = [role._id];
+    });
+    newUser.save().then(() => {
+        res.status(201).send({newUser, message: "You Registered Successfully"});
+    }).catch((err) => {
+        res.status(400).send({message: err});
+    });
 
 }
 

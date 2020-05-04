@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require("body-parser");
 const cors = require('cors')
 const db = require("./models");
-var bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 
 
 const DB_PORT = process.env.DB_PORT;
@@ -33,6 +33,7 @@ app.get('/', (req, res) => {
   res.json({ message: "welcome" })
 })
 
+// Database Connection
 mongoose.set('useCreateIndex', true);
 mongoose.connect(`mongodb://${DB_HOST}:${DB_PORT}/goodReadsDB`, {
   useNewUrlParser: true,
@@ -49,15 +50,16 @@ require("./routes/auth")(app);
 const { userRouter, tokenMiddleware } = require('./routes/users');
 
 app.use(tokenMiddleware)
-app.use('/api', userRouter)
+app.use('/api', userRouter) // FOR TESTING ONLY
 
+// Starting the App
 app.listen(PORT, (err) => {
 
   if (!err) console.log(`App Started on port: ${PORT}`);
 
 });
 
-
+// Creates the Roles and the Admin
 function initial() {
   Role.estimatedDocumentCount((err, count) => {
     if (!err && count === 0) {
@@ -91,7 +93,7 @@ function initial() {
         username: "admin",
         firstName: "admin",
         lastName: "admin",
-        password: bcrypt.hashSync("12345678", 8),
+        password: "12345678",
         email: "admin@gmail.com"
       });
       Role.findOne({ name: "user" }, (err, role) => {

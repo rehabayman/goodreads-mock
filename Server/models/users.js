@@ -7,11 +7,12 @@ const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
 const userSchema = new mongoose.Schema({
-    username: { type: String, required: true, minlength: 3, unique: true },
+    username: { type: String, required: true, minlength: 3, maxlength: 20, unique: true },
     firstName: {
         type: String,
         required: true,
         minlength: 3,
+        maxlength: 20,
         validate(value) {
             if (!validator.isAlpha(value))
                 throw Error("First Name should be all Alphabetical Characters");
@@ -20,6 +21,8 @@ const userSchema = new mongoose.Schema({
     lastName: {
         type: String,
         required: true,
+        minlength: 3,
+        maxlength: 20,
         validate(value) {
             if (!validator.isAlpha(value))
                 throw Error("Last Name should be all Alphabetical Characters");

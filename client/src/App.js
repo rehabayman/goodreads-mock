@@ -10,6 +10,7 @@ import Home from "./components/home.component";
 import Profile from "./components/profile.component";
 import BoardUser from "./components/board-user.component";
 import BoardAdmin from "./components/board-admin.component";
+import Register from "./components/register.component";
 import NavBar from "./components/navbar"
 
 function App() {
@@ -23,7 +24,7 @@ function App() {
             <Switch>
               <Route exact path={["/", "/home"]} component={Home} />
               <Route exact path="/login" component={Login} />
-              {/* <Route exact path="/register" component={Register} /> */}
+              <Route exact path="/register" component={Register} />
               <Route exact path="/profile" component={Profile} />
               <Route path="/user" component={BoardUser} />
               <Route path="/admin" component={BoardAdmin} />

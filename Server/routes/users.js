@@ -1,6 +1,5 @@
 const express = require('express')
 const userController = require('../controllers/userController');
-const multer = require('multer');
 const { authJwt } = require("../middlewares");
 
 const router = express.Router()
@@ -25,11 +24,7 @@ router.get(
     userController.adminBoard
 );
 
-const uploading = multer({
-    dest: __dirname + '../public/uploads/users',
-    limits: { fileSize: 2000000, files: 1 }, // 2M File
-});
 
-router.post('/signup', userController.create);
+// router.post('/signup', userController.create);
 
 exports.userRouter = router

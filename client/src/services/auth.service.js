@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-const API_URL = "http://localhost:8000/api/auth/"
+const API_URL = "http://localhost:8000/users/auth/"
+// const SIGNUP_URL = "http://localhost:8000/users/auth/signup"
 
 
 function AuthService ()  {
@@ -26,6 +27,23 @@ function AuthService ()  {
 
     getCurrentUser: () =>{
       return JSON.parse(localStorage.getItem('user'));;
+    },
+
+    // DON'T FORGET TO MODIFY LOGIN
+    register: (username, email, password, firstname, lastname, image) => {
+      let form = new FormData();
+      const config = {
+        headers: { 'content-type': 'multipart/form-data' }
+      }
+      form.append('firstName', firstname);
+      form.append('lastName', lastname);
+      form.append('username', username);
+      form.append('email', email);
+      form.append('password', password);
+      form.append('image', image);
+      return (
+        axios.post(API_URL+"signup", form, config)
+      )
     }
   })
 }
