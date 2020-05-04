@@ -1,14 +1,15 @@
 const userModel = require('../models/users');
 
-function create (req, res) {
-    const {body: {firstName, lastName, email, password}} = req;
-    const image_path = req.files.image.path;
+exports.create = (req, res) => {
+    const { body: { username, firstName, lastName, email, password } } = req;
+    // const image_path = req.files.image.path;
     const newUser = new userModel({
-        firstName, 
-        lastName, 
+        username,
+        firstName,
+        lastName,
         email,
         password,
-        image_path
+        // image_path
     });
     newUser.save().then(() => {
         res.status(201).send(newUser);
@@ -17,6 +18,18 @@ function create (req, res) {
     });
 }
 
-module.exports = {
-    create,
-}
+exports.allAccess = (req, res) => {
+    res.status(200).send("Public Content.");
+};
+
+exports.userBoard = (req, res) => {
+    res.status(200).send("User Content.");
+};
+
+exports.adminBoard = (req, res) => {
+    res.status(200).send("Admin Content.");
+};
+
+exports.moderatorBoard = (req, res) => {
+    res.status(200).send("Moderator Content.");
+};
