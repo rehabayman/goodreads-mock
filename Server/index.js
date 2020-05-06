@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require('cors')
 const db = require("./models");
 const bcrypt = require('bcryptjs');
-
+const bookRouter = require('./routes/books');
 
 const DB_PORT = process.env.DB_PORT;
 const DB_HOST = process.env.DB_HOST;
@@ -128,3 +128,4 @@ app.use((err, req, res, next) => {
 });
 
 app.use('/users', userRouter);
+app.use('/books', bookRouter);

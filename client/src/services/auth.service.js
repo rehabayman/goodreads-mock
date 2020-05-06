@@ -29,7 +29,6 @@ function AuthService ()  {
       return JSON.parse(localStorage.getItem('user'));;
     },
 
-    // DON'T FORGET TO MODIFY LOGIN
     register: (username, email, password, firstname, lastname, image) => {
       let form = new FormData();
       const config = {

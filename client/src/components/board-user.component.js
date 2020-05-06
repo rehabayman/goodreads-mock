@@ -1,7 +1,7 @@
 
 import React, {useState, useEffect} from 'react'
 import UserService from '../services/user.service'
-
+import RateBook from './rate-book.component'
 
 const BoardUser=()=>  {
     
@@ -30,6 +30,7 @@ const BoardUser=()=>  {
         <div className="container">
         <header className="jumbotron">
             <h3>{content}</h3>
+            <RateBook />
         </header>
         </div>
     );
