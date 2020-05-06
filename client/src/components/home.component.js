@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 
 import UserService from "../services/user.service";
+import Populars from "./popular-live.component.js";
+import Footer from "./footer.js";
 
 const Home=()=> {
   
@@ -30,6 +32,12 @@ const Home=()=> {
       <header className="jumbotron">
         <h3>{content}</h3>
       </header>
+      <main>
+        <Populars />
+      </main>
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 }

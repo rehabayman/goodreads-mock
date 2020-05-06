@@ -11,5 +11,4 @@ router.get('/rate/:id', [authJwt.verifyToken], bookController.getBookRating);
 router.post('/rate/:id', [authJwt.verifyToken], bookController.updateBookRating);
 
 
-
-module.exports= router
+module.exports = router

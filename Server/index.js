@@ -10,6 +10,7 @@ const DB_PORT = process.env.DB_PORT;
 const DB_HOST = process.env.DB_HOST;
 const PORT = process.env.PORT;
 // const userRouter = require('./routes/users');
+const categoryRouter = require('./routes/categories');
 
 const app = express();
 
@@ -20,14 +21,26 @@ var corsOptions = {
   origin: "http://localhost:8081"
 };
 
+//  importig Home routes.
+const homeRouter = require("./routes/home.js");
+app.use(express.json());//middleware
+app.use(cors());//middleware
 app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
+
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
+
+// middleware that logs requests method and the url requested.
+app.use( (req, res, next)=>{
+  console.log(`\n\nnew request, its method: ${req.method}`);
+  console.log(`the url requested: ${req.url}\n`);
+  next();
+})
 
 app.get('/', (req, res) => {
   res.json({ message: "welcome" })
@@ -51,8 +64,10 @@ const { userRouter, tokenMiddleware } = require('./routes/users');
 
 app.use(tokenMiddleware)
 app.use('/api', userRouter) // FOR TESTING ONLY
+app.use('/categories',categoryRouter)
 
-// Starting the App
+app.use("/home", homeRouter);
+
 app.listen(PORT, (err) => {
 
   if (!err) console.log(`App Started on port: ${PORT}`);
