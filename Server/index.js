@@ -19,6 +19,9 @@ var corsOptions = {
   origin: "http://localhost:8081"
 };
 
+//  importig Home routes.
+const homeRouter = require("./routes/home.js");
+
 app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
@@ -27,6 +30,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
+
+// middleware that logs requests method and the url requested.
+app.use( (req, res, next)=>{
+  console.log(`\n\nnew request, its method: ${req.method}`);
+  console.log(`the url requested: ${req.url}\n`);
+  next();
+})
 
 app.get('/', (req, res) => {
   res.json({ message: "welcome" })
@@ -48,6 +58,8 @@ const {userRouter,tokenMiddleware}=require('./routes/users');
 
 app.use(tokenMiddleware)
 app.use('/api',userRouter)
+
+app.use("/home", homeRouter);
 
 app.listen(PORT, (err) => {
 
