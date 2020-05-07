@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const bodyParser = require("body-parser");
-const cors = require('cors')
+const cors = require('cors');
 const db = require("./models");
 const bcrypt = require('bcryptjs');
 
@@ -9,7 +9,7 @@ const bcrypt = require('bcryptjs');
 const DB_PORT = process.env.DB_PORT;
 const DB_HOST = process.env.DB_HOST;
 const PORT = process.env.PORT;
-// const userRouter = require('./routes/users');
+const booksRouter = require('./routes/books');
 
 const app = express();
 
@@ -128,3 +128,5 @@ app.use((err, req, res, next) => {
 });
 
 app.use('/users', userRouter);
+
+app.use('/books', booksRouter)
