@@ -1,7 +1,8 @@
 
 import React, {useState, useEffect} from 'react'
 import UserService from '../services/user.service'
-import RateBook from './rate-book.component'
+import RateBook from './RateBook'
+import BookShelves from './BookShelves'
 
 const BoardUser=()=>  {
     
@@ -31,6 +32,7 @@ const BoardUser=()=>  {
         <header className="jumbotron">
             <h3>{content}</h3>
             <RateBook />
+            <BookShelves />
         </header>
         </div>
     );

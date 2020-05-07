@@ -19,7 +19,6 @@ const RateBook=(props)=>  {
             setRating(parseInt(response.data.rating))
         })
         .catch(err => {
-            console.log(err)
             if(err.response) {
                 if(err.response.status === 404) {
                     setRating(0);
@@ -34,7 +33,7 @@ const RateBook=(props)=>  {
         const data = {rating: parseInt(e.target.value)}
         axios.post(API_URL+props.bookId, data, {headers: authHeader()})
         .then(response => {
-            console.log(response);
+            console.log(response); // Book Rating Object
         })
         .catch(err => {
             console.log(err)

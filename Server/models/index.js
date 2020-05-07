@@ -11,6 +11,7 @@ db.bookModel = require("./books");
 db.bookRatingModel = require("./bookRatings");
 db.authorModel = require("./authors");
 db.categoryModel = require("../models/categories");
+db.bookShelvesModel = require("../models/bookShelves");
 
 db.ROLES = ["user", "admin"];
 
