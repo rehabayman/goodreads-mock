@@ -2,6 +2,7 @@ const express =  require('express');
 const router = express.Router();
 const CategoryModel = require('../models/categories')
 
+
 router.get('/',(req,res)=>{
     CategoryModel.find({},(err,category)=>{
         if(err)
@@ -21,16 +22,28 @@ router.post('/', (req,res)=>{
         name,id
         // books,
      
-    })
-  
-    category.save((err,category)=>{
-        if(err)
-        return res.send(err); 
-        res.send(category);
-    })
-        // console.log('NEw message sfter',body.content);
+    });
+    var found = true;
+    var i = 0;        
+    // Do need to add if we not find it
+    CategoryModel.find({}, function(err, categories) {
+    let cat=categories.filter((cat)=> (cat.name===category.name)).map(filtered=> {return filtered.name;})
+    if(cat!==category.name)
+    {
+        found = false;
+        category.save((err,category)=>{
+            if(err)
+            {res.status(500).send({message: err});
+        return ;} 
+            res.send(category);
+        });
+    }
 
+    if (found)
+        res.status(404).send({message: "Category already exists."});})
+       
     // res.status(204).end();
+    // res.status(404).send({message: "Category already exists."});
 });
 router.patch('/:id',(req,res)=>{
    
@@ -53,5 +66,3 @@ router.delete('/:id',(req,res)=>{
 
 
 module.exports = router;
-
-
