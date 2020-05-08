@@ -13,6 +13,8 @@ import ModalHeader from 'react-bootstrap/ModalHeader';
 import ModalTitle from 'react-bootstrap/ModalTitle';
 import ModalBody from 'react-bootstrap/ModalBody';
 import ModalFooter from 'react-bootstrap/ModalFooter';
+import authHeader from '../services/auth-header'
+
 const PORT = 5000;
 const DB_HOST = "localhost";
 
@@ -24,10 +26,10 @@ const Category = (props) => {
   const [input, setInput] = useState('');
   // const [name,setCategoryName]=useState('');
   const [modal, setModal] = useState(false);
-//  const [errors,setErrors]=useState({});
+  const [errors,setErrors]=useState({});
 
   useEffect(() => {
-    setInterval(() => axios.get(`http://${DB_HOST}:${PORT}/categories`).then((res) => {
+    setInterval(() => axios.get(`http://${DB_HOST}:${PORT}/categories`,{headers: authHeader()}).then((res) => {
       setMessages(res.data);
       // console.log(res.data);
       res.data.map(msg => {
@@ -59,7 +61,7 @@ const Category = (props) => {
       // console.log(oldCategory);
 
       if (oldCategory.length <= 0) {
-        let res = await axios.post(`http://${DB_HOST}:${PORT}/categories`, { name: input }
+        let res = await axios.post(`http://${DB_HOST}:${PORT}/categories`, { name: input },{headers: authHeader()}
 
         ).then(() => { setInput(''); });
       }
@@ -76,7 +78,7 @@ const Category = (props) => {
 
   const handleDelete = async (id) => {
 
-    let res = await axios.delete(`http://${DB_HOST}:${PORT}/categories/` + id);
+    let res = await axios.delete(`http://${DB_HOST}:${PORT}/categories/` + id,{headers: authHeader()});
 
     // console.log(res.data);
   }
@@ -89,21 +91,50 @@ const Category = (props) => {
     // console.log(category);
     if (category.match(/^[a-zA-Z]+$/)) {
       if (category === oldCategory) {
-        let res = await axios.patch(`http://${DB_HOST}:${PORT}/categories/` + id, { name: category });
+        let res = await axios.patch(`http://${DB_HOST}:${PORT}/categories/` + id, { name: category },{headers: authHeader()});
         // console.log(res.data);
         // console.log(messages);
       }
       else if (category === null || category === "") {
         console.log('Can not  change to this category name');
-        await axios.patch(`http://${DB_HOST}:${PORT}/categories/` + id, { name: oldCategory });
+        await axios.patch(`http://${DB_HOST}:${PORT}/categories/` + id, { name: oldCategory },{headers: authHeader()});
       }
       else {
-        await axios.patch(`http://${DB_HOST}:${PORT}/categories/` + id, { name: category });
+        await axios.patch(`http://${DB_HOST}:${PORT}/categories/` + id, { name: category },{headers: authHeader()});
       }
     }
   }
+  const styleModal = {
+    fontSize: 20,
+    color: "#4a54f1",
+    textAlign: "center",
+    display: 'none', /* Hidden by default */
+    position: 'fixed', /* Stay in place */
+    left: '30%',
+    top: '50%',
+    zIndex: 1, /* Sit on top */
+    overflow: 'auto' 
+}
+// const modalContent ={
+//   position: 'relative',
+//   backgroundColor: '#fefefe',
+//   margin: 'auto',
+//   opacity: 2,
+//    transition: 'opacity 50s ease-in'
+// }
+const modalHeader ={
+  padding: '2px 16px',
+  backgroundColor: '#5cb85c',
+  color: 'white'
+}
 
+const modalBody= {padding: '2px 16px'}
 
+const modalFooter ={
+  padding: '2px 16px',
+  backgroundColor: '#5cb85c',
+  color: 'white'
+}
   return (
 
     <div className="App">
@@ -118,11 +149,12 @@ const Category = (props) => {
 
       <Modal show={modal} onHide={() => modalClose()}
         dialogClassName="modal-90w"
-        aria-labelledby="example-custom-modal-styling-title">
-        <Modal.Header closeButton>
+        aria-labelledby="example-custom-modal-styling-title" style={styleModal}>
+          {/* <div style={modalContent}> */}
+        <Modal.Header closeButton style={modalHeader}>
           <Modal.Title id="example-custom-modal-styling-title">Add New Category</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={modalBody}>
           <div className="form-group">
             <label>Enter Category:</label>
             <input
@@ -138,7 +170,7 @@ const Category = (props) => {
           </div>
 
         </Modal.Body>
-        <Modal.Footer>
+        <Modal.Footer style={modalFooter}>
           <div className="form-group">
             <button variant="secondary" onClick={e => handleSubmit(e)} type="button">
               Save
@@ -148,6 +180,7 @@ const Category = (props) => {
           </button>
           </div>
         </Modal.Footer>
+        {/* </div> */}
       </Modal>
 
       {/* <form id="form" onSubmit={handleSubmit}>
@@ -186,7 +219,6 @@ const Category = (props) => {
     </div>
   );
 }
-
 
 export default Category;
 
