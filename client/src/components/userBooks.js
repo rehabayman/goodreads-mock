@@ -1,7 +1,7 @@
 import React,{useState, useEffect} from "react"
 import UserService from "../services/user.service"
 import Carousel from 'react-elastic-carousel';
-
+import BookShelve from './BookShelves'
 const UserBooks=()=>{
 
     const[userBooks,setUserBooks]= useState([])
@@ -42,11 +42,11 @@ const UserBooks=()=>{
         }
     }
     let rate=0
-  
+    console.log(books)
     return(
         
-       
-       
+        
+        
         <div className="home">
             <div className="side">
                 <ul>
@@ -72,26 +72,7 @@ const UserBooks=()=>{
 
         <div className="books">
 
-        {/* <ul className="books-header">
-                <li>
-                Cover
-                </li>
-                <li>
-                 Name                    
-                </li>
-                <li>
-                 Author                    
-                </li>
-                <li>
-                 Average Rate                    
-                </li>
-                <li>
-                 Rating                    
-                </li>
-                <li>
-                 Shelve                    
-                </li>
-             </ul> */}
+        
      
              <table class="table">
                 <thead>
@@ -106,10 +87,10 @@ const UserBooks=()=>{
                 </thead>
                 <tbody>
         {books.length>0? 
-        <Carousel itemsToShow={2} verticalMode>
-
-        {books.map(book =>     
-
+        
+        
+        books.map(book =>     
+          
             <tr>
             
             <td>  {book.book.image_path? <img src={book.book.image_path} />:"image"}</td>
@@ -126,51 +107,14 @@ const UserBooks=()=>{
                 })
                 } 1               
             </td>
-            <td> {book.shelf}</td>
+            <td> <BookShelve bookId={book.book._id}/></td>
+            {/* <td> {book.shelf}</td> */}
             </tr>
-        // <div className="books-container" key={book.book._id} >
-        //     <ul class="books-list">
-        //         <li>
-        //             {book.book.image_path? <img src={book.book.image_path} />:"image"}
-        //         </li>
-        //         <li>
-        //             {book.book.name}
-        //         </li>
-
-        //         <li>
-
-        //             {` ${book.book.author.firstName }  ${book.book.author.lastName}`}
-
-        //         </li>
-
-        //         <li>
-                 
-        //          {book.book.ratings.reduce((a, {rating}) => a + rating, 0) / book.book.ratings.length}
-
-        //         </li>
-
-        //         {/* <li>
-        //             {book.book.ratings.find(rat=>{
-        //                 if(rat.user===JSON.parse(localStorage.getItem('user')).id){
-
-        //                     return rat.rating
-        //                 }
-        //             })}
-        //         </li> */}
-
-        //         <li>
-        //             2
-        //         </li>
-        //         <li>
-        //             {book.shelf}
-        //         </li>
-        //     </ul>
-
-        // </div>
         
-        )}
+        
+        )
 
-      </Carousel>:""}
+      :""}
       
       </tbody>
       </table>

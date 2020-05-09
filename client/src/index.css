@@ -69,15 +69,4 @@ ul{
   margin-left: 12%;
   margin-bottom: 100px;
 }
-.jVymcz{
-  width: 50vw!important;
-  margin: auto;
-  text-align: center;
-}
-thead{
-  display: flex;
-    flex-direction: row;
-    width: 60vw;
-    justify-content: center;
-    align-items: center;
-}
+

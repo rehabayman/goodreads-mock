@@ -1,15 +1,16 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const bodyParser = require("body-parser");
-const cors = require('cors')
+const cors = require('cors');
 const db = require("./models");
 const bcrypt = require('bcryptjs');
-
+const bookRouter = require('./routes/books');
 
 const DB_PORT = process.env.DB_PORT;
 const DB_HOST = process.env.DB_HOST;
 const PORT = process.env.PORT;
 // const userRouter = require('./routes/users');
+const categoryRouter = require('./routes/categories');
 
 const app = express();
 
@@ -25,10 +26,12 @@ var corsOptions = {
 
 //  importig Home routes.
 const homeRouter = require("./routes/home.js");
-
+app.use(express.json());//middleware
+app.use(cors());//middleware
 app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
+
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -64,6 +67,7 @@ const { userRouter, tokenMiddleware } = require('./routes/users');
 
 app.use(tokenMiddleware)
 app.use('/api', userRouter) // FOR TESTING ONLY
+app.use('/categories',categoryRouter)
 
 app.use("/home", homeRouter);
 
@@ -161,3 +165,4 @@ app.use((err, req, res, next) => {
 });
 
 app.use('/users', userRouter);
+app.use('/books', bookRouter);

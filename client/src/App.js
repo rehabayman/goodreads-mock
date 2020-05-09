@@ -12,6 +12,7 @@ import BoardUser from "./components/board-user.component";
 import BoardAdmin from "./components/board-admin.component";
 import Register from "./components/register.component";
 import NavBar from "./components/navbar"
+import Category from './components/Category.js';
 
 function App() {
 
@@ -28,6 +29,8 @@ function App() {
               <Route exact path="/profile" component={Profile} />
               <Route path="/user" component={BoardUser} />
               <Route path="/admin" component={BoardAdmin} />
+              <Route exact path="/categories" component={Category} />
+
             </Switch>
           </div>
         </div>
