@@ -4,8 +4,8 @@ import axios from 'axios';
 import authHeader from '../services/auth-header'
 
 const BookShelves=(props)=>  {
-    console.log(props.bookId)
     
+   
     const API_URL = "http://localhost:8000/books/shelves/"
     const [shelves,setShelves]= useState([]);
     const [selectedItem, setSelectedItem] = useState(props.state);
@@ -13,7 +13,7 @@ const BookShelves=(props)=>  {
     useEffect(()=>{    // get the books' shelves
         axios.get(API_URL, {headers: authHeader()})                                                                 
         .then(response => {
-            console.log(response)
+           
             let shelvesFromApi = response.data.map(item => {
                 return {value: item, display: item}
             });
@@ -44,7 +44,9 @@ const BookShelves=(props)=>  {
             console.log(err)
         })
     }
-    
+    if(props.state!= selectedItem){
+        setSelectedItem(props.state)
+    }
     return (
         <div className="container">
             <select value={selectedItem} onChange={handleShelfChange}>

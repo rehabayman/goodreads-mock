@@ -25,11 +25,11 @@ const RateBook=(props)=>  {
                 }
             }
         })
-
+        
     });
-
+    
     const handleRatingChange = (e) => {
-        props.changeBookRate(props.bookId,e.target.value)
+        changeBookRate(bookId,e.target.value)
         setRating(parseInt(e.target.value));
         const data = {rating: parseInt(e.target.value)}
         axios.post(API_URL+props.bookId, data, {headers: authHeader()})
@@ -40,6 +40,8 @@ const RateBook=(props)=>  {
             console.log(err)
         })
     }
+    
+    let {bookId,changeBookRate}=props
     
     return (
         <div className="container">
