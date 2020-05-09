@@ -15,7 +15,7 @@ import ModalBody from 'react-bootstrap/ModalBody';
 import ModalFooter from 'react-bootstrap/ModalFooter';
 import authHeader from '../services/auth-header'
 
-const PORT = 5000;
+const PORT = 8000;
 const DB_HOST = "localhost";
 
 
@@ -89,18 +89,25 @@ const Category = (props) => {
     // console.log(oldCategory);
     let category = prompt('edit category', oldCategory);
     // console.log(category);
+    let isexistCategory = messages.filter((cat) => (cat.name === category)).map(filtered => { return filtered.name; })
+    // console.log(isexistCategory);
     if (category.match(/^[a-zA-Z]+$/)) {
       if (category === oldCategory) {
-        let res = await axios.patch(`http://${DB_HOST}:${PORT}/categories/` + id, { name: category },{headers: authHeader()});
-        // console.log(res.data);
-        // console.log(messages);
+        await axios.patch(`http://${DB_HOST}:${PORT}/categories/` + id, { name: category },{headers: authHeader()});
+        
       }
       else if (category === null || category === "") {
         console.log('Can not  change to this category name');
-        await axios.patch(`http://${DB_HOST}:${PORT}/categories/` + id, { name: oldCategory },{headers: authHeader()});
+
       }
-      else {
+     
+      if (isexistCategory.length === 0) {
+        
         await axios.patch(`http://${DB_HOST}:${PORT}/categories/` + id, { name: category },{headers: authHeader()});
+      }
+      else{
+        console.log('Category already exists');
+
       }
     }
   }
@@ -110,10 +117,7 @@ const Category = (props) => {
     textAlign: "center",
     display: 'none', /* Hidden by default */
     position: 'fixed', /* Stay in place */
-    left: '30%',
-    top: '50%',
-    zIndex: 1, /* Sit on top */
-    overflow: 'auto' 
+   
 }
 // const modalContent ={
 //   position: 'relative',
@@ -143,14 +147,13 @@ const modalFooter ={
         <strong>ADD New Category</strong>
       </p>
        */}
-      <button variant="primary" onClick={() => modalOpen()}>
+    <button variant="primary" onClick={() => modalOpen()}>
         Add New Category
       </button>
 
-      <Modal show={modal} onHide={() => modalClose()}
+        <Modal show={modal} onHide={() => modalClose()}
         dialogClassName="modal-90w"
         aria-labelledby="example-custom-modal-styling-title" style={styleModal}>
-          {/* <div style={modalContent}> */}
         <Modal.Header closeButton style={modalHeader}>
           <Modal.Title id="example-custom-modal-styling-title">Add New Category</Modal.Title>
         </Modal.Header>
@@ -165,7 +168,6 @@ const modalFooter ={
               className="form-control"
               size="30" placeholder="Name"
             />
-            {/* <span style={{color: "red"}}>{errors["name"]}</span> */}
 
           </div>
 
@@ -180,7 +182,6 @@ const modalFooter ={
           </button>
           </div>
         </Modal.Footer>
-        {/* </div> */}
       </Modal>
 
       {/* <form id="form" onSubmit={handleSubmit}>
