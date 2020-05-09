@@ -2,6 +2,8 @@ import React,{useState, useEffect} from "react"
 import UserService from "../services/user.service"
 import Carousel from 'react-elastic-carousel';
 import BookShelve from './BookShelves'
+import RateBook from './RateBook'
+
 const UserBooks=()=>{
 
     const[userBooks,setUserBooks]= useState([])
@@ -17,6 +19,26 @@ const UserBooks=()=>{
 
     },[])
     
+    const changeBookState=(id,state)=>{
+        books.forEach((book)=>{
+            if(book.book._id===id){              
+                book.shelf=state
+            }
+        })
+    }
+    const changeBookRate=(id,rate)=>{
+        books.forEach((book)=>{
+            if(book.book._id===id){              
+                book.book.ratings.forEach(rat => {                    
+                    if(rat.user==JSON.parse(localStorage.getItem('user')).id){                                     
+                        rat.rating= rate
+                    }
+                  
+                })
+            }
+        })
+    }
+
     let books=[]
     if(readMode=="read"){
       if(userBooks[0]) { 
@@ -101,14 +123,15 @@ const UserBooks=()=>{
                 {rate=book.book.ratings.forEach(rat => {                    
                     if(rat.user==JSON.parse(localStorage.getItem('user')).id){    
                         console.log(rat.rating)               
-                        return rat.rating
+                        rate= rat.rating
                     }
                   
                 })
-                } 1               
+                }          
+
+                <RateBook changeBookRate={changeBookRate} bookId={book.book._id} rate={rate} />
             </td>
-            <td> <BookShelve bookId={book.book._id}/></td>
-            {/* <td> {book.shelf}</td> */}
+            <td> <BookShelve changeBookState={changeBookState} bookId={book.book._id} state={book.shelf}/></td>
             </tr>
         
         

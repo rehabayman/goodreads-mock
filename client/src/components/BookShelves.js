@@ -8,7 +8,7 @@ const BookShelves=(props)=>  {
     
     const API_URL = "http://localhost:8000/books/shelves/"
     const [shelves,setShelves]= useState([]);
-    const [selectedItem, setSelectedItem] = useState("want to read");
+    const [selectedItem, setSelectedItem] = useState(props.state);
 
     useEffect(()=>{    // get the books' shelves
         axios.get(API_URL, {headers: authHeader()})                                                                 
@@ -33,6 +33,7 @@ const BookShelves=(props)=>  {
      * YOU CAN CHANGE props.bookId WITH A STATIC book id FOR TESTING
      */
     const handleShelfChange = (e) => {
+        props.changeBookState(props.bookId,e.target.value)
         setSelectedItem(e.target.value);
         const data = {shelf: e.target.value}
         axios.post(API_URL+props.bookId, data, {headers: authHeader()})
