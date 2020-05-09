@@ -11,7 +11,7 @@ exports.tokenMiddleware = function (req, res, next) {
     );
     next();
 }
-router.get("/",  [authJwt.verifyToken, authJwt.isAdmin], bookController.allBooks);
+router.get("/", bookController.allBooks);
 router.post('/add', [authJwt.verifyToken, authJwt.isAdmin] ,bookController.addBook);
 router.get("/:id", [authJwt.verifyToken, authJwt.isAdmin] ,bookController.oneBook);
 router.patch("/:id", [authJwt.verifyToken, authJwt.isAdmin], bookController.editBook);
