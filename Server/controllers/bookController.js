@@ -38,24 +38,7 @@ exports.updateBookRating = (req, res) => {
                     console.log("Rating updated Successfully");
                     // res.status(200).send(bookRating);
                 }
-            })
-            bookModel.findById(req.params.id, (e, bookInstance) => {
-                if (e) {
-                    console.log(e);
-                    res.status(500).send({message: e});
-                    return;
-                } else {
-                    bookInstance.ratings.push(bookRating._id);
-                    bookInstance.save(error => {
-                        if(error) {
-                            console.log(error);
-                        } else {
-                            console.log("Rating added to book");
-                            res.status(200).send(bookRating);
-                        }
-                    })
-                }
-            })
+            });
         } else {
             newBookRating = new bookRatingModel({
                 user: req.userId,
@@ -84,9 +67,9 @@ exports.updateBookRating = (req, res) => {
                             console.log("Rating added to book");
                             res.status(200).send(bookRating);
                         }
-                    })
+                    });
                 }
-            })
+            });
         }
     });
 }
