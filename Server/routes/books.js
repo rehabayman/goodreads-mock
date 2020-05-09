@@ -3,7 +3,7 @@ const bookController = require('../controllers/bookController');
 const router= express.Router()
 const { authJwt } = require("../middlewares");
 const cors = require('cors');
-
+console.log(authJwt.verifyToken)
 exports.tokenMiddleware = function (req, res, next) {
     res.header(
         "Access-Control-Allow-Headers",
@@ -11,7 +11,8 @@ exports.tokenMiddleware = function (req, res, next) {
     );
     next();
 }
-router.get("/", bookController.allBooks);
+router.get('/shelves', [authJwt.verifyToken], bookController.getBootShelves);
+router.get("/",  [authJwt.verifyToken], bookController.allBooks);
 router.post('/add', [authJwt.verifyToken, authJwt.isAdmin] ,bookController.addBook);
 router.get("/:id", [authJwt.verifyToken, authJwt.isAdmin] ,bookController.oneBook);
 router.patch("/:id", [authJwt.verifyToken, authJwt.isAdmin], bookController.editBook);
@@ -24,6 +25,5 @@ router.get('/rate/:id', [authJwt.verifyToken], bookController.getBookRating);
 router.post('/rate/:id', [authJwt.verifyToken], bookController.updateBookRating);
 
 router.post('/shelves/:id', [authJwt.verifyToken], bookController.updateBookShelf);
-router.get('/shelves', [authJwt.verifyToken], bookController.getBootShelves);
 
 module.exports = router

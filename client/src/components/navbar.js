@@ -26,14 +26,10 @@ const NavBar = () => {
     return (
         <nav className="navbar navbar-expand navbar-dark bg-dark">
             <Link to={"/"} className="navbar-brand">
-                Read
+                GoodReads
         </Link>
             <div className="navbar-nav mr-auto">
-                <li className="nav-item">
-                    <Link to={"/home"} className="nav-link">
-                        Home
-            </Link>
-                </li>
+                
 
                 {showModeratorBoard && (
                     <li className="nav-item">

@@ -7,7 +7,7 @@ import authHeader from '../services/auth-header'
 const RateBook=(props)=>  {
     
     const API_URL = "http://localhost:8000/books/rate/"
-    const [rating,setRating]= useState(0);
+    const [rating,setRating]= useState(props.rate);
 
     /**
      * YOU CAN CHANGE props.bookId WITH A STATIC book id FOR TESTING
@@ -29,6 +29,7 @@ const RateBook=(props)=>  {
     });
 
     const handleRatingChange = (e) => {
+        props.changeBookRate(props.bookId,e.target.value)
         setRating(parseInt(e.target.value));
         const data = {rating: parseInt(e.target.value)}
         axios.post(API_URL+props.bookId, data, {headers: authHeader()})

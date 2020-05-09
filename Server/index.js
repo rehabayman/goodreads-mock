@@ -16,6 +16,9 @@ const app = express();
 
 const Role = db.role;
 const User = db.user;
+const BooksRatings = db.booksRating;
+const Book= db.book
+
 
 var corsOptions = {
   origin: "http://localhost:8081"
@@ -135,6 +138,25 @@ function initial() {
       })
     }
   })
+
+  // b= new Book({
+  //   author: "5eaf6ecb895916e1524671d6",
+  //   name:"test1",
+  //   category:"5eb33239cd6d6d14d9cab99d"
+  // })
+
+  // r= new BooksRatings({
+  //   rating:1,
+  //   user:"5eaf6ecb895916e1524671d6",
+  //   book:b
+  // })
+
+  // console.log(r)
+  // b.ratings=[r._id]
+  // b.save()
+  // r.save()
+
+
 }
 
 // Error Middleware
