@@ -149,54 +149,6 @@ exports.oneBook = (req, res, next) => {
 }
 
 exports.allBooks = (req, res, next) => {
-    // let book = new bookModel({
-    //     name: "Julius Ceasar",
-    //     author: "5eb343cbc3993711f50b7115", 
-    //     category: "5eb343cbc3993711f50b7114"
-    // })
-
-    // book.save(err => {
-    //     if(err) {
-    //         console.log(err)
-    //     }
-    //     console.log("Book Added Successfully");
-    // })
-    // book = new bookModel({
-    //     name: "Hamlet",
-    //     author: "5eb343cbc3993711f50b7115", 
-    //     category: "5eb343cbc3993711f50b7114"
-    // })
-
-    // book.save(err => {
-    //     if(err) {
-    //         console.log(err)
-    //     }
-    //     console.log("Book Added Successfully");
-    // })
-    // book = new bookModel({
-    //     name: "King Lear",
-    //     author: "5eb343cbc3993711f50b7115", 
-    //     category: "5eb343cbc3993711f50b7114"
-    // })
-
-    // book.save(err => {
-    //     if(err) {
-    //         console.log(err)
-    //     }
-    //     console.log("Book Added Successfully");
-    // })
-    // book = new bookModel({
-    //     name: "The Temptest",
-    //     author: "5eb343cbc3993711f50b7115", 
-    //     category: "5eb343cbc3993711f50b7114"
-    // })
-
-    // book.save(err => {
-    //     if(err) {
-    //         console.log(err)
-    //     }
-    //     console.log("Book Added Successfully");
-    // })
     bookModel.find({ })
     .populate('author', 'firstName lastName')
     .populate('category', 'name')

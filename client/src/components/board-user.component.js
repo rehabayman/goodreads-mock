@@ -31,8 +31,6 @@ const BoardUser=()=>  {
         <div className="container">
         <header className="jumbotron">
             <h3>{content}</h3>
-            <RateBook />
-            <BookShelves />
         </header>
         </div>
     );

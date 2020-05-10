@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react"
 import UserService from "../services/user.service"
-import Carousel from 'react-elastic-carousel';
 import BookShelve from './BookShelves'
 import RateBook from './RateBook'
 

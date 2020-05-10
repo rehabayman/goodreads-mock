@@ -1,15 +1,19 @@
 
 import React, {useState, useEffect} from 'react'
 import axios from 'axios';
-import authHeader from '../services/auth-header'
+import authHeader from '../services/auth-header';
+import Carousel from 'react-elastic-carousel';
 
-const BookShelves=(props)=>  {
+const AllBooksUser=(props)=>  {
     
     const API_URL = "http://localhost:8000/books/";
     const [books, setBooks] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage, setPostsPerPage] = useState(3);
+    const [activePage, setActivePage] = useState(1);
+    const [totalItemsCount, setTotalItemsCount] = useState(0);
+
+    const handlePageChange = (pageNumber) => {
+        setActivePage(pageNumber);
+      }
     
     useEffect(()=>{    // get all books
         axios.get(API_URL, {headers: authHeader()})                                                                 
@@ -23,12 +27,14 @@ const BookShelves=(props)=>  {
                 }
             }
         })
+        setTotalItemsCount(books.length);
 
     }, []);
 
     
     return (
-        <div className="container d-flex flex-row flex-wrap justify-content-center mt-5">
+        <div className="container">
+            <div className="container d-flex flex-row flex-wrap justify-content-center mt-5">
             {
                 books.map(book => {
                     return (
@@ -42,9 +48,10 @@ const BookShelves=(props)=>  {
                     )
                 })
             }
+            </div>
         </div>
     );
     
 }
 
-export default BookShelves
+export default AllBooksUser
