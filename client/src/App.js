@@ -13,6 +13,7 @@ import BoardAdmin from "./components/board-admin.component";
 import Register from "./components/register.component";
 import NavBar from "./components/navbar"
 import Category from './components/Category.js';
+import BooksUser from './components/BooksUser'
 
 function App() {
 
@@ -30,7 +31,7 @@ function App() {
               <Route path="/user" component={BoardUser} />
               <Route path="/admin" component={BoardAdmin} />
               <Route exact path="/categories" component={Category} />
-
+              <Route exact path="/books" component={BooksUser}/>
             </Switch>
           </div>
         </div>

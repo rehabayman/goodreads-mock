@@ -36,9 +36,9 @@ exports.updateBookRating = (req, res) => {
                     console.log(err);
                 } else {
                     console.log("Rating updated Successfully");
-                    res.status(200).send(bookRating);
+                    // res.status(200).send(bookRating);
                 }
-            })
+            });
         } else {
             newBookRating = new bookRatingModel({
                 user: req.userId,
@@ -50,7 +50,24 @@ exports.updateBookRating = (req, res) => {
                     console.log(err);
                 } else {
                     console.log("Rating added Successfully");
-                    res.status(200).send(bookRating);
+                    // res.status(200).send(bookRating);
+                }
+            });
+            bookModel.findById(req.params.id, (e, bookInstance) => {
+                if (e) {
+                    console.log(e);
+                    res.status(500).send({message: e});
+                    return;
+                } else {
+                    bookInstance.ratings.push(bookRating._id);
+                    bookInstance.save(error => {
+                        if(error) {
+                            console.log(error);
+                        } else {
+                            console.log("Rating added to book");
+                            res.status(200).send(bookRating);
+                        }
+                    });
                 }
             });
         }
@@ -132,11 +149,59 @@ exports.oneBook = (req, res, next) => {
 }
 
 exports.allBooks = (req, res, next) => {
+    // let book = new bookModel({
+    //     name: "Julius Ceasar",
+    //     author: "5eb343cbc3993711f50b7115", 
+    //     category: "5eb343cbc3993711f50b7114"
+    // })
+
+    // book.save(err => {
+    //     if(err) {
+    //         console.log(err)
+    //     }
+    //     console.log("Book Added Successfully");
+    // })
+    // book = new bookModel({
+    //     name: "Hamlet",
+    //     author: "5eb343cbc3993711f50b7115", 
+    //     category: "5eb343cbc3993711f50b7114"
+    // })
+
+    // book.save(err => {
+    //     if(err) {
+    //         console.log(err)
+    //     }
+    //     console.log("Book Added Successfully");
+    // })
+    // book = new bookModel({
+    //     name: "King Lear",
+    //     author: "5eb343cbc3993711f50b7115", 
+    //     category: "5eb343cbc3993711f50b7114"
+    // })
+
+    // book.save(err => {
+    //     if(err) {
+    //         console.log(err)
+    //     }
+    //     console.log("Book Added Successfully");
+    // })
+    // book = new bookModel({
+    //     name: "The Temptest",
+    //     author: "5eb343cbc3993711f50b7115", 
+    //     category: "5eb343cbc3993711f50b7114"
+    // })
+
+    // book.save(err => {
+    //     if(err) {
+    //         console.log(err)
+    //     }
+    //     console.log("Book Added Successfully");
+    // })
     bookModel.find({ })
-    .populate('authors', 'firstname lastname')
-    .populate('categories', 'name')
+    .populate('author', 'firstName lastName')
+    .populate('category', 'name')
     .exec((err, book)=>{
-        if(err) next('cannot find books');
+        if(err) res.status(404).send({message: 'cannot find books'});
         res.json(book)
     })
 };

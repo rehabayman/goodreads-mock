@@ -22,23 +22,30 @@ const DB_HOST = "localhost";
 
 const Category = (props) => {
 
-  const [messages, setMessages] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [input, setInput] = useState('');
-  // const [name,setCategoryName]=useState('');
   const [modal, setModal] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage,setSuccessMessage]=useState('');
 
   useEffect(() => {
-    setInterval(() => axios.get(`http://${DB_HOST}:${PORT}/categories`).then((res) => {
-      setMessages(res.data);
+
+    setInterval(() => axios.get(`http://${DB_HOST}:${PORT}/categories`, { headers: authHeader() }).then((res) => {
+      setCategories(res.data);
       // console.log(res.data);
       res.data.map(msg => {
         // console.log(msg);
-        messages.push(msg);
+        categories.push(msg);
+        setSuccessMessage('');
+
       });
+    }).catch(err => {
+      console.log(err);
+      setSuccessMessage('');
+      setErrorMessage({errorMessage: err.message});
+
     }), 5 * 1000);
-  }
-    , []);
+  }, []);
 
   const modalOpen = () => {
     setModal(true);
@@ -57,61 +64,112 @@ const Category = (props) => {
     e.preventDefault();
     // let errors = {};
     if (input.match(/^[a-zA-Z]+$/)) {
-      let oldCategory = messages.filter((cat) => (cat.name === input)).map(filtered => { return filtered.name; })
+      let oldCategory = categories.filter((cat) => (cat.name === input)).map(filtered => { return filtered.name; })
       // console.log(oldCategory);
 
       if (oldCategory.length <= 0) {
-        let res = await axios.post(`http://${DB_HOST}:${PORT}/categories`, { name: input }
+        let res = await axios.post(`http://${DB_HOST}:${PORT}/categories`, { name: input }, { headers: authHeader() }
 
-        ).then(() => { setInput(''); });
+        ).then((res) => {
+          setInput(''); console.log(res);
+          setErrorMessage('');
+        })
+          .catch(err => {
+            console.log(err);
+            setSuccessMessage('');
+            setErrorMessage({errorMessage: err.message});
+
+          })
+
+          // setSuccessMessage('Category added successfully '); 
+
       }
       else if (oldCategory)
-        console.log('Category already exists');
-      // console.log(res.data);
-      // else          
-      //    errors[input] = "Cannot be empty";
-
-      modalClose();
+        {console.log('Category already exists');
+        setSuccessMessage('');
+        setErrorMessage('Category already exists');}
+          
     }
-
+    else{
+      setErrorMessage('Category name is invalid,Cannot be empty please enter characters only');
+    }
+    modalClose();
   }
 
   const handleDelete = async (id) => {
 
-    let res = await axios.delete(`http://${DB_HOST}:${PORT}/categories/` + id);
+    let res = await axios.delete(`http://${DB_HOST}:${PORT}/categories/` + id, { headers: authHeader() }).
+      then((res) => {
+        console.log(res);
+        setErrorMessage('');
+      })
+      .catch(err => {
+        console.log(err);
+        setSuccessMessage('');
+        setErrorMessage({errorMessage: err.message});
+
+      });
+      // setSuccessMessage('Category deleted successfully '); 
 
     // console.log(res.data);
   }
 
   const handleEdit = async (id) => {
 
-    let oldCategory = messages.filter((cat) => (cat._id === id)).map(filtered => { return filtered.name; })
+    let oldCategory = categories.filter((cat) => (cat._id === id)).map(filtered => { return filtered.name; })
     // console.log(oldCategory);
     let category = prompt('edit category', oldCategory);
     // console.log(category);
-    let isexistCategory = messages.filter((cat) => (cat.name === category)).map(filtered => { return filtered.name; })
+    let isexistCategory = categories.filter((cat) => (cat.name === category)).map(filtered => { return filtered.name; })
     // console.log(isexistCategory);
-  
-      if (category === oldCategory) {
-        await axios.patch(`http://${DB_HOST}:${PORT}/categories/` + id, { name: category });
 
-      }
-      else if (category === null || category === "") {
-        console.log('Can not  change to this category name');
-        // await axios.patch(`http://${DB_HOST}:${PORT}/categories/` + id, { name: oldCategory });
-      }
-  
-      else if (isexistCategory.length === 0 && category!==null) {
-        if (category.match(/^[a-zA-Z]+$/)) {
-        await axios.patch(`http://${DB_HOST}:${PORT}/categories/` + id, { name: category});
-        }
-      }
-      else {
-        console.log('Category already exists');
+    if (category === oldCategory) {
+      await axios.patch(`http://${DB_HOST}:${PORT}/categories/` + id, { name: category }, { headers: authHeader() })
+        .then((res) => {
+          console.log(res);
+          setErrorMessage('');
+        })
+        .catch(err => {
+          console.log(err);
+          setSuccessMessage('');
+          setErrorMessage({errorMessage: err.message});
 
+        });
+
+    }
+    else if (category === null || category === "") {
+      setErrorMessage('Category name is invalid,Cannot be empty please enter characters only');
+      console.log('Can not  change to this category name');
+    }
+
+    else if (isexistCategory.length === 0 && category !== null) {
+      if (category.match(/^[a-zA-Z]+$/)) {
+        await axios.patch(`http://${DB_HOST}:${PORT}/categories/` + id, { name: category }, { headers: authHeader() })
+          .then((res) => {
+            console.log(res);
+            setErrorMessage('');
+          })
+          .catch(err => {
+            console.log(err);
+            setSuccessMessage('');
+            setErrorMessage({errorMessage: err.message});
+
+          });
+          // setSuccessMessage('Category updated successfully '); 
       }
-    
-    
+      else{
+        setErrorMessage('Category name is invalid,Cannot be empty please enter characters only');
+      }
+     
+    }
+    else {
+      setSuccessMessage('');
+      setErrorMessage('Category name already exists ');
+      console.log('Category already exists');
+
+    }
+
+
   }
   const styleModal = {
     fontSize: 20,
@@ -119,15 +177,8 @@ const Category = (props) => {
     textAlign: "center",
     display: 'none', /* Hidden by default */
     position: 'fixed', /* Stay in place */
-  
+    // overflow: 'auto' 
   }
-  // const modalContent ={
-  //   position: 'relative',
-  //   backgroundColor: '#fefefe',
-  //   margin: 'auto',
-  //   opacity: 2,
-  //    transition: 'opacity 50s ease-in'
-  // }
   const modalHeader = {
     padding: '2px 16px',
     backgroundColor: '#5cb85c',
@@ -148,10 +199,15 @@ const Category = (props) => {
         <strong>ADD New Category</strong>
       </p>
        */}
+       
       <button variant="primary" onClick={() => modalOpen()}>
         Add New Category
       </button>
-      <Modal show={modal} onHide={() => modalClose()}
+      
+        <div className="error" style={{backgroundColor:'#FFD2D2',color:'#D8000'}}> {errorMessage } </div> 
+       
+        <div className="error" style={{backgroundColor:'#DFF2BF',color:'##4F8A10'}}> {successMessage } </div> 
+    <Modal show={modal} onHide={() => modalClose()}
         dialogClassName="modal-90w"
         aria-labelledby="example-custom-modal-styling-title" style={styleModal}>
         <Modal.Header closeButton style={modalHeader}>
@@ -197,15 +253,15 @@ const Category = (props) => {
           </thead>
           <tbody>
             {
-              messages.map((message, index) =>
-                <tr key={message._id}>
+              categories.map((cat, index) =>
+                <tr key={cat._id}>
                   <td>{index + 1}</td>
-                  <td>{message.name}</td>
-                  <td><button type="button" onClick={() => { handleEdit(message._id) }} className="btn btn-warning" data-toggle="modal" data-target="#exampleModal">
+                  <td>{cat.name}</td>
+                  <td><button type="button" onClick={() => { handleEdit(cat._id) }} className="btn btn-warning" data-toggle="modal" data-target="#exampleModal">
                     Edit
                       </button>
                   </td>
-                  <td><button type="button" onClick={() => { handleDelete(message._id) }} className="btn btn-warning" data-toggle="modal" data-target="#exampleModal">
+                  <td><button type="button" onClick={() => { handleDelete(cat._id) }} className="btn btn-warning" data-toggle="modal" data-target="#exampleModal">
                     Delete
                       </button>
                   </td>

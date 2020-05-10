@@ -12,6 +12,8 @@
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-bootstrap-table-next": "^4.0.1",
+    "react-bootstrap-modal": "^4.2.0",
+    "react-bootstrap-validation": "^0.1.11",
     "react-dom": "^16.13.1",
     "react-elastic-carousel": "^0.4.1",
     "react-router-dom": "^5.1.2",
