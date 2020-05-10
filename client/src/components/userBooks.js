@@ -201,20 +201,20 @@ const UserBooks = () => {
             <div className="side">
                 <ul>
                     <li>
-                        <button type="button" onClick={() => { setShelf("All") }} class="btn btn-light">All</button>
+                        <button type="button" onClick={() => { setShelf("All") }} className="btn btn-light">All</button>
 
                     </li>
                     <li>
-                        <button type="button" class="btn btn-light" onClick={() => { setShelf("read") }} >Read</button>
+                        <button type="button" className="btn btn-light" onClick={() => { setShelf("read") }} >Read</button>
 
                     </li>
                     <li>
-                        <button type="button" class="btn btn-light" onClick={() => { setShelf("reading") }} > Currently Reading</button>
+                        <button type="button" className="btn btn-light" onClick={() => { setShelf("reading") }} > Currently Reading</button>
 
 
                     </li>
                     <li>
-                        <button type="button" class="btn btn-light" onClick={() => { setShelf("want to read") }} > Want to read</button>
+                        <button type="button" className="btn btn-light" onClick={() => { setShelf("want to read") }} > Want to read</button>
                     </li>
 
                 </ul>
