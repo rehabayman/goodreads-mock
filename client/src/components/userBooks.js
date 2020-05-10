@@ -3,20 +3,93 @@ import UserService from "../services/user.service"
 import Carousel from 'react-elastic-carousel';
 import BookShelve from './BookShelves'
 import RateBook from './RateBook'
+import { MDBDataTable } from 'mdbreact';
 
 const UserBooks = () => {
 
-    const [userBooks, setUserBooks] = useState([])
+    const [userBooks, setUserBooks] = useState({})
     const [shelf, setShelf] = useState("All")
+    const [booksShelf,setBookShelf]= useState({})
+
+    let convertedBooks={}
+    let filteredBooks={}
     useEffect(() => {
+
         UserService.getUserBooks().then((resp) => {
             let books
+            
             if (resp.data) {
                 books = resp.data[0].filter((book) => {
                     return book.shelf
                 })
+                convertedBooks['rows']= books.map((book)=>{
+                    return{
+                        id: book.book._id,
+                        cover: book.book.image_path ? <img src={book.book.image_path} /> : "No image",
+                        author:` ${book.book.author.firstName}  ${book.book.author.lastName}`,
+                        name:book.book.name,
+                        shelve:<BookShelve changeBookState={changeBookState} bookId={book.book._id} state={book.shelf} />,
+                        ratings: book.book.ratings,
+                        rating: book.book.ratings.map(rat => {
+                            if (rat.user == JSON.parse(localStorage.getItem('user')).id) {
+
+                                return <RateBook key={book.book._id} changeBookRate={changeBookRate} bookId={book.book._id} rate={rat.rating} />
+
+                            }
+
+                        }),
+                        average: book.book.ratings.reduce((a, { rating }) => a + rating, 0) / book.book.ratings.length || 0
+                    }
+                })
+
+                convertedBooks["columns"]=[
+                   
+                        {
+                        label: 'Cover',
+                        field: 'cover',
+                        sort: 'asc',
+                        width: 270
+                        },
+                        {
+                          label: 'Name',
+                          field: 'name',
+                          sort: 'asc',
+                          width: 150
+                        },
+                        {
+                          label: 'Author',
+                          field: 'author',
+                          sort: 'asc',
+                          width: 200
+                        },
+                        {
+                          label: 'Average',
+                          field: 'average',
+                          sort: 'asc',
+                          width: 100
+                        },
+                        {
+                          label: 'Rating',
+                          field: 'rating',
+                          sort: 'asc',
+                          width: 150
+                        },
+                        {
+                          label: 'Shelve',
+                          field: 'shelve',
+                          sort: 'asc',
+                          width: 100
+                        }
+                ]
+                
+    
+                setUserBooks(convertedBooks)
+                filteredBooks= {"columns": convertedBooks["columns"],"rows": convertedBooks["rows"]}
+                setBookShelf({"columns": convertedBooks["columns"],"rows": convertedBooks["rows"]})
+               
             }
-            setUserBooks(books)
+
+           
 
         }).catch((err) => {
             console.log(err)
@@ -24,65 +97,104 @@ const UserBooks = () => {
 
     }, [])
 
-    const changeBookState = (id, state) => {
 
-        books = userBooks.map(book => {
-            if (book.book._id === id) {
-                return { ...book, shelf: state }
+    useEffect(()=>{
 
+      
+        filteredBooks={"columns": userBooks["columns"] , "rows": userBooks["rows"]}
+
+
+        if (shelf == "read") {
+            if (userBooks["rows"]) {
+                filteredBooks["rows"] = filteredBooks["rows"].filter((book) => {
+                    return book.shelve.props.state == "read"
+                })
+                setBookShelf({"columns": filteredBooks["columns"],"rows": filteredBooks["rows"]})
             }
-            return book
-        })
+        }
+        else if (shelf == "reading") {
+            filteredBooks["rows"] = filteredBooks["rows"].filter((book) => {
+                return book.shelve.props.state== "reading"
+            })
+            setBookShelf({"columns": filteredBooks["columns"],"rows": filteredBooks["rows"]})
 
-        setUserBooks(books)
+        }
+        else if (shelf == "want to read") {
+            filteredBooks["rows"]= filteredBooks["rows"].filter((book) => {
+                return book.shelve.props.state== "want to read"
+            })
+            setBookShelf({"columns": filteredBooks["columns"],"rows": filteredBooks["rows"]})
+
+        }
+        else{
+            setBookShelf({"columns": filteredBooks["columns"],"rows": filteredBooks["rows"]})
+        }
+
+       
+    },[shelf])
+
+    const changeBookState = (id, bookState) => {
+
+        
+        if(convertedBooks["rows"]){     
+            let books=convertedBooks
+            books["rows"] = convertedBooks["rows"].map(book => {
+                
+                if (book.id == id) {                    
+                    return { ...book, shelve: <BookShelve changeBookState={changeBookState} bookId={book.id} state={bookState} /> }
+                    
+                }
+                return book
+            }) 
+            setUserBooks({"columns":books["columns"],"rows":books["rows"]})            
+
+        }
+
+        let books={"columns": filteredBooks["columns"] , "rows": filteredBooks["rows"]}
+
+
+        if(books["rows"]){     
+            
+            books["rows"] = books["rows"].map(book => {
+                
+                if (book.id == id) {                    
+                    return { ...book, shelve: <BookShelve changeBookState={changeBookState} bookId={book.id} state={bookState} /> }
+                    
+                }
+                return book
+            })         
+            
+            
+
+            setBookShelf({"columns": books["columns"],"rows": books["rows"]})
+        }
+
+
+            
     }
 
 
     const changeBookRate = (id, rate) => {
-
-        books = userBooks.map(book => {
-            if (book.book._id === id) {
-                book.book.ratings.forEach(rat => {
-                    if (rat.user == JSON.parse(localStorage.getItem('user')).id) {
-                        rat.rating = rate
-                        return { ...book, [rat.rating]: rate }
+       
+        let books=convertedBooks
+        books["rows"] = convertedBooks["rows"].map(book => {
+            if (book.id === id) {
+                book.ratings.forEach(rat => {
+                    if (rat.user == JSON.parse(localStorage.getItem('user')).id) {       
+                        rat.rating=rate                
+                        book.rating[0]=<RateBook key={book.id} changeBookRate={changeBookRate} bookId={book.id} rate={rate} />
+                        return { ...book}
                     }
                 })
+            book.average= book.ratings.reduce((a, { rating }) => a + rating, 0) / book.ratings.length || 0
             }
             return book
         })
-        setUserBooks(books)
+        
+        setUserBooks({"columns":books["columns"],"rows":books["rows"]})
     }
 
-    let books = []
-   
-
-    if (shelf == "read") {
-        if (userBooks) {
-            books = userBooks.filter((book) => {
-                return book.shelf == "read"
-            })
-        }
-    }
-    else if (shelf == "reading") {
-        books = userBooks.filter((book) => {
-            return book.shelf == "reading"
-        })
-    }
-    else if (shelf == "want to read") {
-        books = userBooks.filter((book) => {
-            return book.shelf == "want to read"
-        })
-    }
-    else {
-
-        if (userBooks) {
-            books = userBooks.filter((book) => {
-                return book.shelf
-            })
-        }
-    }
-
+    
     return (
 
         <div className="home">
@@ -110,54 +222,15 @@ const UserBooks = () => {
 
             <div className="books">
 
-
-
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Cover</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Author</th>
-                            <th scope="col">Average Rate</th>
-                            <th scope="col">Rating</th>
-                            <th scope="col">Shelve</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        {books.length > 0 ?
-
-
-
-                            books.map(book =>
-                                <tr key={book.book._id}>
-
-                                    <td>  {book.book.image_path ? <img src={book.book.image_path} /> : "image"}</td>
-                                    <td>{book.book.name}</td>
-                                    <td> {` ${book.book.author.firstName}  ${book.book.author.lastName}`}</td>
-                                    <td> {book.book.ratings.reduce((a, { rating }) => a + rating, 0) / book.book.ratings.length || 0}</td>
-                                    <td>
-                                        {book.book.ratings.map(rat => {
-                                            if (rat.user == JSON.parse(localStorage.getItem('user')).id) {
-
-                                                return <RateBook key={book.book._id} changeBookRate={changeBookRate} bookId={book.book._id} rate={rat.rating} />
-
-                                            }
-
-                                        })
-                                        }
-
-                                    </td>
-                                    <td> <BookShelve changeBookState={changeBookState} bookId={book.book._id} state={book.shelf} /></td>
-                                </tr>
-
-
-                            )
-
-                            : ""}
-
-                    </tbody>
-                </table>
+            <MDBDataTable
+                striped
+                bordered
+                small
+                hover
+                data={booksShelf}
+                color="#1C2331"
+            />
+            
             </div>
         </div>
 
