@@ -31,6 +31,7 @@ const BoardUser=()=>  {
         <div className="container">
         <header className="jumbotron">
             <h3>{content}</h3>
+            <BookShelves bookId="5eb881b45021d659e5df0432"/>
         </header>
         </div>
     );

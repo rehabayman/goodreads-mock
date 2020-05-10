@@ -59,7 +59,7 @@ exports.updateBookRating = (req, res) => {
                     res.status(500).send({message: e});
                     return;
                 } else {
-                    bookInstance.ratings.push(bookRating._id);
+                    bookInstance.ratings.push(newBookRating._id);
                     bookInstance.save(error => {
                         if(error) {
                             console.log(error);

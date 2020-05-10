@@ -98,46 +98,49 @@ function initial() {
           console.log("error", err);
         }
 
-        else console.log("added 'admin' to roles collection");
+        else {
+          console.log("added 'admin' to roles collection");
+          User.findOne({ username: "admin" }, (err, user) => {
+
+            if (!user) {
+              user = new User({
+                username: "admin",
+                firstName: "admin",
+                lastName: "admin",
+                password: "12345678",
+                email: "admin@gmail.com"
+              });
+              Role.findOne({ name: "user" }, (err, role) => {
+                if (err) {
+                  console.log(err)
+                  return
+                }
+                user.roles = [role._id]
+              });
+              Role.findOne({ name: "admin" }, (err, role) => {
+        
+                if (err) {
+                  console.log(err)
+                  return
+                }
+                user.roles = [role._id]
+                user.save(err => {
+                  if (err) {
+                    console.log(err)
+                    return
+                  }
+                  console.log("User was registered successfully!");
+                })
+              })
+            }
+          })
+        
+        }
       });
     }
   });
 
 
-  User.findOne({ username: "admin" }, (err, user) => {
-
-    if (!user) {
-      user = new User({
-        username: "admin",
-        firstName: "admin",
-        lastName: "admin",
-        password: "12345678",
-        email: "admin@gmail.com"
-      });
-      Role.findOne({ name: "user" }, (err, role) => {
-        if (err) {
-          console.log(err)
-          return
-        }
-        user.roles = [role._id]
-      });
-      Role.findOne({ name: "admin" }, (err, role) => {
-
-        if (err) {
-          console.log(err)
-          return
-        }
-        user.roles = [role._id]
-        user.save(err => {
-          if (err) {
-            console.log(err)
-            return
-          }
-          console.log("User was registered successfully!");
-        })
-      })
-    }
-  })
 
 }
 

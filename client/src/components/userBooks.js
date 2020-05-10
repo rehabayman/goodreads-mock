@@ -29,14 +29,13 @@ const UserBooks = () => {
                         name:book.book.name,
                         shelve:<BookShelve changeBookState={changeBookState} bookId={book.book._id} state={book.shelf} />,
                         ratings: book.book.ratings,
-                        rating: book.book.ratings.map(rat => {
-                            if (rat.user == JSON.parse(localStorage.getItem('user')).id) {
-
-                                return <RateBook key={book.book._id} changeBookRate={changeBookRate} bookId={book.book._id} rate={rat.rating} />
-
-                            }
-
-                        }),
+                        rating: book.book.ratings.length ? book.book.ratings.map(rat => {
+                                if (rat.user === JSON.parse(localStorage.getItem('user')).id) {
+    
+                                    return <RateBook key={book.book._id} changeBookRate={changeBookRate} bookId={book.book._id} rate={rat.rating} />
+    
+                                }
+                            }) : <RateBook key={book.book._id} changeBookRate={changeBookRate} bookId={book.book._id} rate={0} />,
                         average: book.book.ratings.reduce((a, { rating }) => a + rating, 0) / book.book.ratings.length || 0
                     }
                 })
@@ -200,20 +199,20 @@ const UserBooks = () => {
             <div className="side">
                 <ul>
                     <li>
-                        <button type="button" onClick={() => { setShelf("All") }} class="btn btn-light">All</button>
+                        <button type="button" onClick={() => { setShelf("All") }} className="btn btn-light">All</button>
 
                     </li>
                     <li>
-                        <button type="button" class="btn btn-light" onClick={() => { setShelf("read") }} >Read</button>
+                        <button type="button" className="btn btn-light" onClick={() => { setShelf("read") }} >Read</button>
 
                     </li>
                     <li>
-                        <button type="button" class="btn btn-light" onClick={() => { setShelf("reading") }} > Currently Reading</button>
+                        <button type="button" className="btn btn-light" onClick={() => { setShelf("reading") }} > Currently Reading</button>
 
 
                     </li>
                     <li>
-                        <button type="button" class="btn btn-light" onClick={() => { setShelf("want to read") }} > Want to read</button>
+                        <button type="button" className="btn btn-light" onClick={() => { setShelf("want to read") }} > Want to read</button>
                     </li>
 
                 </ul>
