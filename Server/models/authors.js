@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Book = require('./books');
-
+ 
 const authorSchema = new mongoose.Schema({
     firstName: {type: String, required: true, minlength: 3},
     lastName: {type: String, required: true},

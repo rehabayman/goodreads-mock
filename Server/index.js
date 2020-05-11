@@ -5,6 +5,7 @@ const cors = require('cors');
 const db = require("./models");
 const bcrypt = require('bcryptjs');
 const bookRouter = require('./routes/books');
+const authorRouter = require('./routes/authors');
 const homeRouter = require("./routes/home.js");
 
 const DB_PORT = process.env.DB_PORT;
@@ -18,7 +19,7 @@ const app = express();
 const Role = db.role;
 const User = db.user;
 const BooksRatings = db.booksRating;
-const Book= db.book
+const Book = db.book
 
 
 var corsOptions = {
@@ -39,7 +40,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 // middleware that logs requests method and the url requested.
-app.use( (req, res, next)=>{
+app.use((req, res, next) => {
   console.log(`\n\nnew request, its method: ${req.method}`);
   console.log(`the url requested: ${req.url}\n`);
   next();
@@ -71,7 +72,7 @@ app.use('/categories',categoryRouter)
 app.use('/users', userRouter);
 app.use('/books', bookRouter);
 app.use("/home", homeRouter);
-
+app.use('/authors',authorRouter);
 app.listen(PORT, (err) => {
 
   if (!err) console.log(`App Started on port: ${PORT}`);
@@ -99,44 +100,44 @@ function initial() {
           console.log("error", err);
         }
 
-        else{
-           console.log("added 'admin' to roles collection");
-          
-           User.findOne({ username: "admin" }, (err, user) => {
-         
-             if (!user) {
-               user = new User({
-                 username: "admin",
-                 firstName: "admin",
-                 lastName: "admin",
-                 password: "12345678",
-                 email: "admin@gmail.com"
-               });
-               Role.findOne({ name: "user" }, (err, role) => {
-                 if (err) {
-                   console.log(err)
-                   return
-                 }
-                 user.roles = [role._id]
-               });
-               Role.findOne({ name: "admin" }, (err, role) => {
-         
-                 if (err) {
-                   console.log(err)
-                   return
-                 }
-                 user.roles = [role._id]
-                 user.save(err => {
-                   if (err) {
-                     console.log(err)
-                     return
-                   }
-                   console.log("User was registered successfully!");
-                 })
-               })
-             }
-           })
-          }
+        else {
+          console.log("added 'admin' to roles collection");
+
+          User.findOne({ username: "admin" }, (err, user) => {
+
+            if (!user) {
+              user = new User({
+                username: "admin",
+                firstName: "admin",
+                lastName: "admin",
+                password: "12345678",
+                email: "admin@gmail.com"
+              });
+              Role.findOne({ name: "user" }, (err, role) => {
+                if (err) {
+                  console.log(err)
+                  return
+                }
+                user.roles = [role._id]
+              });
+              Role.findOne({ name: "admin" }, (err, role) => {
+
+                if (err) {
+                  console.log(err)
+                  return
+                }
+                user.roles = [role._id]
+                user.save(err => {
+                  if (err) {
+                    console.log(err)
+                    return
+                  }
+                  console.log("User was registered successfully!");
+                })
+              })
+            }
+          })
+        }
       });
     }
   });

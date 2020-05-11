@@ -13,8 +13,9 @@ import BoardAdmin from "./components/board-admin.component";
 import Register from "./components/register.component";
 import NavBar from "./components/navbar"
 import Category from './components/Category.js';
-import BooksUser from './components/BooksUser'
 import BookDetails from './components/bookDetails'
+import BooksUser from './components/AllBooksUser'
+
 function App() {
 
   return (

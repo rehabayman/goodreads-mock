@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react"
 import UserService from "../services/user.service"
-import Carousel from 'react-elastic-carousel';
 import BookShelve from './BookShelves'
 import RateBook from './RateBook'
 import { MDBDataTable } from 'mdbreact';
@@ -32,14 +31,13 @@ const UserBooks = () => {
                         name:<Link to={`/books/${book.book._id}`}>{book.book.name}</Link>,
                         shelve:<BookShelve changeBookState={changeBookState} bookId={book.book._id} state={book.shelf} />,
                         ratings: book.book.ratings,
-                        rating: book.book.ratings.map(rat => {
-                            if (rat.user == JSON.parse(localStorage.getItem('user')).id) {
-
-                                return <RateBook key={book.book._id} changeBookRate={changeBookRate} bookId={book.book._id} rate={rat.rating} />
-
-                            }
-
-                        }),
+                        rating: book.book.ratings.length ? book.book.ratings.map(rat => {
+                                if (rat.user === JSON.parse(localStorage.getItem('user')).id) {
+    
+                                    return <RateBook key={book.book._id} changeBookRate={changeBookRate} bookId={book.book._id} rate={rat.rating} />
+    
+                                }
+                            }) : <RateBook key={book.book._id} changeBookRate={changeBookRate} bookId={book.book._id} rate={0} />,
                         average: book.book.ratings.reduce((a, { rating }) => a + rating, 0) / book.book.ratings.length || 0
                     }
                 })
