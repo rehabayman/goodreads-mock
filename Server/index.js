@@ -5,7 +5,7 @@ const cors = require('cors');
 const db = require("./models");
 const bcrypt = require('bcryptjs');
 const bookRouter = require('./routes/books');
-
+const authorRouter = require('./routes/authors');
 const DB_PORT = process.env.DB_PORT;
 const DB_HOST = process.env.DB_HOST;
 const PORT = process.env.PORT;
@@ -67,7 +67,7 @@ app.use('/api', userRouter) // FOR TESTING ONLY
 app.use('/categories',categoryRouter)
 
 app.use("/home", homeRouter);
-
+app.use('/authors',authorRouter);
 app.listen(PORT, (err) => {
 
   if (!err) console.log(`App Started on port: ${PORT}`);
