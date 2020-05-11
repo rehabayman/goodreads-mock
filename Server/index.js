@@ -11,7 +11,7 @@ const DB_PORT = process.env.DB_PORT;
 const DB_HOST = process.env.DB_HOST;
 const PORT = process.env.PORT;
 // const userRouter = require('./routes/users');
-const categoryRouter = require('./routes/categories');
+const categoryRouter = require('./routes/categories.js');
 
 const app = express();
 
@@ -25,7 +25,6 @@ var corsOptions = {
   origin: "http://localhost:8081"
 };
 
-//  importig Home routes.
 app.use(express.json());//middleware
 app.use(cors());//middleware
 app.use(cors(corsOptions));

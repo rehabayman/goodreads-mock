@@ -59,6 +59,12 @@ const NavBar = () => {
                             Books
                         </Link>
                     </li>
+
+                    <li className="nav-item">
+                        <Link to={"/categories/all"} className="nav-link">
+                            Categories
+                        </Link>
+                    </li>
                     </>
                 )}
             </div>

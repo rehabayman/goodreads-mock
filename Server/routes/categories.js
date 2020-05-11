@@ -3,7 +3,7 @@ const router = express.Router();
 const CategoryModel = require('../models/categories')
 const { authJwt } = require("../middlewares");
 
-
+const categoryController = require("../controllers/categoryController");
 router.get('/',(req,res)=>{
     CategoryModel.find({},(err,category)=>{
         if(err)
@@ -12,6 +12,9 @@ router.get('/',(req,res)=>{
         
     })
 });
+
+router.get('/all', categoryController.getAll);
+router.get('/:id/', categoryController.getDetails);
 
 router.post('/', (req,res)=>{
     let  {body : {name,id

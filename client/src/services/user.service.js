@@ -1,7 +1,7 @@
 import axios from 'axios'
 import authHeader from './auth-header'
-const API_URL = 'http://localhost:8000/api/test/'
-const userBooksUrl='http://localhost:8000/home/userbooks'
+const API_URL = `${process.env.REACT_APP_API_URL}/users/auth/`
+const userBooksUrl=`${process.env.REACT_APP_API_URL}/home/userbooks`
 
 function UserService() {
 

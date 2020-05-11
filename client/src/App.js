@@ -13,7 +13,9 @@ import BoardAdmin from "./components/board-admin.component";
 import Register from "./components/register.component";
 import NavBar from "./components/navbar"
 import Category from './components/Category.js';
-import BooksUser from './components/BooksUser'
+import BooksUser from './components/BooksUser';
+import CategoryList from './components/Categorylist.js';
+import CategoryDetails from './components/CategoryDetails.js';
 
 function App() {
 
@@ -31,6 +33,8 @@ function App() {
               <Route path="/user" component={BoardUser} />
               <Route path="/admin" component={BoardAdmin} />
               <Route exact path="/categories" component={Category} />
+              <Route exact path="/categories/all" component={CategoryList} />
+              <Route exact path="/categories/:categoryname/:id" component={CategoryDetails} />
               <Route exact path="/books" component={BooksUser}/>
             </Switch>
           </div>
