@@ -21,7 +21,7 @@ verifyToken = (req, res, next) => {
 }
 
 isAdmin = (req, res, next) => {
-    console.log("hiiiiiiiiiiiii")
+    
     User.findById(req.userId).exec((err, user) => {
         if (err) {
             res.status(500).send({ message: err })

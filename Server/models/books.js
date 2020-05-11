@@ -8,7 +8,8 @@ const bookSchema = new mongoose.Schema({
     image_path: {type: String},
     author: {type: mongoose.Schema.Types.ObjectId, ref: 'Author', required: true},
     category: {type: mongoose.Schema.Types.ObjectId, ref: 'Category'},
-    ratings:[{type: mongoose.Schema.Types.ObjectId, ref: 'BookRatings'}]
+    ratings:[{type: mongoose.Schema.Types.ObjectId, ref: 'BookRatings'}],
+    reviews:[{type: mongoose.Schema.Types.ObjectId, ref:'BookReviews'}]
 });
 
 // Delete dependent documents

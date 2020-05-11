@@ -59,7 +59,7 @@ exports.updateBookRating = (req, res) => {
                     res.status(500).send({message: e});
                     return;
                 } else {
-                    bookInstance.ratings.push(bookRating._id);
+                    bookInstance.ratings.push(newBookRating._id);
                     bookInstance.save(error => {
                         if(error) {
                             console.log(error);
@@ -138,65 +138,43 @@ exports.addBook = (req, res , next) => {
        })
    }
 
+// exports.oneBook = (req, res, next) => {
+//     bookModel.findById(req.params.id)
+//     .populate('authors', 'firstname lastname')
+//     .populate('categories', 'name')
+//     .exec((err, book)=>{
+//         if(err) next('cannot find this book');
+//         res.json(book)
+//     })
+// }
 exports.oneBook = (req, res, next) => {
+    
     bookModel.findById(req.params.id)
-    .populate('authors', 'firstname lastname')
-    .populate('categories', 'name')
+    .populate('author', 'firstName lastName')
+    .populate('category', 'name')
+    .populate('ratings','rating user')
+    .populate([{
+        path: 'reviews',
+        populate: {
+            path: 'user',
+            select:"username"         
+        },
+    }])
     .exec((err, book)=>{
-        if(err) next('cannot find this book');
-        res.json(book)
+        if(err){ 
+            next('cannot find this book')
+            console.log(err)
+        };
+        
+        bookShelvesModel.find({book:req.params.id, user:req.userId}).select("shelf").exec((err,shelf)=>{
+            
+            res.json({book, shelf: shelf[0]})
+        })
     })
 }
 
+
 exports.allBooks = (req, res, next) => {
-    // let book = new bookModel({
-    //     name: "Julius Ceasar",
-    //     author: "5eb343cbc3993711f50b7115", 
-    //     category: "5eb343cbc3993711f50b7114"
-    // })
-
-    // book.save(err => {
-    //     if(err) {
-    //         console.log(err)
-    //     }
-    //     console.log("Book Added Successfully");
-    // })
-    // book = new bookModel({
-    //     name: "Hamlet",
-    //     author: "5eb343cbc3993711f50b7115", 
-    //     category: "5eb343cbc3993711f50b7114"
-    // })
-
-    // book.save(err => {
-    //     if(err) {
-    //         console.log(err)
-    //     }
-    //     console.log("Book Added Successfully");
-    // })
-    // book = new bookModel({
-    //     name: "King Lear",
-    //     author: "5eb343cbc3993711f50b7115", 
-    //     category: "5eb343cbc3993711f50b7114"
-    // })
-
-    // book.save(err => {
-    //     if(err) {
-    //         console.log(err)
-    //     }
-    //     console.log("Book Added Successfully");
-    // })
-    // book = new bookModel({
-    //     name: "The Temptest",
-    //     author: "5eb343cbc3993711f50b7115", 
-    //     category: "5eb343cbc3993711f50b7114"
-    // })
-
-    // book.save(err => {
-    //     if(err) {
-    //         console.log(err)
-    //     }
-    //     console.log("Book Added Successfully");
-    // })
     bookModel.find({ })
     .populate('author', 'firstName lastName')
     .populate('category', 'name')
@@ -231,3 +209,5 @@ exports.removeBook = (req, res, next) => {
         res.send('success')
     })
 }
+
+

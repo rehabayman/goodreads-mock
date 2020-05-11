@@ -2,7 +2,7 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios';
 import authHeader from '../services/auth-header'
-
+import { Link} from "react-router-dom";
 const BookShelves=(props)=>  {
     
     const API_URL = "http://localhost:8000/books/";
@@ -35,7 +35,7 @@ const BookShelves=(props)=>  {
                     <div className="card mb-2 mr-3" style={{width: "18rem"}} key={book._id}>
                         <a href="#"><img className="card-img-top" src={book.cover} alt="Book Cover"></img></a>
                         <div className="card-body">
-                            <h5 className="card-title"><a href="#">{book.name}</a></h5>
+                            <h5 className="card-title"><Link to={`/books/${book._id}`}>{book.name}</Link></h5>
                             <p className="card-text"><a href="#">{`${book.author.firstName} ${book.author.lastName}`}</a></p>
                         </div>
                     </div>

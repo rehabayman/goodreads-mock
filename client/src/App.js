@@ -16,6 +16,7 @@ import Category from './components/Category.js';
 import BooksUser from './components/BooksUser';
 import CategoryList from './components/Categorylist.js';
 import CategoryDetails from './components/CategoryDetails.js';
+import BookDetails from './components/bookDetails'
 
 function App() {
 
@@ -24,7 +25,7 @@ function App() {
       <div>
         <NavBar/>
 
-          <div className="">
+          <div className="container">
             <Switch>
               <Route exact path={"/"} component={Home} />
               <Route exact path="/login" component={Login} />
@@ -36,6 +37,7 @@ function App() {
               <Route exact path="/categories/all" component={CategoryList} />
               <Route exact path="/categories/:categoryname/:id" component={CategoryDetails} />
               <Route exact path="/books" component={BooksUser}/>
+              <Route exact path="/books/:id" component={BookDetails}/>
             </Switch>
           </div>
         </div>

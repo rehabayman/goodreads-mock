@@ -33,7 +33,10 @@ const BookShelves=(props)=>  {
      * YOU CAN CHANGE props.bookId WITH A STATIC book id FOR TESTING
      */
     const handleShelfChange = (e) => {
-        props.changeBookState(props.bookId,e.target.value)
+        
+        if(props.changeBookState)
+           props.changeBookState(props.bookId,e.target.value)
+
         setSelectedItem(e.target.value);
         const data = {shelf: e.target.value}
         axios.post(API_URL+props.bookId, data, {headers: authHeader()})
