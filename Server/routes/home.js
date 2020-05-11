@@ -1,8 +1,14 @@
 const express= require('express')
 
 const router= express.Router()
-const homeCntroller = require("../controllers/homeController.js");
-router.get("/popular", homeCntroller.getPopular);
+const {getPopular, getUserBooks} = require("../controllers/homeController.js");
+const { authJwt } = require("../middlewares");
+
+
+
+
+router.get("/popular", getPopular);
+router.get("/userbooks",authJwt.verifyToken,getUserBooks);
 
 
 

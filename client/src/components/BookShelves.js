@@ -5,13 +5,15 @@ import authHeader from '../services/auth-header'
 
 const BookShelves=(props)=>  {
     
+  
     const API_URL = "http://localhost:8000/books/shelves/"
     const [shelves,setShelves]= useState([]);
-    const [selectedItem, setSelectedItem] = useState("want to read");
+    const [selectedItem, setSelectedItem] = useState(props.state);
 
     useEffect(()=>{    // get the books' shelves
         axios.get(API_URL, {headers: authHeader()})                                                                 
         .then(response => {
+           
             let shelvesFromApi = response.data.map(item => {
                 return {value: item, display: item}
             });
@@ -20,7 +22,7 @@ const BookShelves=(props)=>  {
         .catch(err => {
             if(err.response) {
                 if(err.response.status === 404) {
-                    setShelves([]);
+                    setShelves([]);                   
                 }
             }
         })
@@ -31,6 +33,7 @@ const BookShelves=(props)=>  {
      * YOU CAN CHANGE props.bookId WITH A STATIC book id FOR TESTING
      */
     const handleShelfChange = (e) => {
+        props.changeBookState(props.bookId,e.target.value)
         setSelectedItem(e.target.value);
         const data = {shelf: e.target.value}
         axios.post(API_URL+props.bookId, data, {headers: authHeader()})
@@ -41,7 +44,9 @@ const BookShelves=(props)=>  {
             console.log(err)
         })
     }
-    
+    if(props.state!= selectedItem){
+        setSelectedItem(props.state)
+    }
     return (
         <div className="container">
             <select value={selectedItem} onChange={handleShelfChange}>
