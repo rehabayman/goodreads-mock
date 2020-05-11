@@ -68,7 +68,8 @@ const { userRouter, tokenMiddleware } = require('./routes/users');
 app.use(tokenMiddleware)
 app.use('/api', userRouter) // FOR TESTING ONLY
 app.use('/categories',categoryRouter)
-
+app.use('/users', userRouter);
+app.use('/books', bookRouter);
 app.use("/home", homeRouter);
 
 app.listen(PORT, (err) => {
@@ -141,7 +142,6 @@ function initial() {
   });
 
 
-
 }
 
 // Error Middleware
@@ -149,5 +149,3 @@ app.use((err, req, res, next) => {
   if (err) res.status(500).send("Internal Server Error.");
 });
 
-app.use('/users', userRouter);
-app.use('/books', bookRouter);

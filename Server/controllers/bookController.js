@@ -138,15 +138,41 @@ exports.addBook = (req, res , next) => {
        })
    }
 
+// exports.oneBook = (req, res, next) => {
+//     bookModel.findById(req.params.id)
+//     .populate('authors', 'firstname lastname')
+//     .populate('categories', 'name')
+//     .exec((err, book)=>{
+//         if(err) next('cannot find this book');
+//         res.json(book)
+//     })
+// }
 exports.oneBook = (req, res, next) => {
+    
     bookModel.findById(req.params.id)
-    .populate('authors', 'firstname lastname')
-    .populate('categories', 'name')
+    .populate('author', 'firstName lastName')
+    .populate('category', 'name')
+    .populate('ratings','rating user')
+    .populate([{
+        path: 'reviews',
+        populate: {
+            path: 'user',
+            select:"username"         
+        },
+    }])
     .exec((err, book)=>{
-        if(err) next('cannot find this book');
-        res.json(book)
+        if(err){ 
+            next('cannot find this book')
+            console.log(err)
+        };
+        
+        bookShelvesModel.find({book:req.params.id, user:req.userId}).select("shelf").exec((err,shelf)=>{
+            
+            res.json({book, shelf: shelf[0]})
+        })
     })
 }
+
 
 exports.allBooks = (req, res, next) => {
     // let book = new bookModel({
@@ -231,3 +257,5 @@ exports.removeBook = (req, res, next) => {
         res.send('success')
     })
 }
+
+

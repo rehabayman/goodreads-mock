@@ -14,7 +14,7 @@ code {
 .home{
   display: flex;
   flex-direction: row;
-  width: 80%;
+  width: 100%;
   justify-content: center;
   align-items: center;
   margin: auto;
@@ -70,3 +70,49 @@ ul{
   margin-bottom: 100px;
 }
 
+.book-info{
+  display: flex;
+  margin-top: 80px;
+}
+
+.book-info-left{
+  margin-right: 10px;
+  width: 20%;
+}
+.book-info-left .container{
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+}
+.book-info .container fieldset{
+  text-align: center;
+  width: 85%;
+}
+
+.book-data{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+.book-image{
+  width: 100%;
+}
+.reviews{
+  margin-left: 4%;
+}
+.book-rating{
+  display: flex
+}
+.ratein-review{
+  display: flex;
+}
+.ratein-review .card-title{
+  margin-right: 10px;
+}
+.ratedit{
+  font-size: 14px;
+  margin-right: 5px;
+}

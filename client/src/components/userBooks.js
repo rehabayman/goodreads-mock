@@ -4,6 +4,8 @@ import Carousel from 'react-elastic-carousel';
 import BookShelve from './BookShelves'
 import RateBook from './RateBook'
 import { MDBDataTable } from 'mdbreact';
+import { Link} from "react-router-dom";
+
 
 const UserBooks = () => {
 
@@ -27,7 +29,7 @@ const UserBooks = () => {
                         id: book.book._id,
                         cover: book.book.image_path ? <img src={book.book.image_path} /> : "No image",
                         author:` ${book.book.author.firstName}  ${book.book.author.lastName}`,
-                        name:book.book.name,
+                        name:<Link to={`/books/${book.book._id}`}>{book.book.name}</Link>,
                         shelve:<BookShelve changeBookState={changeBookState} bookId={book.book._id} state={book.shelf} />,
                         ratings: book.book.ratings,
                         rating: book.book.ratings.map(rat => {

@@ -14,7 +14,7 @@ import Register from "./components/register.component";
 import NavBar from "./components/navbar"
 import Category from './components/Category.js';
 import BooksUser from './components/BooksUser'
-
+import BookDetails from './components/bookDetails'
 function App() {
 
   return (
@@ -22,7 +22,7 @@ function App() {
       <div>
         <NavBar/>
 
-          <div className="">
+          <div className="container">
             <Switch>
               <Route exact path={"/"} component={Home} />
               <Route exact path="/login" component={Login} />
@@ -32,6 +32,7 @@ function App() {
               <Route path="/admin" component={BoardAdmin} />
               <Route exact path="/categories" component={Category} />
               <Route exact path="/books" component={BooksUser}/>
+              <Route exact path="/books/:id" component={BookDetails}/>
             </Switch>
           </div>
         </div>
