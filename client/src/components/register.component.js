@@ -6,6 +6,9 @@ import { isEmail, isAlpha } from "validator";
 
 import AuthService from "../services/auth.service";
 
+
+let originalPassword = '';
+
 const required = value => {
     if (!value) {
         return (
@@ -66,8 +69,8 @@ const validatePassword = value => {
     }
 };
 
-const validateConfirmPassword = (value, password) => {
-    if (value.length < 8 || value.length > 40 || value !== password) {
+const validateConfirmPassword = (value) => {
+    if (value.length < 8 || value.length > 40 || value !== originalPassword) {
         return (
             <div className="alert alert-danger" role="alert">
                 The password does not match.
@@ -77,7 +80,7 @@ const validateConfirmPassword = (value, password) => {
 };
 
 const validateImage = value => {
-
+    console.log(value);
     if (!value.match(/\.(jpg|jpeg|png)$/)) {
         return (
             <div className="alert alert-danger" role="alert">
@@ -119,6 +122,7 @@ const Register = (props) => {
 
     const onChangePassword = (e) => {
         setPassword(e.target.value);
+        originalPassword = e.target.value;
     }
 
     const onChangeConfirmPassword = (e) => {
@@ -129,14 +133,6 @@ const Register = (props) => {
         setImage(e.target.files[0]);
     }
 
-    const validateConfirmPasswordHelper = (value) => {
-        validateConfirmPassword(value, password);
-    }
-
-    const validateImageHelper = (image) => {
-        // console.log(image);
-        validateImage(image);
-    }
     const handleRegister = (e) => {
         e.preventDefault();
 
@@ -253,7 +249,7 @@ const Register = (props) => {
                             name="confirm-password"
                             value={confirmPass}
                             onChange={onChangeConfirmPassword}
-                            validations={[required, validateConfirmPasswordHelper]}
+                            validations={[required, validateConfirmPassword]}
                         />
                     </div>
 
@@ -264,7 +260,7 @@ const Register = (props) => {
                             className="form-control"
                             name="image"
                             onChange={onChangeImage}
-                            validations={[validateImageHelper]}
+                            validations={[validateImage]}
                         />
                     </div>
                     <div className="form-group">

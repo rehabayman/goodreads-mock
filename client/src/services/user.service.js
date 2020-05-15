@@ -21,7 +21,6 @@ function UserService() {
       return axios.get(API_URL + 'admin', { headers: authHeader() });
     },
     getUserBooks:()=>{
-      console.log("hereee")
       return axios.get(userBooksUrl,{headers:authHeader()})
     }
   })
