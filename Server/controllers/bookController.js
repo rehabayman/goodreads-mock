@@ -1,5 +1,5 @@
 const {bookModel, bookRatingModel, authorModel, categoryModel, bookShelvesModel} = require("../models/index")
-
+// const AuthorsModel = require('../models/authors');
 exports.getBookRating = (req, res) => {
     
     bookRatingModel.findOne({book: req.params.id, user: req.userId}, (err, bookRating) => {
@@ -132,8 +132,15 @@ exports.addBook = (req, res , next) => {
            author,
            category
        })
+    //    authorModel.findById({_id:author},(error,author)=>{
+    //     if(error) return res.send(error);
+    //     author.books.push(bookdata);
+    //     author.save((error,author)=>{
+    //     if(error) return res.send(error);
+    //     })
+    // });
        bookdata.save((err, book )=>{
-           if(err) next(err);
+           if(err) console.log(err);
            res.json(book)
        })
    }
@@ -147,7 +154,7 @@ exports.oneBook = (req, res, next) => {
         res.json(book)
     })
 }
-
+ 
 exports.allBooks = (req, res, next) => {
     bookModel.find({ })
     .populate('author', 'firstName lastName')
