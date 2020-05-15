@@ -28,6 +28,15 @@
   color: #61dafb;
 }
 
+.loadinDiv{
+  border: 5px solid lightblue;
+  border-top: 5px solid darkblue;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  animation: App-logo-spin infinite 0.6s linear;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -36,3 +45,4 @@
     transform: rotate(360deg);
   }
 }
+

@@ -14,7 +14,7 @@ exports.tokenMiddleware = function (req, res, next) {
 router.get('/shelves', [authJwt.verifyToken], bookController.getBootShelves);
 router.get("/",  [authJwt.verifyToken], bookController.allBooks);
 router.post('/add', [authJwt.verifyToken, authJwt.isAdmin] ,bookController.addBook);
-router.get("/:id", [authJwt.verifyToken, authJwt.isAdmin] ,bookController.oneBook);
+router.get("/:id", [authJwt.verifyToken] ,bookController.oneBook);
 router.patch("/:id", [authJwt.verifyToken, authJwt.isAdmin], bookController.editBook);
 router.delete("/:id",  [authJwt.verifyToken, authJwt.isAdmin], bookController.removeBook);
 
@@ -25,5 +25,7 @@ router.get('/rate/:id', [authJwt.verifyToken], bookController.getBookRating);
 router.post('/rate/:id', [authJwt.verifyToken], bookController.updateBookRating);
 
 router.post('/shelves/:id', [authJwt.verifyToken], bookController.updateBookShelf);
+
+router.post("/addreview/:bookId/:userId", bookController.addreview);
 
 module.exports = router

@@ -15,7 +15,7 @@ exports.tokenMiddleware = function (req, res, next) {
 
 router.get("/test/all", userController.allAccess);
 
-router.get("/test/user", [authJwt.verifyToken], userController.userBoard);
+// router.get("/test/user", [authJwt.verifyToken], userController.userBoard);
 
 
 router.get(
@@ -24,7 +24,10 @@ router.get(
     userController.adminBoard
 );
 
-
-// router.post('/signup', userController.create);
+router.get(
+    "/profile",
+    [authJwt.verifyToken],
+    userController.userProfile
+);
 
 exports.userRouter = router

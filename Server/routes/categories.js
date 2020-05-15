@@ -2,6 +2,7 @@ const express =  require('express');
 const router = express.Router();
 const CategoryModel = require('../models/categories')
 const { authJwt } = require("../middlewares");
+const categoryController = require("../controllers/categoryController");
 
 const cors = require('cors');
 console.log(authJwt.verifyToken)
@@ -21,6 +22,18 @@ router.get('/',[authJwt.verifyToken],(req,res)=>{
         
     })
 });
+
+router.get('/',(req,res)=>{
+    CategoryModel.find({},(err,category)=>{
+        if(err)
+         return res.send(err); 
+        res.json(category); 
+        
+    })
+});
+
+router.get('/all', categoryController.getAll);
+router.get('/:id/', categoryController.getDetails);
 
 router.post('/',[authJwt.verifyToken], (req,res)=>{
     let  {body : {name,id

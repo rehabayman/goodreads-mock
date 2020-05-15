@@ -1,5 +1,5 @@
-const {bookModel, bookRatingModel, authorModel, categoryModel, bookShelvesModel} = require("../models/index")
-// const AuthorsModel = require('../models/authors');
+const {bookModel, bookRatingModel, authorModel, categoryModel, bookShelvesModel, bookReviews} = require("../models/index")
+
 exports.getBookRating = (req, res) => {
     
     bookRatingModel.findOne({book: req.params.id, user: req.userId}, (err, bookRating) => {
@@ -145,16 +145,46 @@ exports.addBook = (req, res , next) => {
        })
    }
 
+// exports.oneBook = (req, res, next) => {
+//     bookModel.findById(req.params.id)
+//     .populate('authors', 'firstname lastname')
+//     .populate('categories', 'name')
+//     .exec((err, book)=>{
+//         if(err) next('cannot find this book');
+//         res.json(book)
+//     })
+// }
 exports.oneBook = (req, res, next) => {
+    
     bookModel.findById(req.params.id)
-    .populate('authors', 'firstname lastname')
-    .populate('categories', 'name')
+    .populate('author', 'firstName lastName')
+    .populate('category', 'name')
+    .populate('ratings','rating user')
+    .populate([{
+        path: 'reviews',
+        populate: {
+            path: 'user',
+            select:"username"         
+        },
+    }])
     .exec((err, book)=>{
-        if(err) next('cannot find this book');
-        res.json(book)
+        if(err){ 
+            next('cannot find this book')
+            console.log(err)
+        };
+        
+        bookShelvesModel.find({book:req.params.id, user:req.userId}).select("shelf").exec((err,shelf)=>{
+            
+            res.json({book, shelf: shelf[0]})
+        })
     })
 }
+<<<<<<< HEAD
  
+=======
+
+
+>>>>>>> 466db87244c75723261cccecf61dffe10f28c428
 exports.allBooks = (req, res, next) => {
     bookModel.find({ })
     .populate('author', 'firstName lastName')
@@ -189,4 +219,27 @@ exports.removeBook = (req, res, next) => {
         if(err) next('cannot find the book');
         res.send('success')
     })
+}
+
+
+exports.addreview = (req, res) => {
+    const {userId, bookId} = req.params;
+    const {review} = req.body;
+
+    bookReviews.create({review: review, book: bookId, user: userId}).then( result => {
+        bookModel.find({_id: bookId}).exec((err, book)=>{
+            if(err){
+                console.log(err);
+                res.send(err);
+            } else {
+                book[0].reviews.push(result._id)
+                book[0].save();
+                res.send("done");
+            }
+        })
+    
+    }).catch(e=>{
+        console.log(e);
+    });
+
 }

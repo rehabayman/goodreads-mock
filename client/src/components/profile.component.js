@@ -1,37 +1,48 @@
 
-import React, { useState } from "react";
-import AuthService from "../services/auth.service";
+import React, { useState, useEffect } from "react";
+// import AuthService from "../services/auth.service";
+import authHeader from '../services/auth-header';
+import axios from "axios";
 
 const Profile=()=>{
 
-        const[currentUser,setCurrentUser]= useState(AuthService.getCurrentUser())
-    
+        const[currentUser,setCurrentUser] = useState({})
+
+        useEffect(() => {
+          axios.get(process.env.REACT_APP_API_URL+"/users/profile", {headers: authHeader()})
+          .then(response => {
+            setCurrentUser(response.data)
+          })
+          .catch(error => {
+            console.log(error);
+          });
+        }, []);
         
         return (
           <div className="container">
-            <header className="jumbotron">
-              <h3>
-                <strong>{currentUser.username}</strong> Profile
-              </h3>
+            <header className="jumbotron" style={{display:"flex", flexDirection:"row"}}>
+              <img src={process.env.PUBLIC_URL+"/users-profile-pics/"+currentUser.image_path} alt="User Profile" 
+                  style={{height:"200px", width:"200px"}}/>
+              <h1 style={{marginLeft:"2rem", marginTop:"3rem"}}>
+                <strong>{currentUser.firstName} {currentUser.lastName}</strong>
+              </h1>
             </header>
-            <p>
-              <strong>Token:</strong>{" "}
-              {currentUser.accessToken.substring(0, 20)} ...{" "}
-              {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
-            </p>
-            <p>
-              <strong>Id:</strong>{" "}
-              {currentUser.id}
-            </p>
-            <p>
+            <h4>
+              <strong>First Name:</strong>{" "}
+              {currentUser.firstName}
+            </h4>
+            <h4>
+              <strong>Last Name:</strong>{" "}
+              {currentUser.lastName}
+            </h4>
+            <h4>
               <strong>Email:</strong>{" "}
               {currentUser.email}
-            </p>
-            <strong>Authorities:</strong>
-            <ul>
-              {currentUser.roles &&
-                currentUser.roles.map((role, index) => <li key={index}>{role}</li>)}
-            </ul>
+            </h4>
+            <h4>
+              <strong>Username:</strong>{" "}
+              {currentUser.username}
+            </h4>
           </div>
         );
 }

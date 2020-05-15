@@ -40,7 +40,7 @@ function PopularDummy(props){
         })
     }
 
-    console.log(props.title, props.data);
+    // console.log(props.title, props.data);
     return (
         <div style={divStyle}>
             <h4 style={headerStyle}>{props.title}</h4>

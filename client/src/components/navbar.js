@@ -48,15 +48,16 @@ const NavBar = () => {
                 )}
                 {currentUser && (
                     <>
-                    <li className="nav-item">
-                        <Link to={"/user"} className="nav-link">
-                            User
-                        </Link>
-                    </li>
-                    
+                                        
                     <li className="nav-item">
                         <Link to={"/books"} className="nav-link">
                             Books
+                        </Link>
+                    </li>
+
+                    <li className="nav-item">
+                        <Link to={"/categories/all"} className="nav-link">
+                            Categories
                         </Link>
                     </li>
                     </>

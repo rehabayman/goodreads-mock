@@ -6,7 +6,7 @@ import Carousel from 'react-elastic-carousel';
 
 const AllBooksUser=(props)=>  {
     
-    const API_URL = "http://localhost:8000/books/";
+    const API_URL = process.env.REACT_APP_API_URL+"/books/";
     const [books, setBooks] = useState([]);
     
     useEffect(()=>{    // get all books
@@ -46,7 +46,7 @@ const AllBooksUser=(props)=>  {
         <div className="container d-flex justify-content-center mt-5">
             <h3>No Books Yet.</h3>
         </div>
-        
+
     );
     
 }
