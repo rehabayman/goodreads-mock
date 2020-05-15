@@ -26,4 +26,6 @@ router.post('/rate/:id', [authJwt.verifyToken], bookController.updateBookRating)
 
 router.post('/shelves/:id', [authJwt.verifyToken], bookController.updateBookShelf);
 
+router.post("/addreview/:bookId/:userId", bookController.addreview);
+
 module.exports = router

@@ -4,7 +4,7 @@ import axios from "axios";
 import  { Redirect, Link } from "react-router-dom";
 
 function CategoryList(){
-    let url = `${process.env.REACT_APP_API_URL}/categories/all`;
+    let url = `${process.env.REACT_APP_SERVER_PORT}/categories/all`;
     const [categories, setCategories] = useState([{name:"Loading...", err: true}])
     useEffect(() => {
         

@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 const API_URL = `${process.env.REACT_APP_API_URL}/users/auth/`
+console.log(API_URL)
 // const SIGNUP_URL = "http://localhost:8000/users/auth/signup"
 
 console.log(API_URL)

@@ -8,7 +8,7 @@ import PopularDummyCategories from "./popular-dummy.component";
 
 function PopularLive(){
     
-    let urlHomePopular = `${process.env.REACT_APP_API_URL}/home/popular`;
+    let urlHomePopular = `${process.env.REACT_APP_SERVER_PORT}/home/popular`;
 
     const [books, setBooks] = useState([{book: {name:"Loading..."}}]);
     const [authors, setAuthors] = useState([{book: {author: {firstName: "Loading...", lastName: ""}}}]);
