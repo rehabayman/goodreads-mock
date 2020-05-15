@@ -7,6 +7,7 @@ const bcrypt = require('bcryptjs');
 const bookRouter = require('./routes/books');
 const authorRouter = require('./routes/authors');
 const homeRouter = require("./routes/home.js");
+const { authJwt } = require("./middlewares");
 
 const DB_PORT = process.env.DB_PORT;
 const DB_HOST = process.env.DB_HOST;
@@ -46,8 +47,11 @@ app.use((req, res, next) => {
 })
 
 app.get('/', (req, res) => {
+  
   res.json({ message: "welcome" })
 })
+
+
 
 // Database Connection
 mongoose.set('useCreateIndex', true);

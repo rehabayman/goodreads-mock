@@ -40,9 +40,9 @@ const Category = (props) => {
 
       });
     }).catch(err => {
-      console.log(err);
+      console.log(err.message);
       setSuccessMessage('');
-      setErrorMessage({errorMessage: err.message});
+      setErrorMessage(err.message);
 
     }), 5 * 1000);
   }, []);

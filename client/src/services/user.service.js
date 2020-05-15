@@ -1,7 +1,8 @@
 import axios from 'axios'
 import authHeader from './auth-header'
-const API_URL = `${process.env.REACT_APP_API_URL}/users/auth/`
+const API_URL = `${process.env.REACT_APP_API_URL}/api/test/`
 const userBooksUrl=`${process.env.REACT_APP_API_URL}/home/userbooks`
+
 
 function UserService() {
 
@@ -21,7 +22,7 @@ function UserService() {
       return axios.get(API_URL + 'admin', { headers: authHeader() });
     },
     getUserBooks:()=>{
-      console.log("hereee")
+      
       return axios.get(userBooksUrl,{headers:authHeader()})
     }
   })
