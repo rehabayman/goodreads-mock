@@ -1,4 +1,4 @@
-const {bookModel, bookRatingModel, authorModel, categoryModel, bookShelvesModel} = require("../models/index")
+const {bookModel, bookRatingModel, authorModel, categoryModel, bookShelvesModel, bookReviews} = require("../models/index")
 
 exports.getBookRating = (req, res) => {
     
@@ -211,3 +211,24 @@ exports.removeBook = (req, res, next) => {
 }
 
 
+exports.addreview = (req, res) => {
+    const {userId, bookId} = req.params;
+    const {review} = req.body;
+
+    bookReviews.create({review: review, book: bookId, user: userId}).then( result => {
+        bookModel.find({_id: bookId}).exec((err, book)=>{
+            if(err){
+                console.log(err);
+                res.send(err);
+            } else {
+                book[0].reviews.push(result._id)
+                book[0].save();
+                res.send("done");
+            }
+        })
+    
+    }).catch(e=>{
+        console.log(e);
+    });
+
+}

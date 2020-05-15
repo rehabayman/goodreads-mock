@@ -14,9 +14,9 @@ function CategoryDetails(){
     const [Loading, setLoading] = useState(true);
     const [totalBooks, settotalBooks] = useState(0);  
     const [currentPage, setCurrentPage] = useState(1);
-    const [booksPerPage, setBooksPerPage] = useState(1);
+    const [booksPerPage, setBooksPerPage] = useState(10);
 
-    let url = `${process.env.REACT_APP_API_URL}/categories/${id}`;
+    let url = `${process.env.REACT_APP_SERVER_PORT}/categories/${id}`;
     
     
     useEffect(()=>{

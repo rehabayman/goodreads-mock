@@ -5,6 +5,7 @@ import BookShelve from './BookShelves'
 import RateBook from './RateBook'
 import { Link } from 'react-router-dom'
 import StarRatings from 'react-star-ratings';
+import AddBookReview from './AddBookReview';
 
 const BookDetails = ({ match: { params: { id: bookId } } }) => {
 
@@ -68,6 +69,10 @@ const BookDetails = ({ match: { params: { id: bookId } } }) => {
                         </div>
                     </div>
 
+                        <AddBookReview 
+                            bookId={bookId} 
+                            user={localStorage.getItem('user') }
+                        />
 
                     <div className="reviews">
                         <h4>Reviews</h4>
