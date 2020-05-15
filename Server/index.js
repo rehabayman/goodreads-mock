@@ -66,7 +66,7 @@ require("./routes/auth")(app);
 const { userRouter, tokenMiddleware } = require('./routes/users');
 
 app.use(tokenMiddleware)
-app.use('/api', userRouter) // FOR TESTING ONLY
+// app.use('/api', userRouter) // FOR TESTING ONLY
 app.use('/categories',categoryRouter)
 app.use('/users', userRouter);
 app.use('/books', bookRouter);
