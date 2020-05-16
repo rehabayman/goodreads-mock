@@ -16,7 +16,8 @@ import BooksUser from './components/AllBooksUser';
 import CategoryList from './components/Categorylist.js';
 import CategoryDetails from './components/CategoryDetails.js';
 import BookDetails from './components/bookDetails'
-
+import SearchBook from './components/SearchBook';
+import SearchResult from './components/searchresults';
 function App() {
 
   return (
@@ -37,6 +38,8 @@ function App() {
               <Route exact path="/categories/:categoryname/:id" component={CategoryDetails} />
               <Route exact path="/books" component={BooksUser}/>
               <Route exact path="/books/:id" component={BookDetails}/>
+              <Route exact path="/search" component={SearchBook} />
+              <Route exact path="/SearchResult" component={SearchResult} />
             </Switch>
           </div>
         </div>
