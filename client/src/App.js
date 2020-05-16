@@ -5,7 +5,6 @@ import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import Login from "./components/login.component";
-// import Register from "./components/register.component";
 import Home from "./pages/user/homepage";
 import Profile from "./components/profile.component";
 // import BoardUser from "./components/board-user.component";

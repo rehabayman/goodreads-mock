@@ -80,7 +80,6 @@ const validateConfirmPassword = (value) => {
 };
 
 const validateImage = value => {
-    console.log(value);
     if (!value.match(/\.(jpg|jpeg|png)$/)) {
         return (
             <div className="alert alert-danger" role="alert">
