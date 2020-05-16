@@ -52,7 +52,7 @@ const SearchBook=(props)=>  {
         return lc.includes(filter);
             })
         setfilteredBooks(newFilteredBooks);
-      
+ 
          
     }
     const handleSubmit=(e)=>{        
@@ -110,7 +110,7 @@ const SearchBook=(props)=>  {
                 <input type="text" className="input" value={input} onClick={e=>{setShow(true);console.log(filteredBooks);}
                 } style={inputStyle} onChange={e => handleChange(e)} placeholder="Search..." />
             </form >
-            <div onClick={e=>setShow(false)} >
+            <div onClick={e=>{setShow(false);setfilteredBooks([])}} >
             <datalist className="dropdownContent" style={dropdownContent} >
             {filteredBooks.length ? filteredBooks.slice(0,showBooks).map((i,index) => 
                 <li key={index}>
@@ -142,21 +142,8 @@ const SearchBook=(props)=>  {
             </datalist>
             </div>
 
-            <div onClick={e=>setShow(false)}>
-            <div>Hello</div>
-            <div>Hello2</div>
-            <div>Hell04</div>
-            {/* <div className="todo-items">
-            {filteredBooks.map((item,index) => (
-                <div key=
-                {index}>
-                <SearchResult
-                searchresults={item}
-                index={index}
-                />
-                </div>
-            ))}
-            </div> */}
+            <div onClick={e=>{setShow(false);setfilteredBooks([])}}>
+          
             
             </div>
         </div>
