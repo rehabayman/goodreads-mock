@@ -27,7 +27,24 @@ const Category = (props) => {
   const [modal, setModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage,setSuccessMessage]=useState('');
+  useEffect(() => {
 
+    axios.get(`http://${DB_HOST}:${PORT}/categories`, { headers: authHeader() }).then((res) => {
+      setCategories(res.data);
+      // console.log(res.data);
+      res.data.map(msg => {
+        // console.log(msg);
+        categories.push(msg);
+        setSuccessMessage('');
+
+      });
+    }).catch(err => {
+      console.log(err);
+      setSuccessMessage('');
+      setErrorMessage(err.message);
+
+    });
+  }, []);
   useEffect(() => {
 
     setInterval(() => axios.get(`http://${DB_HOST}:${PORT}/categories`, { headers: authHeader() }).then((res) => {
@@ -42,7 +59,7 @@ const Category = (props) => {
     }).catch(err => {
       console.log(err);
       setSuccessMessage('');
-      setErrorMessage({errorMessage: err.message});
+      setErrorMessage(err.message);
 
     }), 5 * 1000);
   }, []);
@@ -77,7 +94,7 @@ const Category = (props) => {
           .catch(err => {
             console.log(err);
             setSuccessMessage('');
-            setErrorMessage({errorMessage: err.message});
+            setErrorMessage(err.message);
 
           })
 
@@ -106,7 +123,7 @@ const Category = (props) => {
       .catch(err => {
         console.log(err);
         setSuccessMessage('');
-        setErrorMessage({errorMessage: err.message});
+        setErrorMessage(err.message);
 
       });
       // setSuccessMessage('Category deleted successfully '); 
@@ -132,7 +149,7 @@ const Category = (props) => {
         .catch(err => {
           console.log(err);
           setSuccessMessage('');
-          setErrorMessage({errorMessage: err.message});
+          setErrorMessage(err.message);
 
         });
 
@@ -152,7 +169,7 @@ const Category = (props) => {
           .catch(err => {
             console.log(err);
             setSuccessMessage('');
-            setErrorMessage({errorMessage: err.message});
+            setErrorMessage(err.message);
 
           });
           // setSuccessMessage('Category updated successfully '); 
