@@ -36,7 +36,7 @@ function App() {
               <Route exact path="/categories" component={Category} />
               <Route exact path="/categories/all" component={CategoryList} />
               <Route exact path="/categories/:categoryname/:id" component={CategoryDetails} />
-              <Route exact path="/books" component={BooksUser}/>
+              <Route exact path="/books/all" component={BooksUser}/>
               <Route exact path="/books/:id" component={BookDetails}/>
               <Route exact path="/search" component={SearchBook} />
               <Route exact path="/SearchResult" component={SearchResult} />

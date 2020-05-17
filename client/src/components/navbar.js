@@ -50,13 +50,13 @@ const NavBar = () => {
                     <>
                                         
                     <li className="nav-item">
-                        <Link to={"/books"} className="nav-link">
+                        <Link to={"/books/all"} className="nav-link">
                             Books
                         </Link>
                     </li>
 
                     <li className="nav-item">
-                        <Link to={"/categories/all"} className="nav-link">
+                        <Link to={currentUser.roles.includes("ROLE_ADMIN") ? "/categories" : "/categories/all"} className="nav-link">
                             Categories
                         </Link>
                     </li>

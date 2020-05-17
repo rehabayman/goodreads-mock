@@ -1,22 +1,16 @@
 
 import React from 'react';
-import { useState, useEffect, Component } from "react";
-import logo from '../logo.svg';
-import '../App.css';
+import { useState, useEffect } from "react";
 import "../App.css";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import Modal from 'react-bootstrap/Modal';
-// import { Modal } from 'react-bootstrap'
-
-import ModalHeader from 'react-bootstrap/ModalHeader';
-import ModalTitle from 'react-bootstrap/ModalTitle';
-import ModalBody from 'react-bootstrap/ModalBody';
-import ModalFooter from 'react-bootstrap/ModalFooter';
 import authHeader from '../services/auth-header'
-
-const PORT = 8000;
-const DB_HOST = "localhost";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { Modal } from 'react-bootstrap'
+// import ModalHeader from 'react-bootstrap/ModalHeader';
+// import ModalTitle from 'react-bootstrap/ModalTitle';
+// import ModalBody from 'react-bootstrap/ModalBody';
+// import ModalFooter from 'react-bootstrap/ModalFooter';
 
 
 
@@ -26,10 +20,11 @@ const Category = (props) => {
   const [input, setInput] = useState('');
   const [modal, setModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage,setSuccessMessage]=useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+
   useEffect(() => {
 
-    axios.get(`http://${DB_HOST}:${PORT}/categories`, { headers: authHeader() }).then((res) => {
+    axios.get(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/categories`, { headers: authHeader() }).then((res) => {
       setCategories(res.data);
       // console.log(res.data);
       res.data.map(msg => {
@@ -45,24 +40,6 @@ const Category = (props) => {
 
     });
   }, []);
-  useEffect(() => {
-
-    setInterval(() => axios.get(`http://${DB_HOST}:${PORT}/categories`, { headers: authHeader() }).then((res) => {
-      setCategories(res.data);
-      // console.log(res.data);
-      res.data.map(msg => {
-        // console.log(msg);
-        categories.push(msg);
-        setSuccessMessage('');
-
-      });
-    }).catch(err => {
-      console.log(err);
-      setSuccessMessage('');
-      setErrorMessage(err.message);
-
-    }), 5 * 1000);
-  }, []);
 
   const modalOpen = () => {
     setModal(true);
@@ -77,113 +54,93 @@ const Category = (props) => {
 
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     // let errors = {};
     if (input.match(/^[a-zA-Z]+$/)) {
       let oldCategory = categories.filter((cat) => (cat.name === input)).map(filtered => { return filtered.name; })
-      // console.log(oldCategory);
 
       if (oldCategory.length <= 0) {
-        let res = await axios.post(`http://${DB_HOST}:${PORT}/categories`, { name: input }, { headers: authHeader() }
-
-        ).then((res) => {
-          setInput(''); console.log(res);
-          setErrorMessage('');
-        })
-          .catch(err => {
-            console.log(err);
-            setSuccessMessage('');
-            setErrorMessage(err.message);
-
-          })
-
-          // setSuccessMessage('Category added successfully '); 
-
-      }
-      else if (oldCategory)
-        {console.log('Category already exists');
-        setSuccessMessage('');
-        setErrorMessage('Category already exists');}
-          
-    }
-    else{
-      setErrorMessage('Category name is invalid,Cannot be empty please enter characters only');
-    }
-    modalClose();
-  }
-
-  const handleDelete = async (id) => {
-
-    let res = await axios.delete(`http://${DB_HOST}:${PORT}/categories/` + id, { headers: authHeader() }).
-      then((res) => {
-        console.log(res);
-        setErrorMessage('');
-      })
-      .catch(err => {
-        console.log(err);
-        setSuccessMessage('');
-        setErrorMessage(err.message);
-
-      });
-      // setSuccessMessage('Category deleted successfully '); 
-
-    // console.log(res.data);
-  }
-
-  const handleEdit = async (id) => {
-
-    let oldCategory = categories.filter((cat) => (cat._id === id)).map(filtered => { return filtered.name; })
-    // console.log(oldCategory);
-    let category = prompt('edit category', oldCategory);
-    // console.log(category);
-    let isexistCategory = categories.filter((cat) => (cat.name === category)).map(filtered => { return filtered.name; })
-    // console.log(isexistCategory);
-
-    if (category === oldCategory) {
-      await axios.patch(`http://${DB_HOST}:${PORT}/categories/` + id, { name: category }, { headers: authHeader() })
+        axios.post(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/categories`, { name: input }, { headers: authHeader() })
         .then((res) => {
-          console.log(res);
+          setInput('');
           setErrorMessage('');
+          setCategories(categories.concat(res.data));
+          setSuccessMessage('Category added successfully'); 
         })
         .catch(err => {
           console.log(err);
           setSuccessMessage('');
           setErrorMessage(err.message);
-
         });
+      }
+      else if (oldCategory) {
+        console.log('Category already exists');
+        setSuccessMessage('');
+        setErrorMessage('Category already exists');
+      }
 
+    }
+    else {
+      setErrorMessage('Category name is invalid, Cannot be empty please enter characters only.');
+    }
+    modalClose();
+  }
+
+  const handleDelete = (id) => {
+
+    axios.delete(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/categories/` + id, { headers: authHeader() })
+    .then((res) => {
+      console.log(res);
+      setErrorMessage('');
+      setCategories(categories.filter(cat => cat._id !== id));
+    })
+    .catch(err => {
+      console.log(err);
+      setSuccessMessage('');
+      setErrorMessage(err.message);
+    });
+    setSuccessMessage('Category deleted successfully '); 
+  }
+
+  const handleEdit = (id) => {
+
+    let oldCategory = categories.filter((cat) => (cat._id === id)).map(filtered => { return filtered.name; })
+    let category = prompt('edit category', oldCategory);
+    let isexistCategory = categories.filter((cat) => (cat.name === category)).map(filtered => { return filtered.name; })
+
+    if (category === oldCategory[0]) {
+      setSuccessMessage("You Haven't Edited the Category");
     }
     else if (category === null || category === "") {
-      setErrorMessage('Category name is invalid,Cannot be empty please enter characters only');
-      console.log('Can not  change to this category name');
+      setErrorMessage('Category name is invalid, Cannot be empty please enter characters only.');
     }
-
     else if (isexistCategory.length === 0 && category !== null) {
       if (category.match(/^[a-zA-Z]+$/)) {
-        await axios.patch(`http://${DB_HOST}:${PORT}/categories/` + id, { name: category }, { headers: authHeader() })
-          .then((res) => {
-            console.log(res);
-            setErrorMessage('');
-          })
-          .catch(err => {
-            console.log(err);
-            setSuccessMessage('');
-            setErrorMessage(err.message);
-
-          });
-          // setSuccessMessage('Category updated successfully '); 
+        axios.patch(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/categories/` + id, { name: category }, { headers: authHeader() })
+        .then((res) => {
+          console.log(res);
+          setErrorMessage('');
+          setSuccessMessage('Category updated successfully');
+          setCategories(
+            categories.map(el => (el._id === res.data._id ? Object.assign({}, el, {name: res.data.name}) : el))
+          );
+        })
+        .catch(err => {
+          console.log(err);
+          setSuccessMessage('');
+          setErrorMessage(err.message);
+        });
       }
-      else{
+      else {
         setErrorMessage('Category name is invalid,Cannot be empty please enter characters only');
       }
-     
+
     }
     else {
       setSuccessMessage('');
       setErrorMessage('Category name already exists ');
       console.log('Category already exists');
-
     }
 
 
@@ -216,15 +173,15 @@ const Category = (props) => {
         <strong>ADD New Category</strong>
       </p>
        */}
-       
+
       <button variant="primary" onClick={() => modalOpen()}>
         Add New Category
       </button>
-      
-        <div className="error" style={{backgroundColor:'#FFD2D2',color:'#D8000'}}> {errorMessage } </div> 
-       
-        <div className="error" style={{backgroundColor:'#DFF2BF',color:'##4F8A10'}}> {successMessage } </div> 
-    <Modal show={modal} onHide={() => modalClose()}
+
+      <div className="error" style={{ backgroundColor: '#FFD2D2', color: '#D8000' }}> {errorMessage} </div>
+
+      <div className="error" style={{ backgroundColor: '#DFF2BF', color: '##4F8A10' }}> {successMessage} </div>
+      <Modal show={modal} onHide={() => modalClose()}
         dialogClassName="modal-90w"
         aria-labelledby="example-custom-modal-styling-title" style={styleModal}>
         <Modal.Header closeButton style={modalHeader}>
