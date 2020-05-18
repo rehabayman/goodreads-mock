@@ -15,7 +15,7 @@ const BookDetails = ({ match: { params: { id: bookId } } }) => {
         BooksServices.getBookDetails(bookId).then((res) => {
 
             setBook(res.data)
-            setShelf(res.data.shelf.shelf)
+            setShelf(res.data.shelf ? res.data.shelf.shelf : "read")
 
 
         })

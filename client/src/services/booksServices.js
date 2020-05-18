@@ -1,6 +1,6 @@
 import axios from 'axios'
 import authHeader from './auth-header'
-const API_URL = `${process.env.REACT_APP_SERVER_PORT}/books/`
+const API_URL = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/books/`
 
 function BooksService() {
 

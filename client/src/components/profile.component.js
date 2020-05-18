@@ -9,7 +9,7 @@ const Profile=()=>{
         const[currentUser,setCurrentUser] = useState({})
 
         useEffect(() => {
-          axios.get(process.env.REACT_APP_API_URL+"/users/profile", {headers: authHeader()})
+          axios.get(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/users/profile`, {headers: authHeader()})
           .then(response => {
             setCurrentUser(response.data)
           })

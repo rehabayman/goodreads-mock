@@ -6,7 +6,7 @@ import authHeader from '../services/auth-header'
 
 const RateBook = (props) => {
 
-    const API_URL = `${process.env.REACT_APP_SERVER_PORT}/books/rate/`
+    const API_URL = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/books/rate/`
     const [rating, setRating] = useState(props.rate);
 
     /**

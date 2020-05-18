@@ -16,7 +16,7 @@ function CategoryDetails(){
     const [currentPage, setCurrentPage] = useState(1);
     const [booksPerPage, setBooksPerPage] = useState(10);
 
-    let url = `${process.env.REACT_APP_SERVER_PORT}/categories/${id}`;
+    let url = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/categories/${id}`;
     
     
     useEffect(()=>{
