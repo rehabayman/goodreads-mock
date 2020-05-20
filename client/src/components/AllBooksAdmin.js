@@ -70,7 +70,7 @@ const AllBooksAdmin=(props)=>  {
                 <td><Link to={`/books/${book._id}`}>{book.name}</Link></td>
                 <td>{book.category.name}</td>
                 <td>{book.author.firstName}</td>
-                <td><Link to={`/books/${book._id}`}><img className="card-img-top" src={book.cover ? book.cover : "/112815953-stock-vector-no-image-available-icon-flat-vector.jpg"} alt="Book Cover"></img></Link></td>
+                <td><Link to={`/books/${book._id}`}><img className="card-img-top" src={book.image_path ? book.image_path : "/112815953-stock-vector-no-image-available-icon-flat-vector.jpg"} alt="Book Cover"></img></Link></td>
                 <td><button type="button" className="btn btn-warning" data-toggle="modal" data-target="#exampleModal">
                     Edit
                     </button>
