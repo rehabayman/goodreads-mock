@@ -132,13 +132,13 @@ exports.addBook = (req, res , next) => {
            author,
            category
        })
-    //    authorModel.findById({_id:author},(error,author)=>{
-    //     if(error) return res.send(error);
-    //     author.books.push(bookdata);
-    //     author.save((error,author)=>{
-    //     if(error) return res.send(error);
-    //     })
-    // });
+       authorModel.findById({_id:author},(error,author)=>{
+        if(error) return res.send(error);
+        author.books.push(bookdata);
+        author.save((error,author)=>{
+        if(error) return res.send(error);
+        })
+    });
        bookdata.save((err, book )=>{
            if(err) console.log(err);
            res.json(book)
@@ -179,12 +179,8 @@ exports.oneBook = (req, res, next) => {
         })
     })
 }
-<<<<<<< HEAD
- 
-=======
 
 
->>>>>>> 466db87244c75723261cccecf61dffe10f28c428
 exports.allBooks = (req, res, next) => {
     bookModel.find({ })
     .populate('author', 'firstName lastName')

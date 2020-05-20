@@ -13,7 +13,7 @@ router.get('/',async(req,res)=>{
     const { page = 1, limit = 1 } = req.query;
     try{
         const authors = await AuthorsModel.find()
-        .populate('name','category')
+        .populate('books') 
         .limit(limit * 1)  
         .skip((page - 1) * limit)
         .exec();
@@ -26,6 +26,12 @@ router.get('/',async(req,res)=>{
     }catch(err){
         console.error(err.message);
     }
+});
+router.get('/:id',(req,res)=>{
+    AuthorsModel.findOne({_id : req.params.id},(error,author)=>{
+        if(error) return res.send(error);
+        res.json(author);
+    }).populate('books')
 });
 router.post('/',(req,res)=>{
     const {body : {firstName,lastName,birthdate,image_path}} = req;
