@@ -14,9 +14,9 @@ exports.tokenMiddleware = function (req, res, next) {
     next();
 }
 router.get("/",  [authJwt.verifyToken], categoryController.getAllCategories);
-router.post("/",  [authJwt.verifyToken], categoryController.addCategory);
-router.patch('/:id',[authJwt.verifyToken], categoryController.updateCategory);
-router.delete("/:id",  [authJwt.verifyToken], categoryController.deleteCategory);
+router.post("/",  [authJwt.verifyToken, authJwt.isAdmin], categoryController.addCategory);
+router.patch('/:id',[authJwt.verifyToken, authJwt.isAdmin], categoryController.updateCategory);
+router.delete("/:id",  [authJwt.verifyToken, authJwt.isAdmin], categoryController.deleteCategory);
 
 
 // router.get('/',(req,res)=>{
