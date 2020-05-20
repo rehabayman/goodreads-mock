@@ -5,7 +5,7 @@ function AddBookReview(props){
     const [review, setReview] = useState("");
     const userId = JSON.parse(props.user).id;
     const bookId = props.bookId; 
-    const url = `${process.env.REACT_APP_SERVER_PORT}/books/addreview/${bookId}/${userId}`;
+    const url = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/books/addreview/${bookId}/${userId}`;
 
 
     function reviewSubmission(e){
