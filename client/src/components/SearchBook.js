@@ -4,19 +4,17 @@ import './starStyle.css'
 import axios from 'axios';
 import authHeader from '../services/auth-header'
 import SearchResult from './searchresults';
-// import {Router, Route, Link}from 'react-router';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 
 const SearchBook=(props)=>  {
     
     const API_URL = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/books`
-    const [input, setInput] = useState('');
+    let [input, setInput] = useState('');
     const [books, setBooks]=useState([]);  
     const [filteredBooks,setfilteredBooks]=useState([]);
     const [show,setShow]=useState(false);
     let currentBooks= [];
-    // const [dropdownOpen,setDropdownOpen]=useState({display:"none"});
     const [showBooks,setShowBooks]=useState(2);
 
     useEffect(()=>{    
@@ -70,11 +68,7 @@ const SearchBook=(props)=>  {
 
         }
     }
-   const handleShowMore=()=> {
-        setShowBooks(        
-           showBooks >= filteredBooks.length ? showBooks : showBooks + 1//showBooks + 2
-        )
-      }
+ 
     const inputStyle ={
        
             boxSizing: "borderBox",
@@ -95,7 +89,7 @@ const SearchBook=(props)=>  {
         display: show ? "block" : "none",
         position: "absolute",
         backgroundColor: "#f1f1f1",
-        minWidth: "160px",
+        minWidth: "260px",
         boxShadow: "0px 8px 16px 0px rgba(0,0,0,0.2)",
         // zIndex: 1,
       }
@@ -106,34 +100,25 @@ const SearchBook=(props)=>  {
             
             <form onSubmit={handleSubmit}>
                 <input type="text" className="input" value={input} onClick={e=>{setShow(true);console.log(filteredBooks);}
-                } style={inputStyle} onChange={e => handleChange(e)} placeholder="Search..." />
+                } style={inputStyle} onChange={e => {handleChange(e);}} placeholder="Search..." />
             </form >
             <div onClick={e=>{setShow(false);setfilteredBooks([])}} >
             <datalist className="dropdownContent" style={dropdownContent} >
             {filteredBooks.length ? filteredBooks.slice(0,showBooks).map((i,index) => 
-                <li key={index}>
-                   <Link to={`/books/${i._id}`}  >{i.name}</Link>
-                </li>
-
-                ):<></>}
+                   <>
+                   <Link to={`/books/${i._id}`}  >{i.name} <br/><span>by {i.author.firstName} {i.author.lastName}</span></Link><br/>
+                   </>
+                ):
+                <></>}
                  {filteredBooks.length ? 
                 <>
-                {/* <li>
-                     <a href={handleShowMore} > 
-                        Show More!
-                    </a>
-                </li> */}
-              
-                <li>
-             
                     <Link
                         to={{
                         pathname: `/SearchResult`,
                         state: {  filteredBooks},
                         params:{filteredBooks}
                         }}
-                    >Show All</Link>
-                </li>
+                    >Show all results</Link>
                 </>
                 : <></>}
                
