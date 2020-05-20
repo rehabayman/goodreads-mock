@@ -19,19 +19,16 @@ const Category = (props) => {
   const [categories, setCategories] = useState([]);
   const [input, setInput] = useState('');
   const [modal, setModal] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-
+  let [errorMessage, setErrorMessage] = useState('');
+  let [successMessage, setSuccessMessage] = useState('');
+  
   useEffect(() => {
 
     axios.get(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/categories`, { headers: authHeader() }).then((res) => {
       setCategories(res.data);
-      // console.log(res.data);
       res.data.map(msg => {
-        // console.log(msg);
         categories.push(msg);
         setSuccessMessage('');
-
       });
     }).catch(err => {
       console.log(err);
@@ -56,7 +53,6 @@ const Category = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // let errors = {};
     if (input.match(/^[a-zA-Z]+$/)) {
       let oldCategory = categories.filter((cat) => (cat.name === input)).map(filtered => { return filtered.name; })
 
@@ -82,6 +78,7 @@ const Category = (props) => {
 
     }
     else {
+      setSuccessMessage('');
       setErrorMessage('Category name is invalid, Cannot be empty please enter characters only.');
     }
     modalClose();
@@ -110,9 +107,11 @@ const Category = (props) => {
     let isexistCategory = categories.filter((cat) => (cat.name === category)).map(filtered => { return filtered.name; })
 
     if (category === oldCategory[0]) {
+      setErrorMessage('');
       setSuccessMessage("You Haven't Edited the Category");
     }
     else if (category === null || category === "") {
+      setSuccessMessage('');
       setErrorMessage('Category name is invalid, Cannot be empty please enter characters only.');
     }
     else if (isexistCategory.length === 0 && category !== null) {
@@ -133,6 +132,7 @@ const Category = (props) => {
         });
       }
       else {
+        setSuccessMessage('');
         setErrorMessage('Category name is invalid,Cannot be empty please enter characters only');
       }
 
@@ -166,15 +166,38 @@ const Category = (props) => {
     backgroundColor: '#5cb85c',
     color: 'white'
   }
+  const categoriesStyle ={
+    fontFamily: "Trebuchet MS, Arial, Helvetica, sans-serif",
+    borderCollapse: "collapse",
+    width: "100%",
+  }
+  const categoriesindexStyle ={
+    border: "1px solid #ddd",
+    padding: "8px",
+    width: "10%",
+  }
+  const categoriesDataStyle = {
+    border: "1px solid #ddd",
+    padding: "8px",
+    '&:hover': {
+      backgroundColor: '#DDEEEE',
+    },
+  }
+ 
+  const categoriesHeaderStyle= {
+    paddingTop: "12px",
+    paddingBottom: "12px",
+    textAlign: "center",
+    backgroundColor: "#A9A9A9",
+    color: "white",
+    border: "1px solid #ddd",
+    padding: "8px",
+  }
   return (
 
     <div className="App">
-      {/* <p>
-        <strong>ADD New Category</strong>
-      </p>
-       */}
 
-      <button variant="primary" onClick={() => modalOpen()}>
+      <button variant="primary" className="btn-btn-primary" onClick={() => modalOpen()} type="button">
         Add New Category
       </button>
 
@@ -189,7 +212,7 @@ const Category = (props) => {
         </Modal.Header>
         <Modal.Body style={modalBody}>
           <div className="form-group">
-            <label>Enter Category:</label>
+            <label></label>
             <input
               type="text"
               value={input}
@@ -216,26 +239,26 @@ const Category = (props) => {
         <button type="submit">Send</button>
       </form> */}
       <div>
-        <table>
-          <thead>
-            <tr>
-              <th scope="col">Category Index</th>
-              <th scope="col">Category Name</th>
-              <th scope="col">Edit</th>
-              <th scope="col">Delete</th>
+        <table style={categoriesStyle}>
+          <thead >
+            <tr >
+              <th scope="col" style={categoriesHeaderStyle}>Category Index</th>
+              <th scope="col" style={categoriesHeaderStyle}>Category Name</th>
+              <th scope="col" style={categoriesHeaderStyle}>Edit</th>
+              <th scope="col" style={categoriesHeaderStyle}>Delete</th>
             </tr>
           </thead>
           <tbody>
             {
               categories.map((cat, index) =>
                 <tr key={cat._id}>
-                  <td>{index + 1}</td>
-                  <td>{cat.name}</td>
-                  <td><button type="button" onClick={() => { handleEdit(cat._id) }} className="btn btn-warning" data-toggle="modal" data-target="#exampleModal">
+                  <td style={categoriesindexStyle}>{index + 1}</td>
+                  <td style={categoriesDataStyle}>{cat.name}</td>
+                  <td style={categoriesDataStyle}><button type="button" onClick={() => { handleEdit(cat._id) }} className="btn btn-info">
                     Edit
                       </button>
                   </td>
-                  <td><button type="button" onClick={() => { handleDelete(cat._id) }} className="btn btn-warning" data-toggle="modal" data-target="#exampleModal">
+                  <td style={categoriesDataStyle}><button type="button" onClick={() => { handleDelete(cat._id) }} className="btn btn-danger">
                     Delete
                       </button>
                   </td>
@@ -249,5 +272,4 @@ const Category = (props) => {
 }
 
 export default Category;
-
 
