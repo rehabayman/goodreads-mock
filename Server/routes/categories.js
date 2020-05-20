@@ -15,7 +15,7 @@ exports.tokenMiddleware = function (req, res, next) {
 }
 
 router.get('/',[authJwt.verifyToken],(req,res)=>{
-    CategoryModel.find({},(err,category)=>{
+    CategoryModel.find({}).populate('books').exec((err,category)=>{
         if(err)
          return res.send(err); 
         res.json(category); 
@@ -36,13 +36,13 @@ router.get('/all', categoryController.getAll);
 router.get('/:id/', categoryController.getDetails);
 
 router.post('/',[authJwt.verifyToken], (req,res)=>{
-    let  {body : {name,id
+    let  {body : {name
         ,books,
          } }  = req;
     // const name =req;
 
     let category= new CategoryModel({
-        name,id
+        name
         ,books,
      
     });
