@@ -10,9 +10,10 @@ import Profile from "./components/profile.component";
 // import BoardUser from "./components/board-user.component";
 import BoardAdmin from "./components/board-admin.component";
 import Register from "./components/register.component";
-import NavBar from "./components/navbar"
+import NavBar from "./components/navbar";
 import Category from './components/Category.js';
 import BooksUser from './components/AllBooksUser';
+import BooksAdmin from './components/AllBooksAdmin';
 import CategoryList from './components/Categorylist.js';
 import CategoryDetails from './components/CategoryDetails.js';
 import BookDetails from './components/bookDetails'
@@ -37,6 +38,7 @@ function App() {
               <Route exact path="/categories/all" component={CategoryList} />
               <Route exact path="/categories/:categoryname/:id" component={CategoryDetails} />
               <Route exact path="/books/all" component={BooksUser}/>
+              <Route exact path="/books/all/admin" component={BooksAdmin}/>
               <Route exact path="/books/:id" component={BookDetails}/>
               <Route exact path="/search" component={SearchBook} />
               <Route exact path="/SearchResult" component={SearchResult} />
