@@ -134,9 +134,17 @@ exports.addBook = (req, res , next) => {
        })
        bookdata.save((err, book )=>{
            if(err) next(err);
-           res.json(book)
+           else{
+            bookModel.findById(book._id)
+            .populate('author', 'firstName lastName')
+            .populate('category', 'name')
+            .exec((err, booke)=>{
+                if(err) next('cannot find this book')
+                else res.json(booke)
+            })
+            }
        })
-   }
+}
 
 // exports.oneBook = (req, res, next) => {
 //     bookModel.findById(req.params.id)

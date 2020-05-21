@@ -40,7 +40,6 @@ const Category = (props) => {
   const modalOpen = () => {
     setModal(true);
   }
-
   const modalClose = () => {
     setModal(false);
   }
