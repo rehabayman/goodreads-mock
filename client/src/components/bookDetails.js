@@ -8,18 +8,24 @@ import StarRatings from 'react-star-ratings';
 import AddBookReview from './AddBookReview';
 
 const BookDetails = ({ match: { params: { id: bookId } } }) => {
-
+    console.log("hiii")
     const [book, setBook] = useState([])
     const [shelf, setShelf] = useState("")
+    const [reviewAdded, setReviewAdded]= useState(false)
     useEffect(() => {
         BooksServices.getBookDetails(bookId).then((res) => {
-
             setBook(res.data)
             setShelf(res.data.shelf ? res.data.shelf.shelf : "read")
-
-
         })
     }, [])
+
+    useEffect(() => {
+        BooksServices.getBookDetails(bookId).then((res) => {
+            setBook(res.data)
+            setShelf(res.data.shelf ? res.data.shelf.shelf : "read")
+        })
+    }, [reviewAdded])
+
 
     const changeBookRate = (id, rateValue) => {
         let tempBook = { ...bookDetails }
@@ -68,12 +74,14 @@ const BookDetails = ({ match: { params: { id: bookId } } }) => {
                             </div>
                         </div>
                     </div>
-
+                   
                         <AddBookReview 
                             bookId={bookId} 
                             user={localStorage.getItem('user') }
+                            setReviewAdded={setReviewAdded}
                         />
-
+                    <br/>
+                    <br/>
                     <div className="reviews">
                         <h4>Reviews</h4>
                         {bookDetails.reviews.length > 0 ?
