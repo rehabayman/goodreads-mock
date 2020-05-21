@@ -5,7 +5,10 @@ import axios from 'axios';
 import authHeader from '../services/auth-header'
 import SearchResult from './searchresults';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+// import { browserHistory } from 'react-router';
+import {createBrowserHistory} from 'history';
 
+const browserHistory = createBrowserHistory();
 
 const SearchBook=(props)=>  {
     
@@ -38,20 +41,8 @@ const SearchBook=(props)=>  {
 
     }, []);
 
-    const handleChange = (e) => {
-        const { target: { value } } = e;
-        setInput(value);     
-        let  newFilteredBooks=[];
-        newFilteredBooks = books.filter(item => {
-        const lc = item.name.toString().toLowerCase();
-        const filter = e.target.value.toString().toLowerCase();
-        return lc.includes(filter);
-            })
-        setfilteredBooks(newFilteredBooks);
- 
-         
-    }
-    const handleSubmit=(e)=>{        
+    
+    const handleSubmit=  (e)=>{        
         e.preventDefault();
         let  newFilteredBooks=[];
         if (input !=""){
@@ -61,14 +52,36 @@ const SearchBook=(props)=>  {
         return lc.includes(filter);
             })
             setfilteredBooks(newFilteredBooks)
-            setInput('')
+            // setInput('')
             filteredBooks.map(i=>console.log(i.name)
             )
         console.log(filteredBooks);
 
         }
+        props.history.push({ 
+            //browserHistory.push should also work here
+            pathname: '/SearchResult',
+            state: {filteredBooks}
+          }); 
     }
- 
+    const handleChange = (e) => {
+        const { target: { value } } = e;
+        setInput(value);     
+        let  newFilteredBooks=[];
+        if(value!=""){
+        newFilteredBooks = books.filter(item => {
+        const lc = item.name.toString().toLowerCase();
+        const filter = e.target.value.toString().toLowerCase();
+        return lc.includes(filter);
+            })
+        setfilteredBooks(newFilteredBooks);
+        }
+        else{
+            setfilteredBooks([]);
+        }
+         
+    }
+    
     const inputStyle ={
        
             boxSizing: "borderBox",
@@ -105,13 +118,13 @@ const SearchBook=(props)=>  {
             <div onClick={e=>{setShow(false);setfilteredBooks([])}} >
             <datalist className="dropdownContent" style={dropdownContent} >
             {filteredBooks.length ? filteredBooks.slice(0,showBooks).map((i,index) => 
-                   <>
+                   <li key={index}>
                    <Link to={`/books/${i._id}`}  >{i.name} <br/><span>by {i.author.firstName} {i.author.lastName}</span></Link><br/>
-                   </>
+                   </li>
+                   
                 ):
                 <></>}
                  {filteredBooks.length ? 
-                <>
                     <Link
                         to={{
                         pathname: `/SearchResult`,
@@ -119,7 +132,6 @@ const SearchBook=(props)=>  {
                         params:{filteredBooks}
                         }}
                     >Show all results</Link>
-                </>
                 : <></>}
                
             </datalist>
