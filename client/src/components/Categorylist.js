@@ -3,12 +3,14 @@ import axios from "axios";
 
 import  { Redirect, Link } from "react-router-dom";
 
+import authHeader from '../services/auth-header';
+
 function CategoryList(){
-    let url = `${process.env.REACT_APP_SERVER_PORT}/categories/all`;
+    let url = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/categories/all`;
     const [categories, setCategories] = useState([{name:"Loading...", err: true}])
     useEffect(() => {
         
-        axios.get(url).then(res =>{
+        axios.get(url,  {headers: authHeader()} ).then(res =>{
             setCategories(res.data);
             console.log(res.data);
         }).catch(e => {
@@ -22,7 +24,7 @@ function CategoryList(){
         if (category.err){
             return <h1>{category.name}</h1>;
         } else {
-            return <Link to={`/categories/${category.name}/${category._id}`}><h1>{category.name}</h1></Link>;
+            return <Link key={category.id} to={`/categories/${category.name}/${category._id}`}><h1>{category.name}</h1></Link>;
         }
     });
     

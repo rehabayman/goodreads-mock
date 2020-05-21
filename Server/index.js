@@ -21,6 +21,8 @@ const Role = db.role;
 const User = db.user;
 const BooksRatings = db.booksRating;
 const Book = db.book
+const Author= db.author
+const Category= db.categories
 
 
 var corsOptions = {
@@ -47,7 +49,7 @@ app.use((req, res, next) => {
 })
 
 app.get('/', (req, res) => {
-  
+
   res.json({ message: "welcome" })
 })
 
@@ -61,6 +63,24 @@ mongoose.connect(`mongodb://${DB_HOST}:${DB_PORT}/goodReadsDB`, {
 }, (err) => {
   if (!err) {
     console.log("Started connection to mongo");
+  //   let author= new Author({
+  //       firstName: "mohamed",
+  //       lastName: "adham",
+  //       birthdate:"01/12/2020",
+  //       image_path:"./"
+  //   })
+  //   author.save()
+  //   let category= new Category({
+  //     name: "test",
+  //     })
+  // category.save()
+  //   let book=new Book({
+  //     name:"test",
+  //     image_path:"/as",
+  //     author:author,
+  //     category:category
+  //   })
+  //   book.save()
     initial();
   }
   else console.log(err);
@@ -71,11 +91,11 @@ const { userRouter, tokenMiddleware } = require('./routes/users');
 
 app.use(tokenMiddleware)
 // app.use('/api', userRouter) // FOR TESTING ONLY
-app.use('/categories',categoryRouter)
+app.use('/categories', categoryRouter)
 app.use('/users', userRouter);
 app.use('/books', bookRouter);
 app.use("/home", homeRouter);
-app.use('/authors',authorRouter);
+app.use('/authors', authorRouter);
 app.listen(PORT, (err) => {
 
   if (!err) console.log(`App Started on port: ${PORT}`);
@@ -148,8 +168,9 @@ function initial() {
 
 }
 
-// Error Middleware
+// // Error Middleware
 app.use((err, req, res, next) => {
+  console.log(err);
   if (err) res.status(500).send("Internal Server Error.");
 });
 

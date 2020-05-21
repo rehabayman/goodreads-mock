@@ -19,7 +19,7 @@ router.get("/test/all", userController.allAccess);
 
 
 router.get(
-    "/test/admin",
+    "/auth/admin",
     [authJwt.verifyToken, authJwt.isAdmin],
     userController.adminBoard
 );

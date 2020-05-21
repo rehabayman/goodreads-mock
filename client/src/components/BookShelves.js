@@ -6,7 +6,7 @@ import authHeader from '../services/auth-header'
 const BookShelves=(props)=>  {
     
   
-    const API_URL = `${process.env.REACT_APP_API_URL}/books/shelves/`
+    const API_URL = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/books/shelves/`
     const [shelves,setShelves]= useState([]);
     const [selectedItem, setSelectedItem] = useState(props.state);
 

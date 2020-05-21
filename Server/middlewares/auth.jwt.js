@@ -38,16 +38,17 @@ isAdmin = (req, res, next) => {
                     res.status(500).send({ message: err })
                     return
                 }
-                var errorr = 0
+                var errorr = 1
                 roles.forEach(role => {
+                    // console.log(role.name === "admin");
                     if (role.name === "admin") {
-                        errorr = 1
+                        errorr = 0
                         next()
                         return
                     }
                 });
-
-                res.end("{message: Require Admin Role}")
+                // console.log("after foreach");
+                if(errorr) res.end("{message: Require Admin Role}")
                 return
             }
 
