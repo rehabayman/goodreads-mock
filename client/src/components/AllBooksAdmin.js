@@ -22,7 +22,7 @@ const AllBooksAdmin = (props) => {
     const [categoryErr,setCategoryErr]=useState('')
     const [nameErr,setNameErr]=useState('')
 
-
+   
     const modalOpen = () => {
         setModal(true);
         // setValue(arg)
@@ -85,7 +85,7 @@ const AllBooksAdmin = (props) => {
                     }
                 }
             })
-    }, []);
+    }, [modal]);
     const styleModal = {
         fontSize: 20,
         color: "#4a54f1",
@@ -122,7 +122,6 @@ const AllBooksAdmin = (props) => {
     }
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(name,image_path,author,category)
         // switch(value){
         // case "add":
         
@@ -142,9 +141,10 @@ const AllBooksAdmin = (props) => {
                 author: author,
                 category: category,
             },{ headers: authHeader() }).then((res)=>{
-                setBooks([...books,res.data])
-                console.log("tessst",res.data)
-                modalClose();
+                setBooks([...books,res.data])  
+                resetAll() 
+
+             
             })
             .catch(err => {
                 console.log("test",err)
@@ -157,7 +157,16 @@ const AllBooksAdmin = (props) => {
         //     axios.patch(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/books/`
     }
 
-    console.log("test:",image_path, typeof image_path)
+    const resetAll=()=>{
+        setModal(false)
+        setNameInput("")
+        setAuthorInput("")
+        setCategoryInput("")
+        setImageInput("")
+        setAuthors([])
+        setCategories([])
+        modalClose();
+    }
 
     const categoiresView = categories.length ? categories.map(category =>
         <option key={category._id} value={category._id}>{category.name}</option>
@@ -166,7 +175,6 @@ const AllBooksAdmin = (props) => {
         <option key={author._id} value={author._id}>{author.firstName} {author.lastName}</option>
     ) : null;
 
-    console.log(categoryErr)
    
     return (
         books.length > 0 ?
