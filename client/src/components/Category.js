@@ -16,11 +16,12 @@ import authHeader from '../services/auth-header'
 const Category = (props) => {
 
   const [categories, setCategories] = useState([]);
-  const [input, setInput] = useState('');
+  let [input, setInput] = useState('');
   const [modal, setModal] = useState(false);
   let [errorMessage, setErrorMessage] = useState('');
   let [successMessage, setSuccessMessage] = useState('');
-  
+  let [id, setId] = useState('');
+
   useEffect(() => {
 
     axios.get(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/categories`, { headers: authHeader() }).then((res) => {
@@ -30,7 +31,7 @@ const Category = (props) => {
         setSuccessMessage('');
       });
     }).catch(err => {
-      console.log(err);
+      console.log(err.message);
       setSuccessMessage('');
       setErrorMessage(err.message);
 
@@ -40,7 +41,6 @@ const Category = (props) => {
   const modalOpen = () => {
     setModal(true);
   }
-
   const modalClose = () => {
     setModal(false);
   }
@@ -49,27 +49,39 @@ const Category = (props) => {
     setInput(value);
 
   }
-
+const handleAdd=(newCat)=>{
+  axios.post(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/categories`, { name: newCat }, { headers: authHeader() })
+  .then((res) => {
+    setInput('');
+    setErrorMessage('');
+    setCategories(categories.concat(res.data));
+    setSuccessMessage('Category added successfully'); 
+  })
+  .catch(err => {
+    console.log(err);
+    setSuccessMessage('');
+    setErrorMessage(err.message);
+  });
+}
   const handleSubmit = (e) => {
     e.preventDefault();
     if (input.match(/^[a-zA-Z]+$/)) {
       let oldCategory = categories.filter((cat) => (cat.name === input)).map(filtered => { return filtered.name; })
-
-      if (oldCategory.length <= 0) {
-        axios.post(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/categories`, { name: input }, { headers: authHeader() })
-        .then((res) => {
-          setInput('');
-          setErrorMessage('');
-          setCategories(categories.concat(res.data));
-          setSuccessMessage('Category added successfully'); 
-        })
-        .catch(err => {
-          console.log(err);
+      let updateCategory = categories.filter((cat) => (cat._id === id)).map(filtered => { return filtered.name; })
+      if(updateCategory[0]!==null && id!==""){
+        if(input===oldCategory[0])
+        {
           setSuccessMessage('');
-          setErrorMessage(err.message);
-        });
+          setErrorMessage("Category already exists");
+        }
+        else
+            handleUpdate(input);
+            setId('');
       }
-      else if (oldCategory) {
+      else if (oldCategory.length <= 0) {
+       handleAdd(input);
+      }
+      else  {
         console.log('Category already exists');
         setSuccessMessage('');
         setErrorMessage('Category already exists');
@@ -80,6 +92,7 @@ const Category = (props) => {
       setSuccessMessage('');
       setErrorMessage('Category name is invalid, Cannot be empty please enter characters only.');
     }
+    setInput('');
     modalClose();
   }
 
@@ -97,24 +110,11 @@ const Category = (props) => {
       setErrorMessage(err.message);
     });
     setSuccessMessage('Category deleted successfully '); 
+    setId('');
   }
-
-  const handleEdit = (id) => {
-
-    let oldCategory = categories.filter((cat) => (cat._id === id)).map(filtered => { return filtered.name; })
-    let category = prompt('edit category', oldCategory);
-    let isexistCategory = categories.filter((cat) => (cat.name === category)).map(filtered => { return filtered.name; })
-
-    if (category === oldCategory[0]) {
-      setErrorMessage('');
-      setSuccessMessage("You Haven't Edited the Category");
-    }
-    else if (category === null || category === "") {
-      setSuccessMessage('');
-      setErrorMessage('Category name is invalid, Cannot be empty please enter characters only.');
-    }
-    else if (isexistCategory.length === 0 && category !== null) {
-      if (category.match(/^[a-zA-Z]+$/)) {
+  const handleUpdate=(category)=>{
+      let isexistCategory = categories.filter((cat) => (cat.name === category)).map(filtered => { return filtered.name; })
+      if (isexistCategory.length === 0 && category !== null) {
         axios.patch(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/categories/` + id, { name: category }, { headers: authHeader() })
         .then((res) => {
           console.log(res);
@@ -130,18 +130,15 @@ const Category = (props) => {
           setErrorMessage(err.message);
         });
       }
-      else {
-        setSuccessMessage('');
-        setErrorMessage('Category name is invalid,Cannot be empty please enter characters only');
-      }
-
-    }
-    else {
-      setSuccessMessage('');
-      setErrorMessage('Category name already exists ');
-      console.log('Category already exists');
-    }
-
+      setId('');
+  }
+  const handleEdit = (id) => {
+    setId(id);
+    let oldCategory = categories.filter((cat) => (cat._id === id)).map(filtered => { return filtered.name; })
+    modalOpen();
+ 
+    if(input==="" && id!==null)
+    setInput(oldCategory[0]);
 
   }
   const styleModal = {
@@ -217,7 +214,7 @@ const Category = (props) => {
         dialogClassName="modal-90w"
         aria-labelledby="example-custom-modal-styling-title" style={styleModal}>
         <Modal.Header closeButton style={modalHeader}>
-          <Modal.Title id="example-custom-modal-styling-title">Add New Category</Modal.Title>
+          <Modal.Title id="example-custom-modal-styling-title">Add/update Category</Modal.Title>
         </Modal.Header>
         <Modal.Body style={modalBody}>
           <div className="form-group">

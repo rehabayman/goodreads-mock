@@ -1,9 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
+
 
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import PrivateRoute from "./components/privateRoute"
 import Login from "./components/login.component";
 import Home from "./pages/user/homepage";
 import Profile from "./components/Profile";
@@ -21,18 +22,33 @@ import SearchBook from './components/SearchBook';
 import SearchResult from './components/searchresults';
 function App() {
 
+ 
   return (
     <Router>
       <div>
         <NavBar/>
 
           <div className="container">
-            <Switch>
+            <Switch>              
               <Route exact path={"/"} component={Home} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
-              <Route exact path="/profile" component={Profile} />
+              <PrivateRoute exact path="/profile" component={Profile} />             
+              <PrivateRoute path="/admin" component={BoardAdmin} />
+              <PrivateRoute path="/categories"  component={Category} />
+
+              <PrivateRoute exact path="/categories/all" component={CategoryList} />
+              <PrivateRoute exact path="/categories/:categoryname/:id" component={CategoryDetails} />
+              <PrivateRoute exact path="/books/all" component={BooksUser}/>
+              <PrivateRoute exact path="/books/:id" component={BookDetails}/>
+              <PrivateRoute exact path="/SearchResult" component={SearchResult} />
+              <PrivateRoute exact path="/profile" component={Profile} />
+              <PrivateRoute exact path="/search" component={SearchBook} />
+              <PrivateRoute exact path="/books/all/admin" component={BooksAdmin}/>
+
+
               {/* <Route path="/user" component={BoardUser} /> */}
+{/*               
               <Route path="/admin" component={BoardAdmin} />
               <Route exact path="/categories" component={Category} />
               <Route exact path="/categories/all" component={CategoryList} />
@@ -40,8 +56,7 @@ function App() {
               <Route exact path="/books/all" component={BooksUser}/>
               <Route exact path="/books/all/admin" component={BooksAdmin}/>
               <Route exact path="/books/:id" component={BookDetails}/>
-              <Route exact path="/search" component={SearchBook} />
-              <Route exact path="/SearchResult" component={SearchResult} />
+              */}
             </Switch>
           </div>
         </div>

@@ -17,6 +17,9 @@ function AddBookReview(props){
                 .then(res=>{
                     console.log(res.data);
                     setReview("");
+                    props.setReviewAdded((prev)=>{
+                        return !prev
+                    })
                     window.alert("Review added sucessfully!");
                 })
                 .catch(e=>{

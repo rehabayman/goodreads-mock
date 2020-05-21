@@ -12,8 +12,7 @@ exports.tokenMiddleware = function (req, res, next) {
     next();
 }
 router.get('/shelves', [authJwt.verifyToken], bookController.getBootShelves);
-router.get("/",  [authJwt.verifyToken], bookController.allBooks);
-
+router.get(["/","/all"],  [authJwt.verifyToken], bookController.allBooks);
 router.post('/add', [authJwt.verifyToken, authJwt.isAdmin] ,bookController.addBook);
 router.get("/:id", [authJwt.verifyToken] ,bookController.oneBook);
 router.patch("/:id", [authJwt.verifyToken, authJwt.isAdmin], bookController.editBook);

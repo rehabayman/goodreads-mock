@@ -126,6 +126,7 @@ exports.updateBookShelf = (req, res) => {
 
 exports.addBook = (req, res , next) => {
     const { body: { name, image_path , author, category } } = req;
+    console.log(name,category,image_path,author)
        const bookdata = new bookModel({
            name,
            image_path,
@@ -140,10 +141,18 @@ exports.addBook = (req, res , next) => {
         })
     });
        bookdata.save((err, book )=>{
-           if(err) console.log(err);
-           res.json(book)
+           if(err) next(err);
+           else{
+            bookModel.findById(book._id)
+            .populate('author', 'firstName lastName')
+            .populate('category', 'name')
+            .exec((err, booke)=>{
+                if(err) next('cannot find this book')
+                else res.json(booke)
+            })
+            }
        })
-   }
+}
 
 // exports.oneBook = (req, res, next) => {
 //     bookModel.findById(req.params.id)
@@ -182,6 +191,7 @@ exports.oneBook = (req, res, next) => {
 
 
 exports.allBooks = (req, res, next) => {
+
     bookModel.find({ })
     .populate('author', 'firstName lastName')
     .populate('category', 'name')

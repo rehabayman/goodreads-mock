@@ -11,6 +11,7 @@
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.19.2",
     "env-cmd": "^10.1.0",
+    "jwt-decode": "^2.2.0",
     "mdbreact": "^4.26.1",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
@@ -23,6 +24,7 @@
     "react-scripts": "3.4.1",
     "react-star-ratings": "^2.3.0",
     "react-validation": "^3.0.7",
+    "reactstrap": "^8.4.1",
     "styled-components": "^5.1.0",
     "validator": "^13.0.0"
   },

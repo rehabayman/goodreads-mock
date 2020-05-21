@@ -68,7 +68,7 @@ console.log(req.body)
             }
             // assign the three parts ot the token
             let token = jwt.sign({ id: user.id }, config.secret, {
-                expiresIn: 86400 //24 hours
+                expiresIn: 172800 //8 hours
             })
 
             //get authorities of user and send it to the client

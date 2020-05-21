@@ -4,7 +4,7 @@ import authHeader from "./auth-header";
 const API_URL = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/users/auth/`
 // const SIGNUP_URL = "http://localhost:8000/users/auth/signup"
 
-
+console.log(API_URL)
 function AuthService ()  {
   return ({
     login: (username, password)=> {
