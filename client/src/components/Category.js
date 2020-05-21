@@ -168,6 +168,11 @@ const Category = (props) => {
     fontFamily: "Trebuchet MS, Arial, Helvetica, sans-serif",
     borderCollapse: "collapse",
     width: "100%",
+    "&:lastChild": {
+      borderRight: "solid 1px #cccccc"
+    } ,
+   " nthChild(even)":
+    {backgroundColor:" #f2f2f2"}
   }
   const categoriesindexStyle ={
     border: "1px solid #ddd",
@@ -180,6 +185,11 @@ const Category = (props) => {
     '&:hover': {
       backgroundColor: '#DDEEEE',
     },
+    "&:lastChild": {
+      borderRight: "solid 1px #cccccc"
+    } ,
+   " nthChild(even)":
+    {backgroundColor:" #f2f2f2"}
   }
  
   const categoriesHeaderStyle= {

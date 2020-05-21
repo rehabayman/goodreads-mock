@@ -132,6 +132,13 @@ exports.addBook = (req, res , next) => {
            author,
            category
        })
+       authorModel.findById({_id:author},(error,author)=>{
+        if(error) return res.send(error);
+        author.books.push(bookdata);
+        author.save((error,author)=>{
+        if(error) return res.send(error);
+        })
+    });
        bookdata.save((err, book )=>{
            if(err) next(err);
            else{

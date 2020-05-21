@@ -10,10 +10,7 @@ const fs = require('fs');
 
 exports.signup = (req, res) => {
     const { body: { username, firstName, lastName, email, password } } = req;
-    // console.log(req.files[0].path);
-    
     const image_ext = req.files[0].originalname.split('.')[1];
-    // let image_path = req.files[0].path+"."+image_ext;
     let image_path = req.files[0].filename+"."+image_ext;
     
     fs.rename(req.files[0].path, process.env.USER_PICTURES+image_path, (err) => {
@@ -44,7 +41,7 @@ exports.signup = (req, res) => {
 }
 
 exports.signin = (req, res) => {
-
+console.log(req.body)
     User.findOne({
         username: req.body.username
     }).populate("roles", "-__v")
