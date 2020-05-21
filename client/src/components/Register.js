@@ -156,6 +156,7 @@ const Register = (props) => {
                             error.toString();
 
                         setLoading(false);
+                        // console.log(resMessage);
                         setMessage(resMessage);
                         setSuccessful(false);
                     }

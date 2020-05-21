@@ -6,10 +6,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import Login from "./components/login.component";
 import Home from "./pages/user/homepage";
-import Profile from "./components/profile.component";
+import Profile from "./components/Profile";
 // import BoardUser from "./components/board-user.component";
 import BoardAdmin from "./components/board-admin.component";
-import Register from "./components/register.component";
+import Register from "./components/Register";
 import NavBar from "./components/navbar";
 import Category from './components/Category.js';
 import BooksUser from './components/AllBooksUser';

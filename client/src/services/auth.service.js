@@ -1,4 +1,5 @@
-import axios from 'axios'
+import axios from 'axios';
+import authHeader from "./auth-header";
 
 const API_URL = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/users/auth/`
 // const SIGNUP_URL = "http://localhost:8000/users/auth/signup"
@@ -42,6 +43,22 @@ function AuthService ()  {
       form.append('image', image);
       return (
         axios.post(API_URL+"signup", form, config)
+      )
+    },
+
+    update: (email, password, firstName, lastName, image) => {
+      let config = {
+        headers: authHeader()
+      }
+      config['content-type'] = 'multipart/form-data';
+      let form = new FormData();
+      if(firstName) form.append('firstName', firstName);
+      if(lastName) form.append('lastName', lastName);
+      if(email) form.append('email', email);
+      if(password) form.append('password', password);
+      if(image) form.append('image', image);
+      return (
+        axios.patch(API_URL+"update", form, config)
       )
     }
   })

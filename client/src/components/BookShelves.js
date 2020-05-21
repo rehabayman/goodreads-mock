@@ -47,7 +47,7 @@ const BookShelves=(props)=>  {
             console.log(err)
         })
     }
-    if(props.state!= selectedItem){
+    if(props.state !== selectedItem){
         setSelectedItem(props.state)
     }
     return (

@@ -48,11 +48,31 @@ const userSchema = new mongoose.Schema({
     roles: [{ type: mongoose.Schema.Types.ObjectId, ref: "Role" }]
 });
 
-userSchema.pre('save', function (next) {
-    let user = this; 
-    bcrypt.genSalt(saltRounds, function (err, salt) {
-        bcrypt.hash(user.password, salt, function (err, hash) {
-            if (err) {
+userSchema.post('init', function() {
+    this._original = this.toObject();
+});
+
+// userSchema.pre('save', function (next) {
+//     let user = this; 
+//     bcrypt.genSalt(saltRounds, function (err, salt) {
+//         bcrypt.hash(user.password, salt, function (err, hash) {
+//             if (err) {
+//                 console.log(err);
+//                 return next("Cannot Add/Update User");
+//             } else {
+//                 user.password = hash;
+//                 next();
+//             }
+//         });
+//     });
+// });
+
+userSchema.pre('save', function(next){
+    let user = this;
+    
+    if(user.isNew || (user.password !== user._original.password)) {
+        bcrypt.hash(user.password, saltRounds, function(err, hash) {
+            if(err) {
                 console.log(err);
                 return next("Cannot Add/Update User");
             } else {
@@ -60,8 +80,34 @@ userSchema.pre('save', function (next) {
                 next();
             }
         });
-    });
+    }
+    else {
+        next();
+    }
 });
+
+// userSchema.pre('findOneAndUpdate', function (next) {
+//     let user = this; 
+    
+//     if(user._update.password) {
+//         bcrypt.genSalt(saltRounds, function (err, salt) {
+//             bcrypt.hash(user._update.password, salt, function (err, hash) {
+//                 if (err) {
+//                     console.log(err);
+//                     return next("Cannot Add/Update User");
+                    
+//                 } else {
+//                     user._update.password = hash;
+//                     console.log(user._update.password);
+//                     next();
+//                 }
+//             });
+//         });
+//     } 
+//     // else {
+//     //     next();
+//     // }
+// });
 
 // Delete dependent documents
 // To be invoked --> user.remove()

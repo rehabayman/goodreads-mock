@@ -2,6 +2,7 @@ const {verifySignUp} = require("../middlewares")
 const controller = require("../controllers/auth")
 const multer = require('multer');
 const path = require('path');
+const { authJwt } = require("../middlewares");
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -25,5 +26,12 @@ module.exports = function(app) {
   );
 
    app.post("/users/auth/signin", controller.signin);
+
+  const uploadUpdatedImage = multer({
+    dest: path.resolve('../Server/public/upload/users'),
+    limits: { fileSize: 2000000, files: 1 }, // 2M File
+  });
+  
+  app.patch("/users/auth/update", upload.array('image', 1), [authJwt.verifyToken], controller.update);
 };
 
