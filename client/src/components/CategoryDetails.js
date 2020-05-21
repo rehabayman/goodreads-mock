@@ -6,6 +6,7 @@ import Pagination from './pagination';
 
 import  { Redirect, useParams } from "react-router-dom";
 
+import authHeader from '../services/auth-header';
 
 
 function CategoryDetails(){    
@@ -20,7 +21,7 @@ function CategoryDetails(){
     
     
     useEffect(()=>{
-        axios.get(url).then( res=>{
+        axios.get(url,  {headers: authHeader()} ).then( res=>{
             setData(res.data[0]);
             setLoading(false);
             settotalBooks( parseInt(res.data[1]));

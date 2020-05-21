@@ -28,8 +28,8 @@ router.delete("/:id",  [authJwt.verifyToken, authJwt.isAdmin], categoryControlle
 //     })
 // });
 
-router.get('/all', categoryController.getAll);
-router.get('/:id/', categoryController.getDetails);
+router.get('/all', [authJwt.verifyToken],categoryController.getAll);
+router.get('/:id/', [authJwt.verifyToken],categoryController.getDetails);
 
 
 
