@@ -7,10 +7,11 @@ import StarRatings from 'react-star-ratings';
 import AddBookReview from './AddBookReview';
 
 const BookDetails = ({ match: { params: { id: bookId } } }) => {
-    console.log("hiii")
+    
     const [book, setBook] = useState([])
     const [shelf, setShelf] = useState("")
     const [reviewAdded, setReviewAdded]= useState(false)
+    const [userRate,setUserRate] = useState(0)
     useEffect(() => {
         BooksServices.getBookDetails(bookId).then((res) => {
             setBook(res.data)
@@ -21,20 +22,21 @@ const BookDetails = ({ match: { params: { id: bookId } } }) => {
     useEffect(() => {
         BooksServices.getBookDetails(bookId).then((res) => {
             setBook(res.data)
-            setShelf(res.data.shelf ? res.data.shelf.shelf : "read")
+            setShelf(res.data.shelf ? res.data.shelf.shelf : "read")            
         })
-    }, [reviewAdded])
+    }, [reviewAdded, userRate])
 
 
     const changeBookRate = (id, rateValue) => {
         let tempBook = { ...bookDetails }
         tempBook.ratings = bookDetails.ratings.map((rate) => {
-
+            console.log(rate)
             if (rate.user === JSON.parse(localStorage.getItem('user')).id) {
                 return { ...rate, rating: rateValue }
             }
             return rate
         })
+        tempBook.ratings.length===0 && tempBook.ratings.push({_id: id, user: JSON.parse(localStorage.getItem('user')).id, rating: rateValue});
         setBook(({ book: tempBook }))
     }
     const changeBookState = (bookId, shelf) => {

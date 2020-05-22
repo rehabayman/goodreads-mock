@@ -13,18 +13,13 @@ const bookSchema = new mongoose.Schema({
 });
 
 // Delete dependent documents
-// To be invoked --> book.remove()
+// To be invoked --> book.deleteOne()
 
-bookSchema.pre('remove', function () {
-    BookShelves.remove({book_id: this._id}).exec();
-});
-
-bookSchema.pre('remove', function() {
-    BookRatings.remove({book_id: this._id}).exec();
-});
-
-bookSchema.pre('remove', function() {
-    BookReviews.remove({book_id: this._id}).exec();
-});
+bookSchema.pre("deleteOne", { document: true }, function(next) {    
+    BookShelves.deleteMany({ book: this._id }).then(next)
+    BookRatings.deleteMany({book: this._id}).then(next);
+    BookReviews.deleteMany({book: this._id}).then(next);    
+    next()
+  });
 
 module.exports = mongoose.model('Book', bookSchema);

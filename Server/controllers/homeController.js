@@ -44,7 +44,7 @@ exports.getUserBooks = (req, res) => {
 
     User.findById(req.userId).exec(function (err, user) {
 
-        if (err) next(" can not find user")
+        if (err) next("can not find user")
         let userBooks = []
 
         BooksShelves.find({ user }).populate([{
@@ -54,15 +54,11 @@ exports.getUserBooks = (req, res) => {
             },
         }]).exec(function (err, booksShelves) {
             if (err) next("No Books for user")
-           
+            console.log(booksShelves)
             userBooks[0]=[]
             userBooks[0] = booksShelves
             
             res.json(userBooks)
-
-
-
-
         })
     })
 }

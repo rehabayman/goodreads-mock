@@ -229,11 +229,20 @@ exports.editBook = (req, res, next) => {
 }
 
 exports.removeBook = (req, res, next) => {
-    bookModel.findByIdAndRemove(req.params.id,
-        (err) => {
-            if (err) next('cannot find the book');
-            res.send('success')
+
+    bookModel.findById(req.params.id, function (err, doc) {
+        if (err) {
+            next('cannot find the book');
+        }
+        doc.deleteOne(function(err){
+            if(err) console.log(err)
         })
+    })
+    // bookModel.findByIdAndRemove(req.params.id,
+    //     (err) => {
+    //         if (err) next('cannot find the book');
+    //         res.send('success')
+    //     })
 }
 
 

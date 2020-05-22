@@ -21,7 +21,8 @@ const AllBooksAdmin = (props) => {
     const [authorErr,setAuthorErr]=useState('')
     const [categoryErr,setCategoryErr]=useState('')
     const [nameErr,setNameErr]=useState('')
-
+    console.log("books admin")
+    console.log(modal)
    
     const modalOpen = () => {
         setModal(true);
@@ -154,7 +155,7 @@ const AllBooksAdmin = (props) => {
             axios.post(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/books/add`, form, config)
             .then((res) => {
                 setBooks([...books, res.data]);
-                resetAll();
+                // resetAll();
             })
             .catch((err) => {
                 console.log("test",err)
@@ -290,7 +291,7 @@ const AllBooksAdmin = (props) => {
             :
             <div key="container_empty" className="container d-flex justify-content-center mt-5">
 
-            <button variant="primary" onClick={() => modalOpen()}>
+            <button variant="primary" onClick={() => modalOpen("add")}>
                     Add New Book
             </button>
                 <h3>No Books Yet.</h3>
