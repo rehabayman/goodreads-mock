@@ -7,7 +7,7 @@ import { Link} from "react-router-dom";
 
 
 const UserBooks = () => {
-
+   
     const [userBooks, setUserBooks] = useState({})
     const [shelf, setShelf] = useState("All")
     const [booksShelf,setBookShelf]= useState({})
@@ -97,7 +97,6 @@ const UserBooks = () => {
 
 
     useEffect(()=>{
-
       
         filteredBooks={"columns": userBooks["columns"] , "rows": userBooks["rows"]}
 
@@ -132,12 +131,10 @@ const UserBooks = () => {
     },[shelf])
 
     const changeBookState = (id, bookState) => {
-
         
         if(convertedBooks["rows"]){     
             let books=convertedBooks
-            books["rows"] = convertedBooks["rows"].map(book => {
-                
+            books["rows"] = convertedBooks["rows"].map(book => {                
                 if (book.id == id) {                    
                     return { ...book, shelve: <BookShelve changeBookState={changeBookState} bookId={book.id} state={bookState} /> }
                     
@@ -160,8 +157,7 @@ const UserBooks = () => {
                     
                 }
                 return book
-            })         
-            
+            })                     
             
 
             setBookShelf({"columns": books["columns"],"rows": books["rows"]})
@@ -176,10 +172,8 @@ const UserBooks = () => {
         let sum=0
         let books=convertedBooks
         books["rows"] = convertedBooks["rows"].map(book => {
-            if (book.id === id) {
-                console.log(book.ratings)
-                book.ratings.forEach(rat => {
-                   
+            if (book.id === id) {                
+                book.ratings.forEach(rat => {                   
                     if (rat.user == JSON.parse(localStorage.getItem('user')).id) {       
                         rat.rating= parseInt(rate )           
                         book.rating[0]=<RateBook key={book.id} changeBookRate={changeBookRate} bookId={book.id} rate={rate} />     
@@ -188,14 +182,17 @@ const UserBooks = () => {
                     }                 
                     sum+= rat.rating
 
-                })  
-            sum !=0 ? book.average= sum/book.ratings.length : book.average=0
+                })                  
+                sum !=0 ? book.average= sum/book.ratings.length : book.average=rate
+             
+           
             }
             return book
         })
-        setUserBooks({"columns":books["columns"],"rows":books["rows"]})
+        setBookShelf({"columns":books["columns"],"rows":books["rows"]})
     }
 
+    console.log(booksShelf)
     
     return (
 
