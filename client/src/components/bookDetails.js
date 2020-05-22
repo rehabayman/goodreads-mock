@@ -81,7 +81,7 @@ const BookDetails = ({ match: { params: { id: bookId } } }) => {
 
                             <div className="book-rating">
                                 <StarRatings
-                                    rating={averageRating}
+                                    rating={averageRating || 0}
                                     starRatedColor="goldenrod"
                                     numberOfStars={5}
                                     name='rating'
@@ -89,7 +89,7 @@ const BookDetails = ({ match: { params: { id: bookId } } }) => {
                                     starSpacing="3px"
                                 />
                                 <p>
-                                    {averageRating}- {bookDetails.ratings.length} {bookDetails.ratings.length <= 1 ? "rating" : "ratings"}
+                                    {averageRating||0}- {bookDetails.ratings.length} {bookDetails.ratings.length <= 1 ? "rating" : "ratings"}
                                     {/* {bookDetails.ratings.reduce((a, { rating }) => a + rating, 0) / bookDetails.ratings.length || 0} - {bookDetails.ratings.length} {bookDetails.ratings.length <= 1 ? "rating" : "ratings"} */}
                                 </p>
                             </div>
