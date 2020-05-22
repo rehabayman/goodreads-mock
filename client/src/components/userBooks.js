@@ -26,7 +26,7 @@ const UserBooks = () => {
                 convertedBooks['rows']= books.map((book)=>{
                     return{
                         id: book.book._id,
-                        cover: book.book.image_path ? <img src={book.book.image_path} /> : "No image",
+                        cover: book.book.image_path ? <img src={ process.env.PUBLIC_URL + "/books-covers/" + book.book.image_path} style={{height: "100px", width: "100px"}} /> : "No image",
                         author:` ${book.book.author.firstName}  ${book.book.author.lastName}`,
                         name:<Link to={`/books/${book.book._id}`}>{book.book.name}</Link>,
                         shelve:<BookShelve changeBookState={changeBookState} bookId={book.book._id} state={book.shelf} />,

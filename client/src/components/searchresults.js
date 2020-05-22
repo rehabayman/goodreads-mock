@@ -11,7 +11,7 @@ function searchResult(props) {
         <>
          <div>  
                          
-            <div className='container-fluid' >  
+            <div className='container-fluid mt-5' >  
             <Carousel itemsToShow={3} itemsToScroll={3}>  
             {
                 Object.values(props.location.state.filteredBooks).map(book=>

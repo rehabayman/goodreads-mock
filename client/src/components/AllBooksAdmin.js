@@ -21,6 +21,7 @@ const AllBooksAdmin = (props) => {
     const [authorErr,setAuthorErr]=useState('')
     const [categoryErr,setCategoryErr]=useState('')
     const [nameErr,setNameErr]=useState('')
+    const [imageErr,setImageErr]=useState('')
     console.log("books admin")
     console.log(modal)
    
@@ -132,10 +133,11 @@ const AllBooksAdmin = (props) => {
         e.preventDefault();
         // switch(value){
         // case "add":
-        if(!author||!category||!name){
-            author? setAuthorErr(""):setAuthorErr("Please choose an author")
-            category? setCategoryErr(""):setCategoryErr("Please choose an category")
-            name? setNameErr(""): setNameErr("Please Enter a name")
+        if(!author||!category||!name||!image_path){
+            author? setAuthorErr(""):setAuthorErr("Please choose an author");
+            category? setCategoryErr(""):setCategoryErr("Please choose a category");
+            name? setNameErr(""): setNameErr("Please enter a name");
+            image_path? setImageErr(""): setImageErr("Please choose a cover for the book");
             return
         }
         else{
@@ -155,7 +157,7 @@ const AllBooksAdmin = (props) => {
             axios.post(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/books/add`, form, config)
             .then((res) => {
                 setBooks([...books, res.data]);
-                // resetAll();
+                resetAll();
             })
             .catch((err) => {
                 console.log("test",err)
@@ -239,6 +241,7 @@ const AllBooksAdmin = (props) => {
                                     onChange={imageChange}
                                     className="form-control"
                             />
+                            <p style={{color:"red",fontSize:'12px'}}>{imageErr}</p>
                         </div>
                     </Modal.Body>
                     <Modal.Footer style={modalFooter}>
