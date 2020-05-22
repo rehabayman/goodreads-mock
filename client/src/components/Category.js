@@ -65,7 +65,7 @@ const handleAdd=(newCat)=>{
 }
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (input.match(/^[a-zA-Z]+$/)) {
+    if (input.match(/^[A-Za-z ]+$/)) {
       let oldCategory = categories.filter((cat) => (cat.name === input)).map(filtered => { return filtered.name; })
       let updateCategory = categories.filter((cat) => (cat._id === id)).map(filtered => { return filtered.name; })
       if(updateCategory[0]!==null && id!==""){
