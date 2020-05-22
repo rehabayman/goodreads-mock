@@ -182,18 +182,17 @@ const UserBooks = () => {
                    
                     if (rat.user == JSON.parse(localStorage.getItem('user')).id) {       
                         rat.rating= parseInt(rate )           
-                        book.rating[1]=<RateBook key={book.id} changeBookRate={changeBookRate} bookId={book.id} rate={rate} />     
+                        book.rating[0]=<RateBook key={book.id} changeBookRate={changeBookRate} bookId={book.id} rate={rate} />     
                         sum+= rat.rating                   
                         return { ...book}
                     }                 
                     sum+= rat.rating
 
                 })  
-            sum!=0 ?book.average= sum/book.ratings.length : book.average=0
+            sum !=0 ? book.average= sum/book.ratings.length : book.average=0
             }
             return book
         })
-        console.log(books["rows"])
         setUserBooks({"columns":books["columns"],"rows":books["rows"]})
     }
 
