@@ -7,10 +7,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import PrivateRoute from "./components/privateRoute"
 import Login from "./components/login.component";
 import Home from "./pages/user/homepage";
-import Profile from "./components/profile.component";
+import Profile from "./components/Profile";
 // import BoardUser from "./components/board-user.component";
 import BoardAdmin from "./components/board-admin.component";
-import Register from "./components/register.component";
+import Register from "./components/Register";
 import NavBar from "./components/navbar";
 import Category from './components/Category.js';
 import BooksUser from './components/AllBooksUser';
@@ -36,7 +36,7 @@ function App() {
               <Route exact path="/register" component={Register} />
               <PrivateRoute exact path="/profile" component={Profile} />             
               <PrivateRoute path="/admin" component={BoardAdmin} />
-              <PrivateRoute path="/categories"  component={Category} />
+              <PrivateRoute exact path="/categories"  component={Category} />
 
               <PrivateRoute exact path="/categories/all" component={CategoryList} />
               <PrivateRoute exact path="/categories/:categoryname/:id" component={CategoryDetails} />

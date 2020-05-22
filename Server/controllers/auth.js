@@ -87,3 +87,47 @@ console.log(req.body)
             })
         })
 }
+
+exports.update = (req, res) => {
+    let updatedInfo = { }; 
+    const { body } = req;
+
+    console.log(body)
+    console.log(req.files)
+
+
+    if(body.firstName) updatedInfo['firstName'] = body.firstName;
+    if(body.lastName) updatedInfo['lastName'] = body.lastName;
+    if(body.email) updatedInfo['email'] = body.email;
+    if(body.password) updatedInfo['password'] = body.password;
+    if(req.files && req.files.length > 0) {
+        const image_ext = req.files[0].originalname.split('.')[1];
+        let image_path = req.files[0].filename+"."+image_ext;
+        fs.rename(req.files[0].path, process.env.USER_PICTURES+image_path, (err) => {
+            if(err) console.log(err);
+        });
+        updatedInfo['image_path'] = image_path;
+    }
+
+    User.findById(req.userId, (err, instance) => { 
+        if(err) return res.send(err);
+
+        if(updatedInfo.firstName) instance.firstName = updatedInfo.firstName;
+        if(updatedInfo.lastName) instance.lastName = updatedInfo.lastName;
+        if(updatedInfo.email) instance.email = updatedInfo.email;
+        if(updatedInfo.password) instance.password = updatedInfo.password;
+        if(updatedInfo.image_path) {
+            instance.image_path = updatedInfo.image_path;
+        }
+
+        instance.save((err, user) => {
+            if(err) {
+                console.log(err);
+                res.status(400).send({message: err});
+            } else {
+                res.status(201).send({user, message: "Profile Updated Successfully"});
+            }
+        })
+    });
+
+}

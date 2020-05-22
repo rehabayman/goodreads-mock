@@ -19,7 +19,7 @@ function CategoryDetailsDummy(props){
         return <Loading />
     }
 
-    if(props.total == 0){
+    if(props.total === 0){
         return <h1>No details found</h1>;
     }
 
