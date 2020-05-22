@@ -20,6 +20,7 @@ import CategoryDetails from './components/CategoryDetails.js';
 import BookDetails from './components/bookDetails'
 import SearchBook from './components/SearchBook';
 import SearchResult from './components/searchresults';
+import Results from './components/Results';
 function App() {
 
  
@@ -45,7 +46,7 @@ function App() {
               <PrivateRoute exact path="/profile" component={Profile} />
               <PrivateRoute exact path="/search" component={SearchBook} />
               <PrivateRoute exact path="/books/all/admin" component={BooksAdmin}/>
-
+              <PrivateRoute exact path="/Results" component={Results} />
 
               {/* <Route path="/user" component={BoardUser} /> */}
 {/*               
