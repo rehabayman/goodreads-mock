@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from "react-router-dom";
 
 import AuthService from "../services/auth.service";
+import SearchBook from './SearchBook';
 
 const NavBar = () => {
     const [showModeratorBoard, setShowModeratorBoard] = useState(false)
@@ -66,6 +67,9 @@ const NavBar = () => {
 
             {currentUser ? (
                 <div className="navbar-nav ml-auto">
+                     <li className="nav-item">
+                         <SearchBook/>
+                     </li>
                     <li className="nav-item">
                         <Link to={"/profile"} className="nav-link">
                             {currentUser.username}

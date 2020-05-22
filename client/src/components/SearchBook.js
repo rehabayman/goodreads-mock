@@ -8,7 +8,8 @@ import SearchResult from './searchresults';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 // import { browserHistory } from 'react-router';
 import {createBrowserHistory} from 'history';
-
+import { withRouter } from 'react-router-dom';
+import Results from './Results'
 const browserHistory = createBrowserHistory();
 
 const SearchBook=(props)=>  {
@@ -98,83 +99,26 @@ const SearchBook=(props)=>  {
           
         
     }
-    const dropdownContent = {
-        display: show ? "block" : "none",
-        position: "absolute",
-        backgroundColor: "#f1f1f1",
-        minWidth: "260px",
-        maxWidth: "265px",
-        boxShadow: "0px 8px 16px 0px rgba(0,0,0,0.2)",
-        // zIndex: 1,
-      }
-      const searchItem={
-            border: "0",
-            padding: "10px",
-            minHeight: "25px",
-            backgroundColor: "#fff",
-            boxShadow: "none",
-            borderRadius: "3px",
-            position: "relative",
-            maxHeight: "60px",
-            borderBottom: "2px solid #ccc",
-            transition: "maxHeight 0.5s ease",
-          
-      }
-     const row={
-          display:"flex",
-      }
-     const title={
 
-        margin: "0 15px 5px",
-        color: "#333",
-        }
-     const author={ 
-        margin: "0 15px 5px",
-        fontSize: "12px",
-        color: "#333",
-    }
- 
-
+    // const onClick = () => setShow(true)
+    const toggle=()=> {
+        setShow(show => !show);
+      }
     return (
         <div className="dropdown" style={dropdownStyle}>
             
             <form onSubmit={handleSubmit}>
-                <input type="text" className="input" value={input} onFocus={e=>{!show?setShow(true):setShow(false);console.log(filteredBooks);}
-                }onBlur={e=>{show?setShow(false):setShow(true)}} style={inputStyle} onChange={e => {handleChange(e);}} placeholder="Search..." />
+                <input type="text" id="myInput" className="input" value={input} 
+                onFocus={e=>!show?setShow(true):<></>}
+                style={inputStyle} onChange={e => {handleChange(e);}}
+                onClick={toggle}
+                placeholder="Search by book title..." />
+                { show ? <Results show={show} setShow={setShow} setInput={setInput} showBooks={showBooks} filteredBooks={filteredBooks} setfilteredBooks={setfilteredBooks}/> : null }
+
             </form >
-            <div>
-            <datalist className="dropdownContent" style={dropdownContent} >
-            {filteredBooks.length ? filteredBooks.slice(0,showBooks).map((i,index) => 
-                   <li key={index}>
-                       <div className="searchItem" style={searchItem}>
-                            <div className="row">
-                                <Link to={`/books/${i._id}`} style={row}>
-                                    <div className="col-xs-6 col-sm-3 col-md-3 col-lg-2">
-                                        <img className="img-responsive" src="https://via.placeholder.com/50x50" alt=""/>
-                                    </div>
-                                    <div className="col-xs-6 col-sm-9 col-md-9 col-lg-10">
-                                        <h5 style={title}>{i.name} </h5>
-                                        <p style={author}>by {i.author.firstName} {i.author.lastName}</p>
-                                    </div>
-                                </Link>
-                            </div>
-                        </div>
-                   </li>
-                   
-                ):
-                <></>}
-                 {filteredBooks.length ? 
-                    <Link
-                        to={{
-                        pathname: `/SearchResult`,
-                        state: {  filteredBooks},
-                        params:{filteredBooks}
-                        }}
-                    >Show all results</Link>
-                : <></>}
-               
-            </datalist>
-            </div>
+            
+            {/* <div style={{"height" : "600px", "width" : "900px"}} onClick={e=>show?setShow(false):<></>}>
+            </div> */}
 
   
         </div>
@@ -182,4 +126,5 @@ const SearchBook=(props)=>  {
     
 }
 
-export default SearchBook
+export default withRouter (SearchBook);
+
