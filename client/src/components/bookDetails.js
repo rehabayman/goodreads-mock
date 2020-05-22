@@ -30,6 +30,7 @@ const BookDetails = ({ match: { params: { id: bookId } } }) => {
     }, [])
 
     useEffect(() => {
+      
         BooksServices.getBookDetails(bookId).then((res) => {
             setBook(res.data)
             setShelf(res.data.shelf ? res.data.shelf.shelf : "read")
@@ -39,6 +40,8 @@ const BookDetails = ({ match: { params: { id: bookId } } }) => {
             })
             setAverageRating(sum/res.data.book.ratings.length)
           
+        }).catch((err)=>{
+            console.log(err)
         })
     }, [reviewAdded, userRate])
 
