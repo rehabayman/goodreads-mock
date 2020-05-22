@@ -14,8 +14,8 @@ const UserBooks = () => {
 
     let convertedBooks={}
     let filteredBooks={}
-    useEffect(() => {
 
+    useEffect(() => {
         UserService.getUserBooks().then((resp) => {
             let books
             
@@ -32,10 +32,8 @@ const UserBooks = () => {
                         shelve:<BookShelve changeBookState={changeBookState} bookId={book.book._id} state={book.shelf} />,
                         ratings: book.book.ratings,
                         rating: book.book.ratings.length ? book.book.ratings.map(rat => {
-                                if (rat.user === JSON.parse(localStorage.getItem('user')).id) {
-    
-                                    return <RateBook key={book.book._id} changeBookRate={changeBookRate} bookId={book.book._id} rate={rat.rating} />
-    
+                                if (rat.user === JSON.parse(localStorage.getItem('user')).id) {    
+                                    return <RateBook key={book.book._id} changeBookRate={changeBookRate} bookId={book.book._id} rate={rat.rating} />    
                                 }
                             }) : <RateBook key={book.book._id} changeBookRate={changeBookRate} bookId={book.book._id} rate={0} />,
                         average: book.book.ratings.reduce((a, { rating }) => a + rating, 0) / book.book.ratings.length || 0
@@ -175,22 +173,27 @@ const UserBooks = () => {
 
 
     const changeBookRate = (id, rate) => {
-       
+        let sum=0
         let books=convertedBooks
         books["rows"] = convertedBooks["rows"].map(book => {
             if (book.id === id) {
+                console.log(book.ratings)
                 book.ratings.forEach(rat => {
+                   
                     if (rat.user == JSON.parse(localStorage.getItem('user')).id) {       
-                        rat.rating=rate                
-                        book.rating[0]=<RateBook key={book.id} changeBookRate={changeBookRate} bookId={book.id} rate={rate} />
+                        rat.rating= parseInt(rate )           
+                        book.rating[1]=<RateBook key={book.id} changeBookRate={changeBookRate} bookId={book.id} rate={rate} />     
+                        sum+= rat.rating                   
                         return { ...book}
-                    }
-                })
-            book.average= book.ratings.reduce((a, { rating }) => a + rating, 0) / book.ratings.length || 0
+                    }                 
+                    sum+= rat.rating
+
+                })  
+            sum!=0 ?book.average= sum/book.ratings.length : book.average=0
             }
             return book
         })
-        
+        console.log(books["rows"])
         setUserBooks({"columns":books["columns"],"rows":books["rows"]})
     }
 
