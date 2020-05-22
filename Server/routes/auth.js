@@ -26,11 +26,6 @@ module.exports = function(app) {
   );
 
    app.post("/users/auth/signin", controller.signin);
-
-  const uploadUpdatedImage = multer({
-    dest: path.resolve('../Server/public/upload/users'),
-    limits: { fileSize: 2000000, files: 1 }, // 2M File
-  });
   
   app.patch("/users/auth/update", upload.array('image', 1), [authJwt.verifyToken], controller.update);
 };

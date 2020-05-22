@@ -6,15 +6,10 @@ import { isEmail, isAlpha } from "validator";
 import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AuthService from "../services/auth.service";
-import Profile from "./Profile";
 
 
 let originalPassword = '';
 let imageChanged = false;
-let firstNameChanged = false;
-let lastNameChanged = false;
-let emailChanged = false;
-
 
 const buttonStyle = {
     border: "none",
@@ -112,21 +107,15 @@ const UserUpdateForm = (props) => {
 
     const onChangeFirstName = (e) => {
         setFirstName(e.target.value);
-        firstNameChanged = true;
-        // props.setFirstName(e.target.value);
     }
 
     const onChangeLastName = (e) => {
         setLastName(e.target.value);
-        lastNameChanged = true;
-        // props.setLastName(e.target.value);
     }
 
 
     const onChangeEmail = (e) => {
         setEmail(e.target.value);
-        emailChanged = true;
-        // props.setEmail(e.target.value);
     }
 
     const onChangePassword = (e) => {
@@ -139,10 +128,8 @@ const UserUpdateForm = (props) => {
     }
 
     const onChangeImage = (e) => {
-        console.log(e.target.files[0]);
         setImage(e.target.files[0]);
         imageChanged = true;
-        // props.setImage(e.target.files[0]);
     }
 
     const handleCloseWindow = (e) => {
@@ -163,7 +150,9 @@ const UserUpdateForm = (props) => {
                         setMessage(response.data.message);
                         setSuccessful(true);
                         setLoading(false);
-                        let updatedInfo = {email, firstName, lastName, username: props.currentUser.username, image_path: image};
+                        let updatedInfo = {email, firstName, lastName, 
+                            username: props.currentUser.username,
+                            image_path: image, roles: AuthService.getCurrentUser().roles};
                         if (imageChanged) {
                             updatedInfo['image_path'] = response.data.user.image_path;
                         }

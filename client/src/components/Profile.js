@@ -5,6 +5,7 @@ import axios from "axios";
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import UserUpdateForm from "./UserUpdateForm";
+import AuthService from '../services/auth.service';
 
 const buttonStyle = {
   border: "none",
@@ -20,10 +21,6 @@ const Profile = () => {
 
   const [currentUser, setCurrentUser] = useState({});
   const [editStatus, setEditStatus] = useState(false);
-  const [firstName, setFirstName] = useState(currentUser.firstName);
-  const [lastName, setLastName] = useState(currentUser.lastName);
-  const [email, setEmail] = useState(currentUser.email);
-  const [image, setImage] = useState(currentUser.image);
 
 
   const onChangeEditStatus = () => {
@@ -31,6 +28,7 @@ const Profile = () => {
   }
   
   useEffect(() => {
+    // console.log(currentUser.roles.includes('ROLE_ADMIN'), typeof currentUser.roles.includes('ROLE_ADMIN'));
     axios.get(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/users/profile`, { headers: authHeader() })
       .then(response => {
         setCurrentUser(response.data)
@@ -61,10 +59,15 @@ const Profile = () => {
             <h1>
               <strong>{currentUser.firstName} {currentUser.lastName}</strong>
             </h1>
-            <button style={buttonStyle} onClick={onChangeEditStatus}>
-              <FontAwesomeIcon icon={faEdit} style={{ marginRight: "0.5rem" }} />
-                  Edit Profile
-            </button>
+            {
+              !AuthService.getCurrentUser().roles.includes('ROLE_ADMIN') && 
+              <button style={buttonStyle} onClick={onChangeEditStatus}>
+                <FontAwesomeIcon icon={faEdit} style={{ marginRight: "0.5rem" }} />
+                    Edit Profile
+              </button>
+              
+            }
+            
           </div>
         </header>
         <h4>

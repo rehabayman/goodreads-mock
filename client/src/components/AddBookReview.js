@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import axios from 'axios';
 
 function AddBookReview(props){
@@ -10,7 +10,7 @@ function AddBookReview(props){
 
     function reviewSubmission(e){
         e.preventDefault();
-        if( review == ""){
+        if( review === ""){
             window.alert("Add a review to submit!");
         } else {
             axios.post(url, {review: review})
@@ -42,7 +42,7 @@ function AddBookReview(props){
                 <div className="form-group">
                     <textarea onChange={reviewValueChange} value={review}cols="117" rows="10"></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block w-100">Submit</button>            
+                <button type="submit" className="btn btn-primary btn-block w-100">Submit</button>            
             </form>
 
         </div>

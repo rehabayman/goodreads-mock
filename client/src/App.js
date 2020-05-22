@@ -35,7 +35,7 @@ function App() {
               <Route exact path="/register" component={Register} />
               <PrivateRoute exact path="/profile" component={Profile} />             
               <PrivateRoute path="/admin" component={BoardAdmin} />
-              <PrivateRoute path="/categories"  component={Category} />
+              <PrivateRoute exact path="/categories"  component={Category} />
 
               <PrivateRoute exact path="/categories/all" component={CategoryList} />
               <PrivateRoute exact path="/categories/:categoryname/:id" component={CategoryDetails} />

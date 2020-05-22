@@ -13,11 +13,11 @@ const AllBooksAdmin = (props) => {
     const [authors, setAuthors] = useState([]);
     const [categories, setCategories] = useState([]);
     const [modal, setModal] = useState(false);
-    const [input, setInput] = useState('');
+    // const [input, setInput] = useState('');
     const [name, setNameInput] = useState('');
     const [author, setAuthorInput] = useState('');
     const [category, setCategoryInput] = useState('');
-    const [image_path, setImageInput] = useState('');
+    const [image_path, setImageInput] = useState(null);
     const [authorErr,setAuthorErr]=useState('')
     const [categoryErr,setCategoryErr]=useState('')
     const [nameErr,setNameErr]=useState('')
@@ -36,16 +36,18 @@ const AllBooksAdmin = (props) => {
       }
     const authorChange = (e) => {
         const { target: { value } } = e;
-        setAuthorInput(value);
+        if (!(value === "1"))
+            setAuthorInput(value);
     }
     const categoryChange = (e) => {
         const { target: { value } } = e;
-        setCategoryInput(value);
+        if (!(value === "1"))
+            setCategoryInput(value);
     }
     const imageChange = (e) => {
-        const { target: { value } } = e;
-        setImageInput(value);
-        console.log(typeof value,value)
+        // const { target: { value } } = e;
+        setImageInput(e.target.files[0]);
+        // console.log(typeof value,value)
         
     }
     useEffect(() => {    // get all books
@@ -63,8 +65,10 @@ const AllBooksAdmin = (props) => {
   //get all authors
         axios.get(API_auth_URL, { headers: authHeader() })
             .then(response => {
-                console.log(response.data)
-                setAuthors(response.data.authors)
+                let data = [{firstName: "Choose ", lastName: "Author", _id: 1}];
+                data = data.concat(response.data.authors);
+                console.log("author", response.data)
+                setAuthors(data)
             })
             .catch(err => {
                 if (err.response) {
@@ -76,7 +80,10 @@ const AllBooksAdmin = (props) => {
      //get all categories
         axios.get(API_cat_URL, { headers: authHeader() })
             .then(response => {
-                setCategories(response.data)
+                let data = [{name: "Choose Category", _id: 1}];
+                data = data.concat(response.data);
+                // console.log("data", data);
+                setCategories(data)
             })
             .catch(err => {
                 if (err.response) {
@@ -124,8 +131,7 @@ const AllBooksAdmin = (props) => {
         e.preventDefault();
         // switch(value){
         // case "add":
-        
-        if(!author||!category){
+        if(!author||!category||!name){
             author? setAuthorErr(""):setAuthorErr("Please choose an author")
             category? setCategoryErr(""):setCategoryErr("Please choose an category")
             name? setNameErr(""): setNameErr("Please Enter a name")
@@ -135,21 +141,24 @@ const AllBooksAdmin = (props) => {
             setAuthorErr("")
             setCategoryErr("")
             setNameErr("")
-            axios.post(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/books/add`,{
-                name:name,
-                image_path: image_path,
-                author: author,
-                category: category,
-            },{ headers: authHeader() }).then((res)=>{
-                setBooks([...books,res.data])  
-                resetAll() 
+            let form = new FormData();
+            let config = {
+                headers: authHeader()
+            }
+            config['content-type'] = 'multipart/form-data';
+            form.append('name', name);
+            form.append('image_path', image_path);
+            form.append('author', author);
+            form.append('category', category);
 
-             
+            axios.post(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/books/add`, form, config)
+            .then((res) => {
+                setBooks([...books, res.data]);
+                resetAll();
             })
-            .catch(err => {
+            .catch((err) => {
                 console.log("test",err)
-    
-            })
+            });
 
         }
         // break;
@@ -178,78 +187,79 @@ const AllBooksAdmin = (props) => {
    
     return (
         books.length > 0 ?
-            (<div>
-            <button onClick={() => modalOpen("add")}>
-                    Add New Book
-            </button>
-        <Modal show={modal} onHide={() => modalClose()}
-        dialogClassName="modal-90w"
-        aria-labelledby="example-custom-modal-styling-title" style={styleModal}>
-        <Modal.Header closeButton style={modalHeader}>
-          <Modal.Title id="example-custom-modal-styling-title">Add New Book</Modal.Title>
-        </Modal.Header>
-        <Modal.Body style={modalBody}>
-          <div className="form-group">
-          <label>Book Name</label>
-                <Input
-                    type="text"
-                    value={name}
-                    name="modalInputName"
-                    onChange={nameChange}
-                    className="form-control"
-                    size="30" placeholder="Name"
-                />
-                <p style={{color:"red",fontSize:'12px'}}>{nameErr}</p>
+        (
+            <div>
+                <button onClick={() => modalOpen("add")}>
+                        Add New Book
+                </button>
+                <Modal show={modal} onHide={() => modalClose()}
+                        dialogClassName="modal-90w"
+                        aria-labelledby="example-custom-modal-styling-title" style={styleModal}>
 
-                <label>Author</label>
-                <Input
-                    type="select"
-                    name="author"
-                    onClick={authorChange}
-                    className="form-control"
-                >
-                    {authorView}
-                </Input>
-                <p style={{color:"red",fontSize:'12px'}}>{authorErr}</p>
-                <label>Category</label>
-                <Input
-                    type="select"
-                    name="category"
-                    onClick={categoryChange}
-                    className="form-control"
-                >
-                    {categoiresView}                  
-                </Input>
-                <p style={{color:"red",fontSize:'12px'}}>{categoryErr}</p>
-                <label>Image</label>
-                <Input type="file"
-                        name = "image_path"
-                        onChange={imageChange}
-                        className="form-control"
-                        value={image_path}
-                />
-            </div>
-        </Modal.Body>
-        <Modal.Footer style={modalFooter}>
-          <div className="form-group">
-            <button variant="secondary" onClick={handleSubmit} type="button">
-              Save
-            </button>
-            <button variant="secondary" onClick={() => modalClose()}>
-              Close
-          </button>
-          </div>
-        </Modal.Footer>
-      </Modal>
-                <table>
-                    <thead>
+                    <Modal.Header closeButton style={modalHeader}>
+                        <Modal.Title id="example-custom-modal-styling-title">Add New Book</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body style={modalBody}>
+                        <div className="form-group">
+                            <label>Book Name</label>
+                            <Input
+                                type="text"
+                                value={name}
+                                name="modalInputName"
+                                onChange={nameChange}
+                                className="form-control"
+                                size="30" placeholder="Name"
+                            />
+                            <p style={{color:"red",fontSize:'12px'}}>{nameErr}</p>
+
+                            <label>Author</label>
+                            <Input
+                                type="select"
+                                name="author"
+                                onClick={authorChange}
+                                className="form-control"
+                            >
+                                {authorView}
+                            </Input>
+                            <p style={{color:"red",fontSize:'12px'}}>{authorErr}</p>
+                            <label>Category</label>
+                            <Input
+                                type="select"
+                                name="category"
+                                onClick={categoryChange}
+                                className="form-control"
+                            >
+                                {categoiresView}                  
+                            </Input>
+                            <p style={{color:"red",fontSize:'12px'}}>{categoryErr}</p>
+                            <label>Image</label>
+                            <Input type="file"
+                                    name = "image_path"
+                                    onChange={imageChange}
+                                    className="form-control"
+                            />
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer style={modalFooter}>
+                        <div className="form-group">
+                            <button variant="secondary" onClick={handleSubmit} type="button">
+                                Save
+                            </button>
+                            <button variant="secondary" onClick={() => modalClose()}>
+                                Close
+                            </button>
+                        </div>
+                    </Modal.Footer>
+                </Modal>
+                <table className="table">
+                    <thead className="thead-dark">
                         <tr>
-                            <th>Book Name</th>
-                            <th>Category</th>
-                            <th>Author</th>
-                            <th>Book Cover</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
+                            <th scope="col">Book Name</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Author</th>
+                            <th scope="col">Book Cover</th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -258,7 +268,11 @@ const AllBooksAdmin = (props) => {
                                 <td><Link to={`/books/${book._id}`}>{book.name}</Link></td>
                                 <td>{book.category.name}</td>
                                 <td>{book.author.firstName}</td>
-                                <td><Link to={`/books/${book._id}`}><img className="card-img-top" src={book.image_path ? book.image_path : "/112815953-stock-vector-no-image-available-icon-flat-vector.jpg"} alt="Book Cover"></img></Link></td>
+                                <td>
+                                    <Link to={`/books/${book._id}`}>
+                                        <img className="card-img-top" src={book.image_path ? process.env.PUBLIC_URL + "/books-covers/" + book.image_path : "/112815953-stock-vector-no-image-available-icon-flat-vector.jpg"} alt="Book Cover" style={{width:"100px", height:"100px"}}/>
+                                    </Link>
+                                </td>
                                 <td><button type="button" className="btn btn-warning" data-toggle="modal" data-target="#exampleModal">
                                     Edit
                                     </button>
