@@ -92,10 +92,6 @@ exports.update = (req, res) => {
     let updatedInfo = { }; 
     const { body } = req;
 
-    console.log(body)
-    console.log(req.files)
-
-
     if(body.firstName) updatedInfo['firstName'] = body.firstName;
     if(body.lastName) updatedInfo['lastName'] = body.lastName;
     if(body.email) updatedInfo['email'] = body.email;
