@@ -12,7 +12,8 @@ const AllBooksAdmin = (props) => {
     const [books, setBooks] = useState([]);
     const [authors, setAuthors] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [modal, setModal] = useState(false);
+    const [modal1, setModal1] = useState(false);
+    const [modal2, setModal2] = useState(false);    
     // const [input, setInput] = useState('');
     const [name, setNameInput] = useState('');
     const [author, setAuthorInput] = useState('');
@@ -21,20 +22,30 @@ const AllBooksAdmin = (props) => {
     const [authorErr,setAuthorErr]=useState('')
     const [categoryErr,setCategoryErr]=useState('')
     const [nameErr,setNameErr]=useState('')
+    const [ide,setIde]=useState('')
     console.log("books admin")
-    console.log(modal)
    
-    const modalOpen = () => {
-        setModal(true);
-        // setValue(arg)
+   
+    const modalOpen1 = () => {
+        setModal1(true);
     }
-    const modalClose = () => {
-        setModal(false);
+    const modalClose1 = () => {
+        setModal1(false);
       }    
+    const modalOpen2 = (ide) => {
+        setIde(ide);
+        setModal2(true);
+
+    }
+    const modalClose2 = () => {
+        setModal2(false);
+      }    
+    
+    
     const nameChange = (e) => {
         const { target: { value } } = e;
         setNameInput(value);  
-      }
+    }
     const authorChange = (e) => {
         const { target: { value } } = e;
         if (!(value === "1"))
@@ -51,7 +62,7 @@ const AllBooksAdmin = (props) => {
         // console.log(typeof value,value)
         
     }
-    useEffect(() => {    // get all books
+    useEffect(() => {    //////////// get all books //////////
         axios.get(API_URL, { headers: authHeader() })
             .then(response => {
                 setBooks(response.data)
@@ -63,7 +74,7 @@ const AllBooksAdmin = (props) => {
                     }
                 }
             })
-  //get all authors
+  //////////// get all authors //////////////
         axios.get(API_auth_URL, { headers: authHeader() })
             .then(response => {
                 let data = [{firstName: "Choose ", lastName: "Author", _id: 1}];
@@ -78,7 +89,7 @@ const AllBooksAdmin = (props) => {
                     }
                 }
             })
-     //get all categories
+     ///////////////// get all categories /////////////////
         axios.get(API_cat_URL, { headers: authHeader() })
             .then(response => {
                 let data = [{name: "Choose Category", _id: 1}];
@@ -93,7 +104,7 @@ const AllBooksAdmin = (props) => {
                     }
                 }
             })
-    }, [modal]);
+    }, []);
     const styleModal = {
         fontSize: 20,
         color: "#4a54f1",
@@ -156,6 +167,7 @@ const AllBooksAdmin = (props) => {
             .then((res) => {
                 setBooks([...books, res.data]);
                 // resetAll();
+                modalClose1();
             })
             .catch((err) => {
                 console.log("test",err)
@@ -166,16 +178,41 @@ const AllBooksAdmin = (props) => {
         // case "edit":
         //     axios.patch(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/books/`
     }
+    const handleEditSubmit = (e)=>{
+        e.preventDefault();
+        let form = new FormData();
+            let config = {
+                headers: authHeader()
+            }
+            config['content-type'] = 'multipart/form-data';
+            form.append('name', name);
+            form.append('image_path', image_path);
+            form.append('author', author);
+            form.append('category', category);
+        config['content-type'] = 'multipart/form-data';
+        axios.patch(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/books/` + ide , form ,config)
+        .then((res) => {
+          console.log(res);
+          setBooks(
+            books.map(el => (el._id === res.data._id ? Object.assign({}, el, {name: res.data.name, category: res.data.category, author: res.data.author, image_path: res.data.image_path}) : el))
+          );
+          modalClose2();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      }
+    
 
     const resetAll=()=>{
-        setModal(false)
+        setModal1(false)
         setNameInput("")
         setAuthorInput("")
         setCategoryInput("")
         setImageInput("")
         setAuthors([])
         setCategories([])
-        modalClose();
+        modalClose1();
     }
 
     const categoiresView = categories.length ? categories.map(category =>
@@ -190,10 +227,10 @@ const AllBooksAdmin = (props) => {
         books.length > 0 ?
         (
             <div>
-                <button onClick={() => modalOpen("add")}>
+                <button class="btn btn-success" onClick={() => modalOpen1()}>
                         Add New Book
                 </button>
-                <Modal show={modal} onHide={() => modalClose()}
+                <Modal show={modal1} onHide={() => modalClose1()}
                         dialogClassName="modal-90w"
                         aria-labelledby="example-custom-modal-styling-title" style={styleModal}>
 
@@ -246,7 +283,7 @@ const AllBooksAdmin = (props) => {
                             <button variant="secondary" onClick={handleSubmit} type="button">
                                 Save
                             </button>
-                            <button variant="secondary" onClick={() => modalClose()}>
+                            <button variant="secondary" onClick={() => modalClose1()}>
                                 Close
                             </button>
                         </div>
@@ -274,11 +311,67 @@ const AllBooksAdmin = (props) => {
                                         <img className="card-img-top" src={book.image_path ? process.env.PUBLIC_URL + "/books-covers/" + book.image_path : "/112815953-stock-vector-no-image-available-icon-flat-vector.jpg"} alt="Book Cover" style={{width:"100px", height:"100px"}}/>
                                     </Link>
                                 </td>
-                                <td><button type="button" className="btn btn-warning" data-toggle="modal" data-target="#exampleModal">
+                                <td><button type="button" onClick={() => modalOpen2(book._id)} className="btn btn-warning" data-toggle="modal" data-target="#exampleModal">
                                     Edit
                                     </button>
                                 </td>
-                                <td><button type="button" onClick={() => { handleDelete(book._id) }} className="btn btn-warning" data-toggle="modal" data-target="#exampleModal">
+                                <Modal show={modal2} onHide={() => modalClose2()}
+                                dialogClassName="modal-90w"
+                                aria-labelledby="example-custom-modal-styling-title" style={styleModal}>
+                                <Modal.Header closeButton style={modalHeader}>
+                                    <Modal.Title id="example-custom-modal-styling-title">Edit Book</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body style={modalBody}>
+                                    <div className="form-group">
+                                    <label>Book Name</label>
+                                        <Input
+                                            type="text"
+                                            value={name}
+                                            name="modalInputName"
+                                            onChange={nameChange}
+                                            className="form-control"
+                                            size="30" placeholder="Name"
+                                        />
+                                        <label>Author</label>
+                                        <Input
+                                            type="select"
+                                            name="author"
+                                            onClick={authorChange}
+                                            className="form-control"
+                                        >
+                                            {authorView}
+                                        </Input>
+                                        <label>Category</label>
+                                        <Input
+                                            type="select"
+                                            name="category"
+                                            onClick={categoryChange}
+                                            className="form-control"
+                                        >
+                                            {categoiresView}
+                                        </Input>
+                                        <label>Image</label>
+                                        <Input type="file"
+                                            name = "image_path"
+                                            onChange={imageChange}
+                                            className="form-control"
+                                         />
+                                    </div>
+                                </Modal.Body>
+                                <Modal.Footer style={modalFooter}>
+                                <div className="form-group">
+                    
+                                    <button variant="secondary" onClick={ handleEditSubmit } type="button">
+                                        Edit
+                                    </button>
+                                    <button variant="secondary" onClick={() => modalClose2()}>
+                                        Close
+                                    </button>
+                                    </div>
+                                </Modal.Footer>
+                                </Modal>
+
+                                <td><button type="button" onClick={() => { handleDelete(book._id) }} className="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
                                     Delete
                                     </button>
                                 </td>
@@ -290,11 +383,71 @@ const AllBooksAdmin = (props) => {
             </div>)
             :
             <div key="container_empty" className="container d-flex justify-content-center mt-5">
-
-            <button variant="primary" onClick={() => modalOpen("add")}>
+                <h3>No Books Yet   </h3>
+            <button class="btn btn-success" onClick={() => modalOpen1("add")}>
                     Add New Book
-            </button>
-                <h3>No Books Yet.</h3>
+            </button>        
+                    <Modal show={modal1} onHide={() => modalClose1()}
+                        dialogClassName="modal-90w"
+                        aria-labelledby="example-custom-modal-styling-title" style={styleModal}>
+
+                    <Modal.Header closeButton style={modalHeader}>
+                        <Modal.Title id="example-custom-modal-styling-title">Add New Book</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body style={modalBody}>
+                        <div className="form-group">
+                            <label>Book Name</label>
+                            <Input
+                                type="text"
+                                value={name}
+                                name="modalInputName"
+                                onChange={nameChange}
+                                className="form-control"
+                                size="30" placeholder="Name"
+                            />
+                            <p style={{color:"red",fontSize:'12px'}}>{nameErr}</p>
+
+                            <label>Author</label>
+                            <Input
+                                type="select"
+                                name="author"
+                                onClick={authorChange}
+                                className="form-control"
+                            >
+                                {authorView}
+                            </Input>
+                            <p style={{color:"red",fontSize:'12px'}}>{authorErr}</p>
+                            <label>Category</label>
+                            <Input
+                                type="select"
+                                name="category"
+                                onClick={categoryChange}
+                                className="form-control"
+                            >
+                                {categoiresView}                  
+                            </Input>
+                            <p style={{color:"red",fontSize:'12px'}}>{categoryErr}</p>
+                            <label>Image</label>
+                            <Input type="file"
+                                    name = "image_path"
+                                    onChange={imageChange}
+                                    className="form-control"
+                            />
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer style={modalFooter}>
+                        <div className="form-group">
+                            <button variant="secondary" onClick={handleSubmit} type="button">
+                                Save
+                            </button>
+                            <button variant="secondary" onClick={() => modalClose1()}>
+                                Close
+                            </button>
+                        </div>
+                    </Modal.Footer>
+                </Modal>
+            
+                
             </div>
     )
 }

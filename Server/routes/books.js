@@ -19,10 +19,10 @@ const upload = multer({
     dest: path.resolve('../Server/public/upload/books'),
     limits: { fileSize: 2000000, files: 1 }, // 2M File
 });
-router.post('/add', upload.array('image_path', 1), [authJwt.verifyToken, authJwt.isAdmin] ,bookController.addBook);
+router.post('/add', upload.array('image_path', 1), [authJwt.verifyToken] ,bookController.addBook);
 router.get("/:id", [authJwt.verifyToken] ,bookController.oneBook);
-router.patch("/:id", [authJwt.verifyToken, authJwt.isAdmin], bookController.editBook);
-router.delete("/:id",  [authJwt.verifyToken, authJwt.isAdmin], bookController.removeBook);
+router.patch("/:id",upload.array('image_path', 1), [authJwt.verifyToken], bookController.editBook);
+router.delete("/:id",  [authJwt.verifyToken], bookController.removeBook);
 
 
 router.get('/rate/:id', [authJwt.verifyToken], bookController.getBookRating);
