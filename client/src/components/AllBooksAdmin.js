@@ -271,7 +271,7 @@ const AllBooksAdmin = (props) => {
                             <tr key={book._id}>
                                 <td><Link to={`/books/${book._id}`}>{book.name}</Link></td>
                                 <td>{book.category.name}</td>
-                                <td>{book.author.firstName}</td>
+                                <td>{book.author.firstName + " " + book.author.lastName}</td>
                                 <td>
                                     <Link to={`/books/${book._id}`}>
                                         <img className="card-img-top" src={book.image_path ? process.env.PUBLIC_URL + "/books-covers/" + book.image_path : "/112815953-stock-vector-no-image-available-icon-flat-vector.jpg"} alt="Book Cover" style={{width:"100px", height:"100px"}}/>

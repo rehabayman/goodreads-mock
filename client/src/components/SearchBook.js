@@ -3,34 +3,30 @@ import React, { useState, useEffect } from 'react'
 import './starStyle.css'
 import axios from 'axios';
 import authHeader from '../services/auth-header'
-// import "netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css";
-import SearchResult from './searchresults';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-// import { browserHistory } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { withRouter } from 'react-router-dom';
 import Results from './Results'
 const browserHistory = createBrowserHistory();
 
 const SearchBook = (props) => {
-
+    
     const API_URL = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/books`
     let [input, setInput] = useState('');
     const [books, setBooks] = useState([]);
     const [filteredBooks, setfilteredBooks] = useState([]);
     let [show, setShow] = useState(false);
-    let currentBooks = [];
+    // let currentBooks = [];
     const [showBooks, setShowBooks] = useState(2);
-
+    
     useEffect(() => {
         axios.get(API_URL, { headers: authHeader() })
-            .then(response => {
+        .then(response => {
                 setBooks(response.data);
                 response.data.map(book => {
                     books.push(book);
                 })
                 // console.log(books);              
-                currentBooks = books;
+                // currentBooks = books;
                 // console.log(currentBooks);
             }
             )
@@ -48,7 +44,7 @@ const SearchBook = (props) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         let newFilteredBooks = [];
-        if (input != "") {
+        if (input !== "") {
             newFilteredBooks = books.filter(item => {
                 const lc = item.name.toString().toLowerCase();
                 const filter = input.toString().toLowerCase();
@@ -86,13 +82,14 @@ const SearchBook = (props) => {
     }
 
     const inputStyle = {
-
         boxSizing: "borderBox",
         backgroundPosition: "14px 12px",
         fontSize: "16px",
-        padding: "14px 20px 12px 45px",
+        padding: "5px 10px",
         border: "none",
         borderBottom: "1px solid #ddd",
+        width: "300px",
+        marginRight: "1.5rem"
     }
     const dropdownStyle = {
         position: "relative",

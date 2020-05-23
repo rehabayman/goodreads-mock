@@ -38,7 +38,7 @@ const BookDetails = ({ match: { params: { id: bookId } } }) => {
             res.data.book.ratings.forEach((a) => {                    
                 sum += a.rating
             })
-            setAverageRating(sum/res.data.book.ratings.length)
+            sum && setAverageRating(sum/res.data.book.ratings.length)
           
         }).catch((err)=>{
             console.log(err)
@@ -50,13 +50,17 @@ const BookDetails = ({ match: { params: { id: bookId } } }) => {
         let tempBook = { ...bookDetails }
         tempBook.ratings = bookDetails.ratings.map((rate) => {            
             if (rate.user === JSON.parse(localStorage.getItem('user')).id) {
-                return { ...rate, rating: rateValue }
+                return { ...rate, rating: parseInt(rateValue) }
             }
             return rate
         })
-        tempBook.ratings.length === 0 && tempBook.ratings.push({ _id: id, user: JSON.parse(localStorage.getItem('user')).id, rating: rateValue });
-        setUserRate(rateValue)
+        if(tempBook.ratings.length === 0 ){
+            tempBook.ratings.push({ _id: id, user: JSON.parse(localStorage.getItem('user')).id, rating: rateValue });
+            setAverageRating(parseInt(rateValue))
+        }
+        setUserRate(parseInt(rateValue))
         setBook(({ book: tempBook }))
+        console.log(averageRating, typeof averageRating);
     }
 
     const changeBookState = (bookId, shelf) => {

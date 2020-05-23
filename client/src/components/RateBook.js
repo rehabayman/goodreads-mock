@@ -49,11 +49,11 @@ const RateBook = (props) => {
         <div className="container">
             <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet"></link>
             <fieldset className="rating">
-                <input type="radio" id={props.bookId + "star1"} name="rating" value="5" checked={rating === 5} onChange={handleRatingChange} /><label className="full" htmlFor={props.bookId + "star1"} title="Awesome - 5 stars"></label>
-                <input type="radio" id={props.bookId + "star2"} name="rating" value="4" checked={rating === 4} onChange={handleRatingChange} /><label className="full" htmlFor={props.bookId + "star2"} title="Pretty good - 4 stars"></label>
-                <input type="radio" id={props.bookId + "star3"} name="rating" value="3" checked={rating === 3} onChange={handleRatingChange} /><label className="full" htmlFor={props.bookId + "star3"} title="Meh - 3 stars"></label>
-                <input type="radio" id={props.bookId + "star4"} name="rating" value="2" checked={rating === 2} onChange={handleRatingChange} /><label className="full" htmlFor={props.bookId + "star4"} title="Kinda bad - 2 stars"></label>
-                <input type="radio" id={props.bookId + "star5"} name="rating" value="1" checked={rating === 1} onChange={handleRatingChange} /><label className="full" htmlFor={props.bookId + "star5"} title="Sucks big time - 1 star"></label>
+                <input type="radio" id={props.bookId + "star1"} value="5" checked={rating === 5} onChange={handleRatingChange} /><label className="full" htmlFor={props.bookId + "star1"} title="Awesome - 5 stars"></label>
+                <input type="radio" id={props.bookId + "star2"} value="4" checked={rating === 4} onChange={handleRatingChange} /><label className="full" htmlFor={props.bookId + "star2"} title="Pretty good - 4 stars"></label>
+                <input type="radio" id={props.bookId + "star3"} value="3" checked={rating === 3} onChange={handleRatingChange} /><label className="full" htmlFor={props.bookId + "star3"} title="Meh - 3 stars"></label>
+                <input type="radio" id={props.bookId + "star4"} value="2" checked={rating === 2} onChange={handleRatingChange} /><label className="full" htmlFor={props.bookId + "star4"} title="Kinda bad - 2 stars"></label>
+                <input type="radio" id={props.bookId + "star5"} value="1" checked={rating === 1} onChange={handleRatingChange} /><label className="full" htmlFor={props.bookId + "star5"} title="Sucks big time - 1 star"></label>
             </fieldset>
         </div>
     );
