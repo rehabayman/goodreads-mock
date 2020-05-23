@@ -23,5 +23,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-/public/users-profile-pics/
-/public/books-covers/
+/public/users-profile-pics/*
+/public/books-covers/*

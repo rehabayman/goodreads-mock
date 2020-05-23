@@ -68,23 +68,24 @@ const Login = (props) => {
 
 
   return (
-    <div className="col-md-12">
+    <div className="container mt-3 w-50">
       <div className="card card-container">
         <img
           src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
           alt="profile-img"
           className="profile-img-card"
+          style={{height:"400px"}}
         />
 
         <Form
           onSubmit={handleLogin}
           ref={form}
         >
-          <div className="form-group">
-            <label htmlFor="username">Username</label>
+          <div className="form-group mt-3">
+            <label htmlFor="username" className="ml-5">Username</label>
             <Input
               type="text"
-              className="form-control"
+              className="form-control w-75 ml-5"
               name="username"
               value={username}
               onChange={onChangeUsername}
@@ -93,10 +94,10 @@ const Login = (props) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password" className="ml-5">Password</label>
             <Input
               type="password"
-              className="form-control"
+              className="form-control w-75 ml-5"
               name="password"
               value={password}
               onChange={onChangePassword}
@@ -106,8 +107,9 @@ const Login = (props) => {
 
           <div className="form-group">
             <button
-              className="btn btn-primary btn-block"
+              className="btn btn-primary btn-block w-25"
               disabled={loading}
+              style={{marginLeft:"11.8rem"}}
             >
               {loading && (
                 <span className="spinner-border spinner-border-sm"></span>

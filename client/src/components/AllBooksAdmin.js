@@ -23,6 +23,7 @@ const AllBooksAdmin = (props) => {
     const [categoryErr,setCategoryErr]=useState('')
     const [nameErr,setNameErr]=useState('')
     const [ide,setIde]=useState('')
+    const [imageErr,setImageErr]=useState('')
     console.log("books admin")
    
    
@@ -143,10 +144,11 @@ const AllBooksAdmin = (props) => {
         e.preventDefault();
         // switch(value){
         // case "add":
-        if(!author||!category||!name){
-            author? setAuthorErr(""):setAuthorErr("Please choose an author")
-            category? setCategoryErr(""):setCategoryErr("Please choose an category")
-            name? setNameErr(""): setNameErr("Please Enter a name")
+        if(!author||!category||!name||!image_path){
+            author? setAuthorErr(""):setAuthorErr("Please choose an author");
+            category? setCategoryErr(""):setCategoryErr("Please choose a category");
+            name? setNameErr(""): setNameErr("Please enter a name");
+            image_path? setImageErr(""): setImageErr("Please choose a cover for the book");
             return
         }
         else{
@@ -168,6 +170,7 @@ const AllBooksAdmin = (props) => {
                 setBooks([...books, res.data]);
                 // resetAll();
                 modalClose1();
+                resetAll();
             })
             .catch((err) => {
                 console.log("test",err)
@@ -276,6 +279,7 @@ const AllBooksAdmin = (props) => {
                                     onChange={imageChange}
                                     className="form-control"
                             />
+                            <p style={{color:"red",fontSize:'12px'}}>{imageErr}</p>
                         </div>
                     </Modal.Body>
                     <Modal.Footer style={modalFooter}>
@@ -305,7 +309,7 @@ const AllBooksAdmin = (props) => {
                             <tr key={book._id}>
                                 <td><Link to={`/books/${book._id}`}>{book.name}</Link></td>
                                 <td>{book.category.name}</td>
-                                <td>{book.author.firstName}</td>
+                                <td>{book.author.firstName + " " + book.author.lastName}</td>
                                 <td>
                                     <Link to={`/books/${book._id}`}>
                                         <img className="card-img-top" src={book.image_path ? process.env.PUBLIC_URL + "/books-covers/" + book.image_path : "/112815953-stock-vector-no-image-available-icon-flat-vector.jpg"} alt="Book Cover" style={{width:"100px", height:"100px"}}/>

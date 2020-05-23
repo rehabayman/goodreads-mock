@@ -21,7 +21,7 @@
   
   .rating > label { 
     color: rgb(156, 154, 154); 
-   float: right; 
+    float: right; 
   }
   
   input[type="text"]{ padding: 20px 10px; line-height: 28px; }

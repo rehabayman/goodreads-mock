@@ -53,7 +53,7 @@ const Profile = () => {
 
       (<div className="container">
         <header className="jumbotron" style={{ display: "flex", flexDirection: "row" }}>
-          <img src={process.env.PUBLIC_URL + "/users-profile-pics/" + currentUser.image_path} alt="User Profile"
+          <img src={currentUser.image_path ? process.env.PUBLIC_URL + "/users-profile-pics/" + currentUser.image_path : "//ssl.gstatic.com/accounts/ui/avatar_2x.png"} alt="User Profile"
             style={{ height: "200px", width: "200px" }} />
           <div style={{ display: "flex", flexDirection: "column", marginLeft: "2rem", marginTop: "3rem" }}>
             <h1>

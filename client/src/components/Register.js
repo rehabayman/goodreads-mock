@@ -167,12 +167,13 @@ const Register = (props) => {
     }
 
     return (
-        <div className="col-md-12">
+        <div className="container mt-3 w-50 mb-3">
             <div className="card card-container">
                 <img
                     src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
                     alt="profile-img"
                     className="profile-img-card"
+                    style={{height:"350px"}}
                 />
 
                 <Form
@@ -181,11 +182,11 @@ const Register = (props) => {
                     encType="multipart/form-data"
                 >
 
-                    <div className="form-group">
-                        <label htmlFor="firstname">First Name</label>
+                    <div className="form-group mt-3">
+                        <label htmlFor="firstname" className="ml-5">First Name</label>
                         <Input
                             type="text"
-                            className="form-control"
+                            className="form-control w-75 ml-5"
                             name="firstname"
                             value={firstName}
                             onChange={onChangeFirstName}
@@ -194,10 +195,10 @@ const Register = (props) => {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="lastname">Last Name</label>
+                        <label htmlFor="lastname" className="ml-5">Last Name</label>
                         <Input
                             type="text"
-                            className="form-control"
+                            className="form-control w-75 ml-5"
                             name="lastname"
                             value={lastName}
                             onChange={onChangeLastName}
@@ -206,10 +207,10 @@ const Register = (props) => {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="username">Username</label>
+                        <label htmlFor="username" className="ml-5">Username</label>
                         <Input
                             type="text"
-                            className="form-control"
+                            className="form-control w-75 ml-5"
                             name="username"
                             value={username}
                             onChange={onChangeUsername}
@@ -218,10 +219,10 @@ const Register = (props) => {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="email">Email</label>
+                        <label htmlFor="email" className="ml-5">Email</label>
                         <Input
                             type="text"
-                            className="form-control"
+                            className="form-control w-75 ml-5"
                             name="email"
                             value={email}
                             onChange={onChangeEmail}
@@ -230,10 +231,10 @@ const Register = (props) => {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="password">Password</label>
+                        <label htmlFor="password" className="ml-5">Password</label>
                         <Input
                             type="password"
-                            className="form-control"
+                            className="form-control w-75 ml-5"
                             name="password"
                             value={password}
                             onChange={onChangePassword}
@@ -242,10 +243,10 @@ const Register = (props) => {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="confirm-password">Retype Password</label>
+                        <label htmlFor="confirm-password" className="ml-5">Retype Password</label>
                         <Input
                             type="password"
-                            className="form-control"
+                            className="form-control w-75 ml-5"
                             name="confirm-password"
                             value={confirmPass}
                             onChange={onChangeConfirmPassword}
@@ -254,10 +255,10 @@ const Register = (props) => {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="image">Profile Photo</label>
+                        <label htmlFor="image" className="ml-5">Profile Photo</label>
                         <Input
                             type="file"
-                            className="form-control"
+                            className="form-control w-75 ml-5"
                             name="image"
                             onChange={onChangeImage}
                             validations={[validateImage]}
@@ -265,8 +266,9 @@ const Register = (props) => {
                     </div>
                     <div className="form-group">
                         <button
-                            className="btn btn-primary btn-block"
+                            className="btn btn-primary btn-block w-25"
                             disabled={loading}
+                            style={{marginLeft:"11.8rem"}}
                         >
                             {loading && (
                                 <span className="spinner-border spinner-border-sm"></span>

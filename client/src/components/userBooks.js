@@ -7,7 +7,7 @@ import { Link} from "react-router-dom";
 
 
 const UserBooks = () => {
-
+   
     const [userBooks, setUserBooks] = useState({})
     const [shelf, setShelf] = useState("All")
     const [booksShelf,setBookShelf]= useState({})
@@ -26,7 +26,7 @@ const UserBooks = () => {
                 convertedBooks['rows']= books.map((book)=>{
                     return{
                         id: book.book._id,
-                        cover: book.book.image_path ? <img src={book.book.image_path} /> : "No image",
+                        cover: book.book.image_path ? <img src={ process.env.PUBLIC_URL + "/books-covers/" + book.book.image_path} style={{height: "100px", width: "100px"}} /> : "No image",
                         author:` ${book.book.author.firstName}  ${book.book.author.lastName}`,
                         name:<Link to={`/books/${book.book._id}`}>{book.book.name}</Link>,
                         shelve:<BookShelve changeBookState={changeBookState} bookId={book.book._id} state={book.shelf} />,
@@ -97,29 +97,27 @@ const UserBooks = () => {
 
 
     useEffect(()=>{
-
       
         filteredBooks={"columns": userBooks["columns"] , "rows": userBooks["rows"]}
 
-
-        if (shelf == "read") {
+        if (shelf === "read") {
             if (userBooks["rows"]) {
                 filteredBooks["rows"] = filteredBooks["rows"].filter((book) => {
-                    return book.shelve.props.state == "read"
+                    return book.shelve.props.state === "read"
                 })
                 setBookShelf({"columns": filteredBooks["columns"],"rows": filteredBooks["rows"]})
             }
         }
-        else if (shelf == "reading") {
+        else if (shelf === "reading") {
             filteredBooks["rows"] = filteredBooks["rows"].filter((book) => {
-                return book.shelve.props.state== "reading"
+                return book.shelve.props.state === "reading"
             })
             setBookShelf({"columns": filteredBooks["columns"],"rows": filteredBooks["rows"]})
 
         }
-        else if (shelf == "want to read") {
+        else if (shelf === "want to read") {
             filteredBooks["rows"]= filteredBooks["rows"].filter((book) => {
-                return book.shelve.props.state== "want to read"
+                return book.shelve.props.state === "want to read"
             })
             setBookShelf({"columns": filteredBooks["columns"],"rows": filteredBooks["rows"]})
 
@@ -132,13 +130,11 @@ const UserBooks = () => {
     },[shelf])
 
     const changeBookState = (id, bookState) => {
-
         
         if(convertedBooks["rows"]){     
             let books=convertedBooks
-            books["rows"] = convertedBooks["rows"].map(book => {
-                
-                if (book.id == id) {                    
+            books["rows"] = convertedBooks["rows"].map(book => {                
+                if (book.id === id) {                    
                     return { ...book, shelve: <BookShelve changeBookState={changeBookState} bookId={book.id} state={bookState} /> }
                     
                 }
@@ -155,13 +151,12 @@ const UserBooks = () => {
             
             books["rows"] = books["rows"].map(book => {
                 
-                if (book.id == id) {                    
+                if (book.id === id) {                    
                     return { ...book, shelve: <BookShelve changeBookState={changeBookState} bookId={book.id} state={bookState} /> }
                     
                 }
                 return book
-            })         
-            
+            })                     
             
 
             setBookShelf({"columns": books["columns"],"rows": books["rows"]})
@@ -176,27 +171,28 @@ const UserBooks = () => {
         let sum=0
         let books=convertedBooks
         books["rows"] = convertedBooks["rows"].map(book => {
-            if (book.id === id) {
-                console.log(book.ratings)
-                book.ratings.forEach(rat => {
-                   
-                    if (rat.user == JSON.parse(localStorage.getItem('user')).id) {       
-                        rat.rating= parseInt(rate )           
-                        book.rating[1]=<RateBook key={book.id} changeBookRate={changeBookRate} bookId={book.id} rate={rate} />     
+            if (book.id === id) {                
+                book.ratings.forEach(rat => {                   
+                    if (rat.user === JSON.parse(localStorage.getItem('user')).id) {       
+                        rat.rating = parseInt(rate)
+                        book.rating = []           
+                        book.rating.push(<RateBook key={book.id} changeBookRate={changeBookRate} bookId={book.id} rate={rate} /> )    
                         sum+= rat.rating                   
                         return { ...book}
                     }                 
                     sum+= rat.rating
 
-                })  
-            sum!=0 ?book.average= sum/book.ratings.length : book.average=0
+                })                  
+                sum !== 0 ? book.average= sum/book.ratings.length : book.average=rate
+             
+           
             }
             return book
         })
-        console.log(books["rows"])
-        setUserBooks({"columns":books["columns"],"rows":books["rows"]})
+        setBookShelf({"columns":books["columns"],"rows":books["rows"]})
     }
 
+    console.log(booksShelf)
     
     return (
 
