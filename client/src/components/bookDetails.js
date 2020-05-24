@@ -84,7 +84,7 @@ const BookDetails = ({ match: { params: { id: bookId } } }) => {
                         <div className="book-data">
                             <h2>{bookDetails.name}</h2>
                             <h4><Link to={`/authors/${bookDetails.author._id}`}>{`${bookDetails.author.firstName} ${bookDetails.author.lastName}`}</Link></h4>
-                            <h4><Link to={`/authors/${bookDetails.category._id}`}>{bookDetails && bookDetails.category.name}</Link></h4>
+                            <h4><Link to={`/categories/${bookDetails.category.name}/${bookDetails.category._id}`}>{bookDetails && bookDetails.category.name}</Link></h4>
 
                             <div className="book-rating">
                                 <StarRatings
