@@ -27,7 +27,7 @@ const Category = (props) => {
   let [errorMessage, setErrorMessage] = useState('');
   let [successMessage, setSuccessMessage] = useState('');
   let [id, setId] = useState('');
-
+let [modalName,setmodalName]=useState('Add new');
   useEffect(() => {
 
     axios.get(`http://localhost:${process.env.REACT_APP_SERVER_PORT}/categories`, { headers: authHeader() }).then((res) => {
@@ -49,6 +49,7 @@ const Category = (props) => {
   }
   const modalClose = () => {
     setModal(false);
+    setInput('');
   }
   const handleChange = (e) => {
     const { target: { value } } = e;
@@ -136,12 +137,13 @@ const Category = (props) => {
         });
     }
     setId('');
+    setmodalName('')
   }
   const handleEdit = (id) => {
     setId(id);
     let oldCategory = categories.filter((cat) => (cat._id === id)).map(filtered => { return filtered.name; })
     modalOpen();
-
+    setmodalName("Update");
     if (input === "" && id !== null)
       setInput(oldCategory[0]);
 
@@ -160,7 +162,7 @@ const Category = (props) => {
 
     <div className="App">
 
-      <button style={buttonStyle} onClick={modalOpen} className="bg-dark text-white"> 
+      <button style={buttonStyle} onClick={e=>{modalOpen();setmodalName('Add new')}} className="bg-dark text-white"> 
         <FontAwesomeIcon icon={faPlusCircle} />
       </button>
 
@@ -171,7 +173,7 @@ const Category = (props) => {
         dialogClassName="modal-90w"
         aria-labelledby="example-custom-modal-styling-title" style={styleModal} className="text-dark">
         <Modal.Header closeButton className="bg-dark text-white">
-          <Modal.Title id="example-custom-modal-styling-title">Add/update Category</Modal.Title>
+          <Modal.Title id="example-custom-modal-styling-title">{modalName} Category</Modal.Title>
         </Modal.Header>
         <Modal.Body style={modalBody}>
           <div className="form-group">
@@ -191,7 +193,7 @@ const Category = (props) => {
             <button variant="secondary" onClick={handleSubmit} type="button">
               Save
             </button>
-            <button variant="secondary" onClick={modalClose}>
+            <button variant="secondary" onClick={e=>{modalClose();}}>
               Close
           </button>
           </div>
