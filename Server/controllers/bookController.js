@@ -211,20 +211,35 @@ exports.allBooks = (req, res, next) => {
 };
 
 exports.editBook = (req, res, next) => {
-    const { body: { name,
-        image_path,
-        author,
-        category } } = req;
-    bookModel.findByIdAndUpdate(req.params.id, {
-        name,
-        image_path,
-        author,
-        category
-    },
+    let updatedInfo = { }; 
+    const { body } = req;
+
+    if(body.name) updatedInfo['name'] = body.name;
+    if(body.author) updatedInfo['author'] = body.author;
+    if(body.category) updatedInfo['category'] = body.category;
+
+    if(req.files && req.files.length > 0) {
+        const image_ext = req.files[0].originalname.split('.')[1];
+        let image_path = req.files[0].filename+"."+image_ext;
+        fs.rename(req.files[0].path, process.env.BOOKS_COVERS + image_path, (err) => {
+            if(err) console.log(err);
+        });
+        updatedInfo['image_path'] = image_path;
+    }
+
+    bookModel.findByIdAndUpdate(req.params.id, updatedInfo,
         { new: true }
         , (err, book) => {
             if (err) next('cannot update the book');
-            res.json(book)
+            else {
+                bookModel.findById(book._id)
+                .populate('author', 'firstName lastName')
+                .populate('category', 'name')
+                .exec((err, booke) => {
+                    if (err) next('cannot find this book')
+                    else res.json(booke)
+                })
+            }
         })
 }
 
@@ -234,8 +249,9 @@ exports.removeBook = (req, res, next) => {
         if (err) {
             next('cannot find the book');
         }
-        doc.deleteOne(function(err){
+        doc.deleteOne(function(err, doc){
             if(err) console.log(err)
+            else res.send(doc)
         })
     })
     // bookModel.findByIdAndRemove(req.params.id,

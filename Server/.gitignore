@@ -1,6 +1,7 @@
 node_modules/
 .env
-public/upload/
+public/upload/books/*
+public/upload/users/*
 config/
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test

@@ -21,7 +21,7 @@ const upload = multer({
 });
 router.post('/add', upload.array('image_path', 1), [authJwt.verifyToken, authJwt.isAdmin] ,bookController.addBook);
 router.get("/:id", [authJwt.verifyToken] ,bookController.oneBook);
-router.patch("/:id", [authJwt.verifyToken, authJwt.isAdmin], bookController.editBook);
+router.patch("/:id",upload.array('image_path', 1), [authJwt.verifyToken, authJwt.isAdmin], bookController.editBook);
 router.delete("/:id",  [authJwt.verifyToken, authJwt.isAdmin], bookController.removeBook);
 
 
@@ -32,6 +32,6 @@ router.post('/rate/:id', [authJwt.verifyToken], bookController.updateBookRating)
 
 router.post('/shelves/:id', [authJwt.verifyToken], bookController.updateBookShelf);
 
-router.post("/addreview/:bookId/:userId", bookController.addreview);
+router.post("/addreview/:bookId/:userId", [authJwt.verifyToken], bookController.addreview);
 
 module.exports = router

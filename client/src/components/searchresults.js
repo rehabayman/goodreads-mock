@@ -11,14 +11,14 @@ function searchResult(props) {
         <>
          <div>  
                          
-            <div className='container-fluid' >  
+            <div className='container-fluid mt-5' >  
             <Carousel itemsToShow={3} itemsToScroll={3}>  
             {
                 Object.values(props.location.state.filteredBooks).map(book=>
                     {return(
         
                         <div className="card mb-2 mr-3" style={{width: "18rem", height:"25rem"}} key={book._id}>
-                            <Link to={`/books/${book._id}`}><img className="card-img-top" src={book.cover ? book.cover : "/112815953-stock-vector-no-image-available-icon-flat-vector.jpg"} alt="Book Cover"></img></Link>
+                            <Link to={`/books/${book._id}`}><img className="card-img-top"  style= {{maxHeight:"20rem"}} src={book.image_path ? process.env.PUBLIC_URL + "/books-covers/" + book.image_path : "/112815953-stock-vector-no-image-available-icon-flat-vector.jpg"} alt="Book Cover"></img></Link>
                             <div className="card-body">
                                 <h5 className="card-title"><Link to={`/books/${book._id}`}>{book.name}</Link></h5>
                                 <p className="card-text"><Link to={`/authors/${book.author._id}`}>{`${book.author.firstName} ${book.author.lastName}`}</Link></p>

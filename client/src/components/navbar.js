@@ -26,17 +26,17 @@ const NavBar = () => {
 
     return (
         <nav className="navbar navbar-expand navbar-dark bg-dark">
-            <Link to={"/"} className="navbar-brand">
+            <Link to={AuthService.getCurrentUser() && AuthService.getCurrentUser().roles.includes("ROLE_ADMIN") ? "/books/all/admin" : "/"} className="navbar-brand">
                 GoodReads
-        </Link>
+            </Link>
             <div className="navbar-nav mr-auto">
                 
 
-                {showModeratorBoard && (
+                {/* {showModeratorBoard && (
                     <li className="nav-item">
                         <Link to={"/mod"} className="nav-link">
                             Moderator Board
-            </Link>
+                        </Link>
                     </li>
                 )}
 
@@ -44,9 +44,9 @@ const NavBar = () => {
                     <li className="nav-item">
                         <Link to={"/admin"} className="nav-link">
                             Admin Board
-            </Link>
+                        </Link>
                     </li>
-                )}
+                )} */}
                 {currentUser && (
                     <>
                                         
@@ -70,9 +70,11 @@ const NavBar = () => {
 
             {currentUser ? (
                 <div className="navbar-nav ml-auto">
-                     <li className="nav-item">
-                         <SearchBook/>
-                     </li>
+                    {!currentUser.roles.includes('ROLE_ADMIN') &&
+                        <li className="nav-item">
+                            <SearchBook/>
+                        </li>
+                    }
                     <li className="nav-item">
                         <Link to={"/profile"} className="nav-link">
                             {currentUser.username}
@@ -80,7 +82,7 @@ const NavBar = () => {
                     </li>
                     <li className="nav-item">
                         <a href="/login" className="nav-link" onClick={logOut}>
-                            LogOut
+                            Logout
                 </a>
                     </li>
                 </div>

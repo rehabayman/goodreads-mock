@@ -49,17 +49,17 @@ const Results = (props) => {
     return(
     <div id="results" className="search-results">
         <datalist className="dropdownContent" style={dropdownContent} id="myList">
-            {props.filteredBooks.length ? props.filteredBooks.slice(0,props.showBooks).map((i,index) => 
+            {props.filteredBooks.length ? props.filteredBooks.slice(0,props.showBooks).map((book,index) => 
                    <li key={index}>
                        <div className="searchItem" style={searchItem}>
                             <div className="row">
-                                <Link to={`/books/${i._id}`} style={row} onClick={e=>props.show?(props.setShow(false)):<></>}>
+                                <Link to={`/books/${book._id}`} style={row} onClick={e=>props.show?(props.setShow(false)):<></>}>
                                     <div className="col-xs-6 col-sm-3 col-md-3 col-lg-2">
-                                        <img className="img-responsive" src="https://via.placeholder.com/50x50" alt=""/>
+                                    <img className="img-responsive" style= {{width:"50px",height:"50px"}} src={book.image_path ? process.env.PUBLIC_URL + "/books-covers/" + book.image_path : "https://via.placeholder.com/50x50"} alt=""/>
                                     </div>
                                     <div className="col-xs-6 col-sm-9 col-md-9 col-lg-10">
-                                        <h5 style={title}>{i.name} </h5>
-                                        <p style={author}>by {i.author.firstName} {i.author.lastName}</p>
+                                        <h5 style={title}>{book.name} </h5>
+                                        <p style={author}>by {book.author.firstName} {book.author.lastName}</p>
                                     </div>
                                 </Link>
                             </div>
@@ -82,3 +82,4 @@ const Results = (props) => {
     );
 }
 export default Results
+  
