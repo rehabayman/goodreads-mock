@@ -34,7 +34,7 @@ app.use(cors());//middleware
 app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
-
+app.use('/public', express.static('public'));
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));

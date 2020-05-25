@@ -21,6 +21,7 @@ import BookDetails from './components/bookDetails'
 import SearchBook from './components/SearchBook';
 import SearchResult from './components/searchresults';
 import Results from './components/Results';
+import Authors from './components/Authors';
 function App() {
 
  
@@ -34,10 +35,11 @@ function App() {
               <Route exact path={"/"} component={Home} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
+              {/* <Route exact path="/authors/all" component={Authors}/> */}
               <PrivateRoute exact path="/profile" component={Profile} />             
               <PrivateRoute path="/admin" component={BoardAdmin} />
               <PrivateRoute exact path="/categories"  component={Category} />
-
+              <PrivateRoute exact path="/authors" component={Authors}/>
               <PrivateRoute exact path="/categories/all" component={CategoryList} />
               <PrivateRoute exact path="/categories/:categoryname/:id" component={CategoryDetails} />
               <PrivateRoute exact path="/books/all" component={BooksUser}/>

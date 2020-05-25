@@ -1,61 +1,60 @@
 const express =  require('express');
 const router = express.Router();
-const AuthorsModel = require('../models/authors');
+// const AuthorsModel = require('../models/authors');
+const { authJwt } = require("../middlewares");
+const authorController = require("../controllers/authorController");
+const cors = require('cors');
+const path = require('path');
+const multer = require('multer');
 
 
-// router.get('/',(req,res)=>{
-//     AuthorsModel.find({},(err,authors)=>{
-//         if(err) return res.send(err);
-//         res.json(authors);
-//     })
+// const storage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//         cb(null, 'public/authors-pics/');
+//     },
+//     filename: (req, file, cb) => {
+//         cb(null, file.originalname);
+//     }
 // });
-router.get('/',async(req,res)=>{
-    const { page = 1, limit = 1 } = req.query;
-    try{
-        const authors = await AuthorsModel.find()
-        .populate('books') 
-        .limit(limit * 1)  
-        .skip((page - 1) * limit)
-        .exec();
-        const count = await AuthorsModel.countDocuments();
-        res.json({
-            authors,
-            totalPages: Math.ceil(count / limit),
-            currentPage: page
-          });
-    }catch(err){
-        console.error(err.message);
+
+const DIR = './public/upload/authors/';
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, DIR);
+    },
+    filename: (req, file, cb) => {
+        const fileName = file.originalname.toLowerCase().split(' ').join('-');
+        cb(null,'image'+ '-' + fileName)
     }
 });
-router.get('/:id',(req,res)=>{
-    AuthorsModel.findOne({_id : req.params.id},(error,author)=>{
-        if(error) return res.send(error);
-        res.json(author);
-    }).populate('books')
+
+var upload = multer({
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+            cb(null, true);
+            console.log(file);
+        } else {
+            cb(null, false);
+            return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+        }
+    }
 });
-router.post('/',(req,res)=>{
-    const {body : {firstName,lastName,birthdate,image_path}} = req;
-    const author = new AuthorsModel({
-        firstName,
-        lastName,
-        birthdate,
-        image_path
-    })
-    author.save((err,author)=>{
-        if(err) return res.send(err);
-        res.json(author);
-    })
-});
-router.patch('/:id',(req,res)=>{
-    AuthorsModel.findByIdAndUpdate(req.params.id,req.body,{new:true},(err,author)=>{
-        if(err) return res.send(err);
-        res.json(author);
-    })
-});
-router.delete('/:id',(req,res)=>{
-    AuthorsModel.findByIdAndRemove({_id:req.params.id},req.body,(err,author)=>{
-        if(err) return res.send(err);
-        res.json(author);
-    })
-});
+
+exports.tokenMiddleware = function (req, res, next) {
+    res.header(
+        "Access-Control-Allow-Headers",
+        "x-access-token, Origin, Content-Type, Accept"
+    );
+    next();
+}
+router.get("",  [authJwt.verifyToken], authorController.getAllAuthors);
+router.post("",  upload.single('image_path'), [authJwt.verifyToken, authJwt.isAdmin], authorController.addAuthor);
+router.patch('/:id',upload.single('image_path'),[authJwt.verifyToken, authJwt.isAdmin], authorController.updateAuthor);
+router.delete("/:id",  [authJwt.verifyToken, authJwt.isAdmin], authorController.deleteAuthor);
+router.get('/:id/', [authJwt.verifyToken],authorController.authorGetDetails);
+// router.get('/:id/',authorController.authorGetDetails);
+
+
 module.exports = router;
