@@ -8,7 +8,6 @@ import PrivateRoute from "./components/privateRoute"
 import Login from "./components/login.component";
 import Home from "./pages/user/homepage";
 import Profile from "./components/Profile";
-// import BoardUser from "./components/board-user.component";
 import BoardAdmin from "./components/board-admin.component";
 import Register from "./components/Register";
 import NavBar from "./components/navbar";
@@ -22,6 +21,10 @@ import SearchBook from './components/SearchBook';
 import SearchResult from './components/searchresults';
 import Results from './components/Results';
 import Authors from './components/Authors';
+import AuthService from './services/auth.service';
+import AboutUs from './pages/user/aboutus';
+import Terms from './pages/user/terms';
+
 function App() {
 
  
@@ -32,9 +35,13 @@ function App() {
 
           <div className="container">
             <Switch>              
-              <Route exact path={"/"} component={Home} />
+              <Route exact path={"/"} component={
+                AuthService.getCurrentUser() && AuthService.getCurrentUser().roles.includes('ROLE_ADMIN') ? Profile : Home
+                } />
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
+              <Route exact path="/about" component={AboutUs} />
+              <Route exact path="/terms" component={Terms} />
               {/* <Route exact path="/authors/all" component={Authors}/> */}
               <PrivateRoute exact path="/profile" component={Profile} />             
               <PrivateRoute path="/admin" component={BoardAdmin} />
@@ -49,17 +56,6 @@ function App() {
               <PrivateRoute exact path="/search" component={SearchBook} />
               <PrivateRoute exact path="/books/all/admin" component={BooksAdmin}/>
               <PrivateRoute exact path="/Results" component={Results} />
-
-              {/* <Route path="/user" component={BoardUser} /> */}
-{/*               
-              <Route path="/admin" component={BoardAdmin} />
-              <Route exact path="/categories" component={Category} />
-              <Route exact path="/categories/all" component={CategoryList} />
-              <Route exact path="/categories/:categoryname/:id" component={CategoryDetails} />
-              <Route exact path="/books/all" component={BooksUser}/>
-              <Route exact path="/books/all/admin" component={BooksAdmin}/>
-              <Route exact path="/books/:id" component={BookDetails}/>
-              */}
             </Switch>
           </div>
         </div>

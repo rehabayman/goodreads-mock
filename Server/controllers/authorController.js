@@ -65,10 +65,16 @@ exports.addAuthor=(req,res)=>{
 
 
 exports.deleteAuthor=(req,res)=>{
-    authorModel.findByIdAndRemove({_id:req.params.id},req.body,(err,author)=>{
-        if(err) return res.send(err);
-        res.json(author);
-    })
+    authorModel.findById(req.params.id, function (err, author) {
+        if (err) {
+            next('cannot find the author');
+        }
+        // This to invoke delete one pre hook in the schema
+        author.deleteOne(function(err, author){
+            if(err) console.log(err)
+            else res.send(author)
+        })
+    });
 }
 exports.authorGetDetails=async(req,res)=>{
     try {

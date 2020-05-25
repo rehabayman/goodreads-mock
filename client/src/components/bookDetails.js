@@ -77,8 +77,8 @@ const BookDetails = ({ match: { params: { id: bookId } } }) => {
                   
                     <div className="book-info">
                         <div className="book-info-left">
-                            <img className="book-image" src={bookDetails.image_path ? process.env.PUBLIC_URL + "/books-covers/" + bookDetails.image_path : "/112815953-stock-vector-no-image-available-icon-flat-vector.jpg"} />
-                            <BookShelve changeBookState={changeBookState} bookId={bookDetails._id} state={shelf} />
+                            <img className="book-image" src={bookDetails.image_path ? process.env.PUBLIC_URL + "/books-covers/" + bookDetails.image_path : "/112815953-stock-vector-no-image-available-icon-flat-vector.jpg"} alt="Book Cover" />
+                            <BookShelve changeBookState={changeBookState} bookId={bookDetails._id} state={shelf} width={"14rem"} marginTop={"1rem"} height="2rem"/>
                             <RateBook changeBookRate={changeBookRate} key={bookDetails._id} bookId={bookDetails._id} rate={0} />
                         </div>
                         <div className="book-data">
@@ -110,7 +110,7 @@ const BookDetails = ({ match: { params: { id: bookId } } }) => {
                     />
                     <br />
                     <br />
-                    <div className="reviews">
+                    <div className="reviews mb-5">
                         <h4>Reviews</h4>
                         {bookDetails.reviews.length > 0 ?
                             bookDetails.reviews.map((review) => {

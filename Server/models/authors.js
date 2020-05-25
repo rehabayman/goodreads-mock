@@ -11,8 +11,9 @@ const authorSchema = new mongoose.Schema({
 
 // Delete dependent documents
 // To be invoked --> author.remove()
-authorSchema.pre('remove', function () {
-    Book.remove({author_id: this._id}).exec();
+authorSchema.pre('deleteOne', {document: true}, function (next) {
+    Book.deleteMany({author: this._id}).then(next);
+    next();
 });
 
 module.exports = mongoose.model('Author', authorSchema);

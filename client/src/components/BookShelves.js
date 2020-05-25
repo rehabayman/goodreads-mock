@@ -52,7 +52,10 @@ const BookShelves=(props)=>  {
     }
     return (
         <div className="container">
-            <select value={selectedItem} onChange={handleShelfChange}>
+            <select value={selectedItem} onChange={handleShelfChange}
+                    style={{width: props.width ? props.width : "auto",
+                            marginTop: props.marginTop ? props.marginTop : 0,
+                            height: props.height ? props.height : "auto"}}>
                 {
                     shelves.map(shelf => <option key={shelf.value} value={shelf.value}>{shelf.display}</option>)
                 }

@@ -6,47 +6,47 @@ import UserBooks from "../../components/userBooks";
 
 import Footer from "../../components/footer.js";
 
-const Home=()=> {
-  
-  const [content,setContent]=useState("")
+const Home = () => {
 
-  useEffect(()=>{
+  const [content, setContent] = useState("")
+
+  useEffect(() => {
     UserService.getPublicContent().then(
-        response => {
-         
-           setContent(response.data)
-         
-        },
-        error => {
-          
-           setContent(
-              (error.response && error.response.data) ||
-              error.message ||
-              error.toString()
-           )
-         
-        }
-      );
-  },[])
+      response => {
 
-    
+        setContent(response.data)
+
+      },
+      error => {
+
+        setContent(
+          (error.response && error.response.data) ||
+          error.message ||
+          error.toString()
+        )
+
+      }
+    );
+  }, [])
+
+
   return (
-    <div className="homepage">
-    
-      <main>
-          {
-            JSON.parse(localStorage.getItem('user'))?
-             <UserBooks/>:
-             <Populars />
-          }
+    <div style={{height: "41rem"}}>
+
+      <main style={{height: "91.9%"}}>
+        {
+          JSON.parse(localStorage.getItem('user')) ?
+            <UserBooks /> :
+            <Populars />
+        }
       </main>
 
-      <footer>
+      {/* <footer> */}
         {
-          JSON.parse(localStorage.getItem('user'))?"":
-        <Footer />
+          JSON.parse(localStorage.getItem('user')) ? "" :
+            <Footer/>
         }
-      </footer>
+      {/* </footer> */}
     </div>
   );
 }

@@ -32,9 +32,14 @@ function PopularLive(){
 
 
     return (
-        <div className="container">
-            <h1>Welcome to good reads.</h1>
-            <div className="w-50 d-flex flex-row flex-wrap justify-content-between align-items-start">
+        <div className="container mt-5">
+            
+            <h1 className="mb-5 jumbotron">
+                <span role="img" style={{marginRight:"1rem", marginLeft:"0.5rem"}}>&#10024;&#10024;&#10024;&#10024;&#10024;</span>
+                    Welcome to Good Reads
+                <span role="img" style={{marginLeft:"1rem"}}>&#10024;&#10024;&#10024;&#10024;&#10024;</span>
+            </h1>
+            <div className="w-100 d-flex flex-row flex-wrap justify-content-between align-items-start">
                 <PopularDummyBooks title="Popular Books" data={books}/>
                 <PopularDummyAuthors title="Popular Authors" data={authors}/>
                 <PopularDummyCategories title="Popular Categories" data={categories}/>
