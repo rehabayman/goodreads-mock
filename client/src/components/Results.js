@@ -15,8 +15,8 @@ const Results = (props) => {
         display: props.show ? "block" : "none",
         position: "absolute",
         backgroundColor: "#f1f1f1",
-        minWidth: "260px",
-        maxWidth: "265px",
+        minWidth: "300px",
+        maxWidth: "300px",
         boxShadow: "0px 8px 16px 0px rgba(0,0,0,0.2)",
         zIndex: 1,
       }
@@ -55,7 +55,7 @@ const Results = (props) => {
                             <div className="row">
                                 <Link to={`/books/${book._id}`} style={row} onClick={e=>props.show?(props.setShow(false)):<></>}>
                                     <div className="col-xs-6 col-sm-3 col-md-3 col-lg-2">
-                                    <img className="img-responsive" style= {{width:"50px",height:"50px"}} src={book.image_path ? process.env.PUBLIC_URL + "/books-covers/" + book.image_path : "https://via.placeholder.com/50x50"} alt=""/>
+                                    <img className="img-responsive" style= {{width:"45px",height:"45px"}} src={book.image_path ? process.env.PUBLIC_URL + "/books-covers/" + book.image_path : "https://via.placeholder.com/50x50"} alt=""/>
                                     </div>
                                     <div className="col-xs-6 col-sm-9 col-md-9 col-lg-10">
                                         <h5 style={title}>{book.name} </h5>
@@ -74,6 +74,7 @@ const Results = (props) => {
                         pathname: `/SearchResult`,
                         state: {filteredBooks:props.filteredBooks},
                         }} onClick={e=>props.show?(props.setShow(false)):<></>}
+                        style={{marginLeft: "5rem"}}
                     >Show all results</Link>
                 : <></>}
                

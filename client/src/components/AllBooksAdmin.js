@@ -219,7 +219,7 @@ const AllBooksAdmin = () => {
         books.length > 0 ?
             (
                 <div>
-                    <button style={buttonStyle} onClick={() => modalOpen1()} className="bg-dark text-white"> 
+                    <button style={buttonStyle} onClick={modalOpen1} className="bg-dark text-white"> 
                         <FontAwesomeIcon icon={faPlusCircle} />
                     </button>
                     
@@ -227,7 +227,7 @@ const AllBooksAdmin = () => {
                         dialogClassName="modal-90w"
                         aria-labelledby="example-custom-modal-styling-title" style={styleModal} className="text-dark">
 
-                        <Modal.Header closeButton className="bg-dark text-white">
+                        <Modal.Header  className="bg-dark text-white">
                             <Modal.Title id="example-custom-modal-styling-title">Add New Book</Modal.Title>
                         </Modal.Header>
                         <Modal.Body style={modalBody}>
@@ -297,12 +297,12 @@ const AllBooksAdmin = () => {
                         <tbody>
                             {books.map(book =>
                                 <tr key={book._id}>
-                                    <td><Link to={`/books/${book._id}`}>{book.name}</Link></td>
+                                    <td>{book.name}</td>
                                     <td>{book.category.name}</td>
                                     <td>{book.author.firstName + " " + book.author.lastName}</td>
                                     <td>
                                         <Link to={`/books/${book._id}`}>
-                                            <img className="card-img-top" src={book.image_path ? process.env.PUBLIC_URL + "/books-covers/" + book.image_path : "/112815953-stock-vector-no-image-available-icon-flat-vector.jpg"} alt="Book Cover" style={{ width: "100px", height: "100px" }} />
+                                            <img className="card-   -top" src={book.image_path ? process.env.PUBLIC_URL + "/books-covers/" + book.image_path : "/112815953-stock-vector-no-image-available-icon-flat-vector.jpg"} alt="Book Cover" style={{ width: "100px", height: "100px" }} />
                                         </Link>
                                     </td>
                                     <td><button type="button" onClick={() => modalOpen2(book._id)} className="btn btn-warning" data-toggle="modal" data-target="#exampleModal">
@@ -312,7 +312,7 @@ const AllBooksAdmin = () => {
                                     <Modal show={modal2} onHide={modalClose2}
                                         dialogClassName="modal-90w"
                                         aria-labelledby="example-custom-modal-styling-title" style={styleModal} className="text-dark">
-                                        <Modal.Header closeButton className="bg-dark text-white">
+                                        <Modal.Header  className="bg-dark text-white">
                                             <Modal.Title id="example-custom-modal-styling-title">Edit Book</Modal.Title>
                                         </Modal.Header>
                                         <Modal.Body style={modalBody}>
@@ -385,7 +385,7 @@ const AllBooksAdmin = () => {
                     dialogClassName="modal-90w"
                     aria-labelledby="example-custom-modal-styling-title" style={styleModal} className="text-dark">
 
-                    <Modal.Header closeButton className="bg-dark text-white">
+                    <Modal.Header  className="bg-dark text-white">
                         <Modal.Title id="example-custom-modal-styling-title">Add New Book</Modal.Title>
                     </Modal.Header>
                     <Modal.Body style={modalBody}>

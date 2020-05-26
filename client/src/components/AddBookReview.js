@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import axios from 'axios';
+import authHeader from '../services/auth-header';
 
 function AddBookReview(props){
     const [review, setReview] = useState("");
@@ -13,7 +14,7 @@ function AddBookReview(props){
         if( review === ""){
             window.alert("Add a review to submit!");
         } else {
-            axios.post(url, {review: review})
+            axios.post(url, {review: review}, {headers: authHeader()})
                 .then(res=>{
                     console.log(res.data);
                     setReview("");
@@ -24,7 +25,7 @@ function AddBookReview(props){
                 })
                 .catch(e=>{
                     console.log(e);
-                    window.alert("review wasn't added, some error happedn");
+                    window.alert("review wasn't added, some error happened");
                     console.log("post request failed");
                     setReview("");
                 });
@@ -36,13 +37,13 @@ function AddBookReview(props){
     }
 
     return (
-        <div className="container">
+        <div className="container mt-3">
             <h3>Add a review</h3>
             <form onSubmit={reviewSubmission}>
                 <div className="form-group">
-                    <textarea onChange={reviewValueChange} value={review}cols="117" rows="10"></textarea>
+                    <textarea onChange={reviewValueChange} value={review} cols="58" rows="5"></textarea>
                 </div>
-                <button type="submit" className="btn btn-primary btn-block w-100">Submit</button>            
+                <button type="submit" className="btn btn-dark btn-block w-50">Submit</button>            
             </form>
 
         </div>

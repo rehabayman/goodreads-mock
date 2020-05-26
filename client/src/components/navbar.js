@@ -31,22 +31,6 @@ const NavBar = () => {
             </Link>
             <div className="navbar-nav mr-auto">
                 
-
-                {/* {showModeratorBoard && (
-                    <li className="nav-item">
-                        <Link to={"/mod"} className="nav-link">
-                            Moderator Board
-                        </Link>
-                    </li>
-                )}
-
-                {showAdminBoard && (
-                    <li className="nav-item">
-                        <Link to={"/admin"} className="nav-link">
-                            Admin Board
-                        </Link>
-                    </li>
-                )} */}
                 {currentUser && (
                     <>
                                         
@@ -83,7 +67,7 @@ const NavBar = () => {
                     <li className="nav-item">
                         <a href="/login" className="nav-link" onClick={logOut}>
                             Logout
-                </a>
+                        </a>
                     </li>
                 </div>
             ) : (
@@ -91,12 +75,12 @@ const NavBar = () => {
                         <li className="nav-item">
                             <Link to={"/login"} className="nav-link">
                                 Login
-                </Link>
+                            </Link>
                         </li>
                         <li className="nav-item">
                             <Link to={"/register"} className="nav-link">
                                 Sign Up
-                </Link>
+                            </Link>
                         </li>
                     </div>
                 )}

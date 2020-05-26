@@ -172,7 +172,7 @@ let [modalName,setmodalName]=useState('Add new');
       <Modal show={modal} onHide={modalClose}
         dialogClassName="modal-90w"
         aria-labelledby="example-custom-modal-styling-title" style={styleModal} className="text-dark">
-        <Modal.Header closeButton className="bg-dark text-white">
+        <Modal.Header className="bg-dark text-white">
           <Modal.Title id="example-custom-modal-styling-title">{modalName} Category</Modal.Title>
         </Modal.Header>
         <Modal.Body style={modalBody}>

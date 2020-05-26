@@ -196,23 +196,20 @@ const UserBooks = () => {
     
     return (
 
-        <div className="home">
+        <div className="home" style={{marginTop: "5rem", marginLeft: "-4.5rem"}}>
             <div className="side">
                 <ul>
-                    <li>
+                    <li className="mb-2">
                         <button type="button" onClick={() => { setShelf("All") }} className="btn btn-light">All</button>
-
                     </li>
-                    <li>
+                    <li className="mb-2">
                         <button type="button" className="btn btn-light" onClick={() => { setShelf("read") }} >Read</button>
 
                     </li>
-                    <li>
+                    <li className="mb-2">
                         <button type="button" className="btn btn-light" onClick={() => { setShelf("reading") }} > Currently Reading</button>
-
-
                     </li>
-                    <li>
+                    <li className="mb-2">
                         <button type="button" className="btn btn-light" onClick={() => { setShelf("want to read") }} > Want to read</button>
                     </li>
 

@@ -1,8 +1,6 @@
 
 import React, {useState, useEffect} from 'react'
 import UserService from '../services/user.service'
-import RateBook from './RateBook'
-import BookShelves from './BookShelves'
 
 const BoardUser=()=>  {
     
