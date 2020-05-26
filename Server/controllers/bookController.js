@@ -206,6 +206,7 @@ exports.allBooks = (req, res, next) => {
         .populate('category', 'name')
         .exec((err, book) => {
             if (err) res.status(404).send({ message: 'cannot find books' });
+            console.log(book);
             res.json(book)
         })
 };
