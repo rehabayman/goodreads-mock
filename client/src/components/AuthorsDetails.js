@@ -30,23 +30,25 @@ const AuthorDetails = ({ match: { params: { id: authorId } } })=>{
   
     return(
         <div>
-            <Card key={author._id} style={{ width: "18rem" }} >
+            <Card key={author._id} style={{ width: "20rem", marginLeft: "22rem", marginTop: "2rem" }} >
             <CardImg top width="100%" src={author.image_path } alt="Card image cap" />
               <CardBody>
                 <CardTitle>
-                  Author's name:{author.firstName} {author.lastName}
+                  Author's name: {author.firstName} {author.lastName}
                 </CardTitle>
                 <CardText>
-                  Birthdate:{author.birthdate}
+                  Birthdate: {author.birthdate ? author.birthdate.split('T')[0] : author.birthdate}
                 </CardText>
               </CardBody>
             </Card>
-            {
-            books.map(book=>{
-                return (<div key={book._id}>
-                <h2>Author's Books</h2>
-                <Card  style={{ width: "18rem" }} >
-                <CardImg top width="100%" src={process.env.PUBLIC_URL + "/books-covers/" + book.image_path } alt="Card image cap" />
+            
+            <h2>Author's Books</h2>
+            
+            <div style={{display: "flex", flexDirection:"row", flexWrap: "wrap"}}>
+            {books.map(book=>{
+                return (
+                <Card key={book._id} style={{ width: "18rem", marginBottom: "1rem", marginRight: "1rem" }} >
+                <CardImg top width="100%" src={ process.env.PUBLIC_URL + "/books-covers/" + book.image_path } alt="Card image cap" />
               <CardBody>
                 <CardTitle>
                   Book's name:{book.name}
@@ -68,10 +70,10 @@ const AuthorDetails = ({ match: { params: { id: authorId } } })=>{
                 </CardText>
               </CardBody>
             </Card>
-            </div>
                 );
-            })
-        }
+              })
+            }
+            </div>
         </div>
     );
    
