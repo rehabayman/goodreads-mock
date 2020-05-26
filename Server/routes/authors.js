@@ -55,6 +55,6 @@ router.patch('/:id',upload.single('image_path'),[authJwt.verifyToken, authJwt.is
 router.delete("/:id",  [authJwt.verifyToken, authJwt.isAdmin], authorController.deleteAuthor);
 // router.get('/:id/', [authJwt.verifyToken],authorController.authorGetDetails);
 router.get('/:id/',authorController.authorGetDetails);
-
+router.get('/:id/books',authorController.getAllBooks);
 
 module.exports = router;

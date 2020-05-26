@@ -46,7 +46,7 @@ const NavBar = () => {
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <Link to={currentUser.roles.includes("ROLE_ADMIN") ? "/authors" : "/authors/:id"} className="nav-link">Authors</Link>
+                        <Link to={currentUser.roles.includes("ROLE_ADMIN") ? "/authors" : "/authors/all"} className="nav-link">Authors</Link>
                     </li>
                     </>
                 )}

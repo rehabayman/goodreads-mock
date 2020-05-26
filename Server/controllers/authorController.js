@@ -1,10 +1,15 @@
-const {authorModel} = require("../models/index");
+// db.bookModel = require("./books");
+const {authorModel,bookModel} = require("../models/index");
 const fs = require('fs');
 exports.getAllAuthors=async(req,res)=>{
         const { page = 1, limit = 10 } = req.query;
         try{
             const authors = await authorModel.find()
-            .populate('books') 
+            .populate([{
+                path: 'books',
+                populate: [{
+                    path: 'author ratings'                                          
+            }]}]) 
             .limit(limit * 1)  
             .skip((page - 1) * limit)
             .sort({name:'asc'})
@@ -17,6 +22,21 @@ exports.getAllAuthors=async(req,res)=>{
         }catch(err){
             console.error(err.message);
         }
+};
+exports.getAllBooks = async(req,res)=>{
+    try{
+        const books = await bookModel.find({author : req.params.id})
+        .populate('ratings')
+        .populate('reviews')
+        .populate('author') 
+        .exec();
+        console.log(books);
+        res.json({
+            books
+          });
+}catch(err){
+    console.error(err.message);
+}
 };
 exports.addAuthor=(req,res)=>{
     const {body : {firstName,lastName,birthdate}} = req;

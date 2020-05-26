@@ -7,24 +7,27 @@ const AuthorDetails = ({ match: { params: { id: authorId } } })=>{
     const [author,setAuthor] = useState({});
     const [books,setBooks] = useState([]);
     const [loading,setLoading] = useState(false);
-    const API_author_URL = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/authors/${authorId}`;
-
+    // const API_author_URL = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/authors/${authorId}`;
+    const API_books_URL = `http://localhost:${process.env.REACT_APP_SERVER_PORT}/authors/${authorId}/books`;
     useEffect( ()=>{
         setLoading(true)
         const fetchData =async ()=>{
-            await axios.get(API_author_URL,{ headers: authHeader() }).then(response=>{
-                // console.log(response.data.books.length);
+            await axios.get(API_books_URL,{ headers: authHeader() }).then(response=>{
+                console.log(response.data);
                 // console.log(response.data.books[0].ratings);
-                setAuthor( response.data );
+                setAuthor( response.data.books[0].author );
                 setBooks(response.data.books);
             })
         }
         fetchData();
         setLoading(false)
     },[])
+  
+    let rate = 0;
     if(loading){
         return <h1>Loading</h1>
     }
+  
     return(
         <div>
             <Card key={author._id} style={{ width: "18rem" }} >
@@ -40,19 +43,28 @@ const AuthorDetails = ({ match: { params: { id: authorId } } })=>{
             </Card>
             {
             books.map(book=>{
-                return (<div>
+                return (<div key={book._id}>
                 <h2>Author's Books</h2>
-                <Card key={book._id} style={{ width: "18rem" }} >
-                <CardImg top width="100%" src={book.image_path } alt="Card image cap" />
+                <Card  style={{ width: "18rem" }} >
+                <CardImg top width="100%" src={process.env.PUBLIC_URL + "/books-covers/" + book.image_path } alt="Card image cap" />
               <CardBody>
                 <CardTitle>
                   Book's name:{book.name}
                 </CardTitle>
                 <CardText>
-                  Book's ratings:{book.ratings}
+                {
+                    book.ratings.map((rating)=> {
+                    rate += rating.rating
+                    })
+                }
+                Average Book's Rating:{rate/book.ratings.length}
                 </CardText>
                 <CardText>
-                  Book's reviews:{book.reviews}
+                {
+                    book.reviews.map((review)=> {
+                        return (<><small>Book's review :{review.review}</small><br></br> </>);
+                    })
+                }
                 </CardText>
               </CardBody>
             </Card>

@@ -22,6 +22,7 @@ import SearchResult from './components/searchresults';
 import Results from './components/Results';
 import Authors from './components/Authors';
 import AuthorsDetails from './components/AuthorsDetails';
+import AuthorsView from './components/AuthorsView';
 import AuthService from './services/auth.service';
 import AboutUs from './pages/user/aboutus';
 import Terms from './pages/user/terms';
@@ -47,6 +48,7 @@ function App() {
               <PrivateRoute path="/admin" component={BoardAdmin} />
               <PrivateRoute exact path="/categories"  component={Category} />
               <PrivateRoute exact path="/authors" component={Authors}/>
+              <PrivateRoute exact path="/authors/all" component={AuthorsView}/>
               <PrivateRoute exact path="/authors/:id" component={AuthorsDetails}/>
               <PrivateRoute exact path="/categories/all" component={CategoryList} />
               <PrivateRoute exact path="/categories/:categoryname/:id" component={CategoryDetails} />
