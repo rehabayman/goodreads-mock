@@ -2,7 +2,8 @@ import React, { useEffect , useState} from 'react';
 import axios from "axios";
 import authHeader from '../services/auth-header';
 import { Card, CardText, CardBody, CardTitle, CardImg } from "reactstrap";
-
+import BookShelve from './BookShelves';
+import RateBook from './RateBook';
 const AuthorDetails = ({ match: { params: { id: authorId } } })=>{
     const [author,setAuthor] = useState({});
     const [books,setBooks] = useState([]);
@@ -22,14 +23,20 @@ const AuthorDetails = ({ match: { params: { id: authorId } } })=>{
         fetchData();
         setLoading(false)
     },[])
-  
+    // const ratingStyle ={
+    //     display:'flex',
+    //     flexDirection:'row'
+    // }
+    // const containerStyle ={
+       
+    // }
     let rate = 0;
     if(loading){
         return <h1>Loading</h1>
     }
   
     return(
-        <div>
+        <div classname="container" >
             <Card key={author._id} style={{ width: "20rem", marginLeft: "22rem", marginTop: "2rem" }} >
             <CardImg top width="100%" src={author.image_path } alt="Card image cap" />
               <CardBody>
@@ -68,6 +75,10 @@ const AuthorDetails = ({ match: { params: { id: authorId } } })=>{
                     })
                 }
                 </CardText>
+                <div className="rate">
+                shelve:<BookShelve bookId={book.id} state={book.shelf} />
+                <RateBook key={book.id} bookId={book.id} rate={0} />
+                </div>
               </CardBody>
             </Card>
                 );

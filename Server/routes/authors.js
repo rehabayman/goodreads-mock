@@ -53,8 +53,8 @@ router.get("",  [authJwt.verifyToken], authorController.getAllAuthors);
 router.post("",  upload.single('image_path'), [authJwt.verifyToken, authJwt.isAdmin], authorController.addAuthor);
 router.patch('/:id',upload.single('image_path'),[authJwt.verifyToken, authJwt.isAdmin], authorController.updateAuthor);
 router.delete("/:id",  [authJwt.verifyToken, authJwt.isAdmin], authorController.deleteAuthor);
-// router.get('/:id/', [authJwt.verifyToken],authorController.authorGetDetails);
-router.get('/:id/',authorController.authorGetDetails);
-router.get('/:id/books',authorController.getAllBooks);
+router.get('/:id/', [authJwt.verifyToken],authorController.authorGetDetails);
+// router.get('/:id/',authorController.authorGetDetails);
+router.get('/:id/books',[authJwt.verifyToken],authorController.getAllBooks);
 
 module.exports = router;
