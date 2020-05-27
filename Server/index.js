@@ -3,11 +3,11 @@ const express = require('express');
 const bodyParser = require("body-parser");
 const cors = require('cors');
 const db = require("./models");
-const bcrypt = require('bcryptjs');
 const bookRouter = require('./routes/books');
 const authorRouter = require('./routes/authors');
 const homeRouter = require("./routes/home.js");
 const { authJwt } = require("./middlewares");
+const fs = require('fs');
 
 const DB_PORT = process.env.DB_PORT;
 const DB_HOST = process.env.DB_HOST;
@@ -23,6 +23,10 @@ const BooksRatings = db.booksRating;
 const Book = db.book
 const Author= db.author
 const Category= db.categories
+
+// for logging
+let logStream;
+let initialDateFlag = true;
 
 
 var corsOptions = {
@@ -43,8 +47,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // middleware that logs requests method and the url requested.
 app.use((req, res, next) => {
-  console.log(`\n\nnew request, its method: ${req.method}`);
+  console.log(`\n\n${new Date().toISOString()}`);
+  console.log(`new request, its method: ${req.method}`);
   console.log(`the url requested: ${req.url}\n`);
+  if(logStream) {
+    if(initialDateFlag) {
+      logStream.write(`\n${new Date()}`);
+      initialDateFlag = false;
+    }
+    logStream.write(`\n${new Date().toISOString()}` + `\nnew request, its method: ${req.method}`
+                                + `\nthe url requested: ${req.url}\n`);
+  }
   next();
 })
 
@@ -64,24 +77,6 @@ mongoose.connect(`mongodb://${DB_HOST}:${DB_PORT}/goodReadsDB`, {
 }, (err) => {
   if (!err) {
     console.log("Started connection to mongo");
-  //   let author= new Author({
-  //       firstName: "mohamed",
-  //       lastName: "adham",
-  //       birthdate:"01/12/2020",
-  //       image_path:"./"
-  //   })
-  //   author.save()
-  //   let category= new Category({
-  //     name: "test",
-  //     })
-  // category.save()
-  //   let book=new Book({
-  //     name:"test",
-  //     image_path:"/as",
-  //     author:author,
-  //     category:category
-  //   })
-  //   book.save()
     initial();
   }
   else console.log(err);
@@ -99,7 +94,10 @@ app.use("/home", homeRouter);
 app.use('/authors', authorRouter);
 app.listen(PORT, (err) => {
 
-  if (!err) console.log(`App Started on port: ${PORT}`);
+  if (!err) {
+    logStream = fs.createWriteStream(process.env.REQUESTS_LOG, {flags: 'a'});
+    console.log(`App Started on port: ${PORT}`);
+  }
 
 });
 

@@ -7,7 +7,7 @@ function Terms() {
         <>
             <div className="mt-5 jumbotron" style={{marginBottom: "22.1rem"}}>
                 <p className="mb-3">
-                    This website is meant to be as a mock for Good Reads functionalities for developing and learing issues 
+                    This website is meant to be as a mock for Good Reads functionalities for developing and learning issues 
                     and not by any means violating copyrights.
                     <hr></hr>
                     <br/>
