@@ -19,6 +19,7 @@ These steps will get you a copy of the project up and running for development an
 	npm install
 	cp .env.example .env
 	cp config/auth.js.example config/auth.js
+	mkdir logs
 	mkdir -p public/upload/books
 	mkdir -p public/upload/authors
 	mkdir -p public/upload/users
