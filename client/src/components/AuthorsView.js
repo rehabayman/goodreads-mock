@@ -28,9 +28,9 @@ const AuthorsView = (props)=>{
             authors.map(author => {
                 return(
                     <div className="card mb-2 mr-3" style={{width: "18rem", height:"25rem"}} key={author._id}>
-                        <Link to={`/authors/${author._id}`}><img className="card-img-top" style= {{maxHeight:"20rem"}} src={author.image_path} alt="Author is missing"></img></Link>
+                        <Link to={`/authors/${author._id}`}><img className="card-img-top" style= {{height:"20rem"}} src={author.image_path} alt="Author is missing"></img></Link>
                         <div className="card-body">
-                            <h5 className="card-title"><Link to={`/authors/${author._id}`}>Author's name:{author.firstName} {author.lastName}</Link></h5>
+                            <h5 className="card-title"><Link to={`/authors/${author._id}`}>{author.firstName} {author.lastName}</Link></h5>
                         </div>
                     </div>
                 )

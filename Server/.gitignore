@@ -2,7 +2,7 @@ node_modules/
 .env
 public/upload/books/*
 public/upload/users/*
-config/
+config/auth.js
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 # TypeScript cache
